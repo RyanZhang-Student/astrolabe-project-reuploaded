@@ -153,33 +153,47 @@ def create_pro_svg(planets, aspects):
 
 def generate_detailed_html(planets, asc_lon, is_day):
     """
-    生成详细的克重和宫位分析 HTML
+    生成详细的克重和宫位分析 HTML (涵盖所有12宫)
     """
     html_sections = []
+    
+    # 获取上升星座索引，用于计算宫头
     asc_sign_name, _ = get_zodiac_sign(asc_lon)
     asc_idx = SIGNS.index(asc_sign_name)
     
+    # 按宫位分组星体 (仅限实际星体)
     house_planets = {i: [] for i in range(1, 13)}
-    for p_name, p_data in planets.items():
-        if p_name in ['Asc', 'Midheaven', 'IC', 'Dsc']: continue
+    check_list = ['Sun', 'Moon', 'Mercury', 'Venus', 'Mars', 'Jupiter', 'Saturn', 'Uranus', 'Neptune', 'Pluto', 'Fortune', 'Node']
+    for p_name in check_list:
+        if p_name not in planets: continue
+        p_data = planets[p_name]
         h = determine_house(p_data['lon'], asc_lon)
         house_planets[h].append(p_name)
         
     for h_num in range(1, 13):
+        # 1. 宫头信息
         cusp_sign = SIGNS[(asc_idx + h_num - 1) % 12]
         ruler_name = CLASSICAL_RULERS[cusp_sign]
-        ruler_lon = planets[ruler_name]['lon']
-        ruler_flying_house = determine_house(ruler_lon, asc_lon)
+        
+        # 宫主星飞宫
+        if ruler_name in planets:
+            ruler_lon = planets[ruler_name]['lon']
+            ruler_flying_house = determine_house(ruler_lon, asc_lon)
+            ruler_info_str = f"宫主星: {ruler_name} ({h_num}宫主) 飞入 {ruler_flying_house}宫"
+        else:
+            ruler_info_str = f"宫主星: {ruler_name} (数据缺失)"
         
         section = [f"""
         <div class="detailed-house">
             <div class="house-header">第 {h_num} 宫</div>
             <div class="cusp-info">
-                宫头: {cusp_sign} | 宫主星: {ruler_name} ({h_num}宫主) 飞入 {ruler_flying_house}宫
+                宫头: {cusp_sign} | {ruler_info_str}
             </div>
         """]
         
-        for p_name in house_planets[h_num]:
+        # 2. 分析该宫位的守护星 (即使它不在该宫位)
+        if ruler_name in planets:
+            p_name = ruler_name
             p_data = planets[p_name]
             p_lon = p_data['lon']
             p_sign, p_deg = get_zodiac_sign(p_lon)
@@ -190,23 +204,48 @@ def generate_detailed_html(planets, asc_lon, is_day):
             total_score = essential['score'] + accidental['score'] + diplomacy['score']
             
             p_aspects = get_aspects_for_planet(p_name, planets)
-            aspect_rows = ""
-            for i, asp in enumerate(p_aspects[:8], 1):
-                aspect_rows += f"<div>相位{i}: 对方星体: {asp['target']} | 对方宫位: {asp['target_house']} | 相位: {asp['type']} | 强度: {asp['orb']}° ({asp['intensity']}%)</div>"
-
-            defense_str = f"星体: {p_name}"
-            if p_name == ruler_name:
-                defense_str += f"({h_num}宫头守护)"
+            aspect_rows = "".join([f"<div>相位{i}: 对方星体: {asp['target']} | 对方宫位: {asp['target_house']} | 相位: {asp['type']} | 强度: {asp['orb']}° ({asp['intensity']}%)</div>" for i, asp in enumerate(p_aspects[:8], 1)])
 
             section.append(f"""
-            <div class="planet-detail">
-                <div class="planet-title">{p_name} 详细分析</div>
-                <div>{defense_str}</div>
+            <div class="planet-detail ruler-focus">
+                <div class="planet-title">宫主星: {p_name} ({h_num}宫头守护)</div>
+                <div>星体: {p_name}({h_num}宫头守护)</div>
                 <div>落宫: {accidental['house']} | 星座: {p_sign} | 度数: {int(p_deg)}°{int((p_deg%1)*60)}'</div>
                 <div class="score-line">先天分: 状态:{essential['status']} | 入界: {essential['in_term']} | 入面: {essential['in_face']} | 三分: {essential['in_trip']} | 先天分: {essential['score']:+g}</div>
                 <div class="score-line">后天分: 落宫: {accidental['house_score']:+g} | 燃烧: {accidental['is_combust']} | 逆行: {accidental['is_retro']} | 燃烧径: {accidental['is_via_combusta']} | 后天分: {accidental['score']:+g}</div>
                 <div class="score-line">外交: 互容: {diplomacy['mut_rec']} | 互拒: {diplomacy['mut_rej']} | 被拒: {diplomacy['rej_by']} | 被接纳: {diplomacy['accepted_by']} | 外交分: {diplomacy['score']:+g}</div>
-                <div class="score-line total-score">先天后天总分: {total_score:+g}</div>
+                <div class="score-line total-score">先天后天总分: {total_score:+g} | 格局: 无(+0.0) | 重要性: {total_score:+g}</div>
+                <div class="aspect-details">
+                    {aspect_rows if aspect_rows else "无重大相位"}
+                </div>
+            </div>
+            """)
+
+        # 3. 分析该宫位内的其他星体
+        for p_name in house_planets[h_num]:
+            if p_name == ruler_name: continue # 避免重复分析
+            
+            p_data = planets[p_name]
+            p_lon = p_data['lon']
+            p_sign, p_deg = get_zodiac_sign(p_lon)
+            
+            essential = calculate_essential_score(p_name, p_sign, p_deg, is_day)
+            accidental = calculate_accidental_score(p_name, p_data, planets, asc_lon)
+            diplomacy = calculate_diplomacy(p_name, planets, is_day)
+            total_score = essential['score'] + accidental['score'] + diplomacy['score']
+            
+            p_aspects = get_aspects_for_planet(p_name, planets)
+            aspect_rows = "".join([f"<div>相位{i}: 对方星体: {asp['target']} | 对方宫位: {asp['target_house']} | 相位: {asp['type']} | 强度: {asp['orb']}° ({asp['intensity']}%)</div>" for i, asp in enumerate(p_aspects[:8], 1)])
+
+            section.append(f"""
+            <div class="planet-detail">
+                <div class="planet-title">宫内星体: {p_name}</div>
+                <div>星体: {p_name}</div>
+                <div>落宫: {accidental['house']} | 星座: {p_sign} | 度数: {int(p_deg)}°{int((p_deg%1)*60)}'</div>
+                <div class="score-line">先天分: 状态:{essential['status']} | 入界: {essential['in_term']} | 入面: {essential['in_face']} | 三分: {essential['in_trip']} | 先天分: {essential['score']:+g}</div>
+                <div class="score-line">后天分: 落宫: {accidental['house_score']:+g} | 燃烧: {accidental['is_combust']} | 逆行: {accidental['is_retro']} | 燃烧径: {accidental['is_via_combusta']} | 后天分: {accidental['score']:+g}</div>
+                <div class="score-line">外交: 互容: {diplomacy['mut_rec']} | 互拒: {diplomacy['mut_rej']} | 被拒: {diplomacy['rej_by']} | 被接纳: {diplomacy['accepted_by']} | 外交分: {diplomacy['score']:+g}</div>
+                <div class="score-line total-score">先天后天总分: {total_score:+g} | 格局: 无(+0.0) | 重要性: {total_score:+g}</div>
                 <div class="aspect-details">
                     {aspect_rows if aspect_rows else "无重大相位"}
                 </div>
