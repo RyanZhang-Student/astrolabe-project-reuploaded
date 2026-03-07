@@ -184,8 +184,10 @@ def generate_detailed_html(planets, asc_lon, is_day):
             ruler_info_str = f"宫主星: {ruler_name} (数据缺失)"
         
         section = [f"""
-        <div class="detailed-house">
-            <div class="house-header">第 {h_num} 宫</div>
+        <details class="detailed-house">
+            <summary class="house-header" style="cursor: pointer; outline: none;">
+                第 {h_num} 宫 <span style="font-size:14px; color:#888; font-weight:normal; margin-left:10px;">▼ 点击展开/收缩</span>
+            </summary>
             <div class="cusp-info">
                 宫头: {cusp_sign} | {ruler_info_str}
             </div>
@@ -252,7 +254,7 @@ def generate_detailed_html(planets, asc_lon, is_day):
             </div>
             """)
             
-        section.append("</div>")
+        section.append("</details>")
         html_sections.append("".join(section))
         
     return "".join(html_sections)
