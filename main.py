@@ -7,25 +7,8 @@ from engine import get_astronomical_data
 from planets import get_star_longitudes, check_star_aspects
 # 新增：引入星体计算工具
 from star_calc import calculate_star_conjunctions_and_stats
-
-# bruh reuploading the repository
-'''
-try:
-    from ai_analysis_1 import generate_and_append_analysis_1
-    from ai_analysis_2 import generate_and_append_analysis_2
-    from ai_analysis_3 import generate_and_append_analysis_3
-    from ai_analysis_4 import generate_and_append_analysis_4
-    from ai_analysis_5 import generate_and_append_analysis_5
-    from ai_analysis_6 import generate_and_append_analysis_6
-    from ai_analysis_7 import generate_and_append_analysis_7
-
-    HAS_AI = True
-except ImportError as e:
-    print(f"⚠️ AI 模块加载失败，原因: {e}")
-    print("💡 请运行: pip install google-genai")
-    HAS_AI = False
-  '''  
-
+# 新增：引入自研打分系统
+from scoring import calculate_essential_score, calculate_accidental_score, calculate_diplomacy, get_aspects_for_planet
 
 def get_classical_row(house_num, asc_lon, planets, is_day):
     asc_sign_name, _ = get_zodiac_sign(asc_lon)
@@ -81,8 +64,6 @@ def get_classical_row(house_num, asc_lon, planets, is_day):
 
     deg_str = f"{int(ruler_deg)}°{int((ruler_deg % 1)*60)}'"
     return f"<tr><td>{house_num}</td><td>{cusp_sign}</td><td>{ruler_name}</td><td>{ruler_house}</td><td>{ruler_sign}</td><td>{deg_str}</td><td>{state}</td><td>{in_term}</td><td>{in_face}</td><td>{in_trip}</td><td>{combustion}</td><td>{retro}</td><td>{rel_final_str}</td><td>{mut_rej}</td><td>{rej_by_str}</td><td>{rec_by_str}</td><td>-</td></tr>"
-
-
 
 def create_pro_svg(planets, aspects):
     cx, cy, r_out, r_in = 400, 400, 350, 280
@@ -170,6 +151,73 @@ def create_pro_svg(planets, aspects):
     
     return "".join(svg)
 
+def generate_detailed_html(planets, asc_lon, is_day):
+    """
+    生成详细的克重和宫位分析 HTML
+    """
+    html_sections = []
+    asc_sign_name, _ = get_zodiac_sign(asc_lon)
+    asc_idx = SIGNS.index(asc_sign_name)
+    
+    house_planets = {i: [] for i in range(1, 13)}
+    for p_name, p_data in planets.items():
+        if p_name in ['Asc', 'Midheaven', 'IC', 'Dsc']: continue
+        h = determine_house(p_data['lon'], asc_lon)
+        house_planets[h].append(p_name)
+        
+    for h_num in range(1, 13):
+        cusp_sign = SIGNS[(asc_idx + h_num - 1) % 12]
+        ruler_name = CLASSICAL_RULERS[cusp_sign]
+        ruler_lon = planets[ruler_name]['lon']
+        ruler_flying_house = determine_house(ruler_lon, asc_lon)
+        
+        section = [f"""
+        <div class="detailed-house">
+            <div class="house-header">第 {h_num} 宫</div>
+            <div class="cusp-info">
+                宫头: {cusp_sign} | 宫主星: {ruler_name} ({h_num}宫主) 飞入 {ruler_flying_house}宫
+            </div>
+        """]
+        
+        for p_name in house_planets[h_num]:
+            p_data = planets[p_name]
+            p_lon = p_data['lon']
+            p_sign, p_deg = get_zodiac_sign(p_lon)
+            
+            essential = calculate_essential_score(p_name, p_sign, p_deg, is_day)
+            accidental = calculate_accidental_score(p_name, p_data, planets, asc_lon)
+            diplomacy = calculate_diplomacy(p_name, planets, is_day)
+            total_score = essential['score'] + accidental['score'] + diplomacy['score']
+            
+            p_aspects = get_aspects_for_planet(p_name, planets)
+            aspect_rows = ""
+            for i, asp in enumerate(p_aspects[:8], 1):
+                aspect_rows += f"<div>相位{i}: 对方星体: {asp['target']} | 对方宫位: {asp['target_house']} | 相位: {asp['type']} | 强度: {asp['orb']}° ({asp['intensity']}%)</div>"
+
+            defense_str = f"星体: {p_name}"
+            if p_name == ruler_name:
+                defense_str += f"({h_num}宫头守护)"
+
+            section.append(f"""
+            <div class="planet-detail">
+                <div class="planet-title">{p_name} 详细分析</div>
+                <div>{defense_str}</div>
+                <div>落宫: {accidental['house']} | 星座: {p_sign} | 度数: {int(p_deg)}°{int((p_deg%1)*60)}'</div>
+                <div class="score-line">先天分: 状态:{essential['status']} | 入界: {essential['in_term']} | 入面: {essential['in_face']} | 三分: {essential['in_trip']} | 先天分: {essential['score']:+g}</div>
+                <div class="score-line">后天分: 落宫: {accidental['house_score']:+g} | 燃烧: {accidental['is_combust']} | 逆行: {accidental['is_retro']} | 燃烧径: {accidental['is_via_combusta']} | 后天分: {accidental['score']:+g}</div>
+                <div class="score-line">外交: 互容: {diplomacy['mut_rec']} | 互拒: {diplomacy['mut_rej']} | 被拒: {diplomacy['rej_by']} | 被接纳: {diplomacy['accepted_by']} | 外交分: {diplomacy['score']:+g}</div>
+                <div class="score-line total-score">先天后天总分: {total_score:+g}</div>
+                <div class="aspect-details">
+                    {aspect_rows if aspect_rows else "无重大相位"}
+                </div>
+            </div>
+            """)
+            
+        section.append("</div>")
+        html_sections.append("".join(section))
+        
+    return "".join(html_sections)
+
 def generate_report():
     print("\n" + "="*45 + "\n   ASTROLABE DRAWING AND ANALYZING - MODULAR V17\n" + "="*45)
     user_name = input("Enter Name: ").strip().upper()
@@ -192,7 +240,6 @@ def generate_report():
 
     aspects = get_aspects(planets)
     
-    # --- 修改部分：调用 star_calc 进行恒星计算 ---
     star_raw_data = get_star_longitudes(ts, t)
     star_aspects, star_stats = calculate_star_conjunctions_and_stats(planets, star_raw_data, orb=1.0)
     
@@ -200,7 +247,6 @@ def generate_report():
     a_rows = "".join([f"<tr><td>{a['p1']}</td><td>{a['p2']}</td><td style='color:{ASPECT_COLORS.get(a['type'], 'black')}; font-weight:bold'>{a['type']}</td><td>{a['diff']}°</td></tr>" for a in aspects])
     c_rows = "".join([get_classical_row(h, asc_lon, planets, is_day) for h in range(1, 13)])
     
-    # 构建恒星表格行
     s_rows = ""
     if star_aspects:
         for sa in star_aspects:
@@ -208,7 +254,6 @@ def generate_report():
     else:
         s_rows = "<tr><td colspan='4'>No major fixed star conjunctions found (<1°).</td></tr>"
 
-    # 构建统计栏 HTML (根据截图样式)
     stats_html = f"""
     <div class="stats-bar">
         <span>👑 ROYAL STARS: {star_stats['royal']}</span>
@@ -217,6 +262,8 @@ def generate_report():
         <span>📚 ROBSON STARS: {star_stats['robson']}</span>
     </div>
     """
+
+    detailed_html = generate_detailed_html(planets, asc_lon, is_day)
 
     html = f"""<!DOCTYPE html><html><head><meta charset="UTF-8">
     <style>
@@ -230,9 +277,8 @@ def generate_report():
         table{{width:100%;border-collapse:collapse;margin-top:10px;font-size:11px}}
         th,td{{border:1px solid #ddd;padding:6px 4px;text-align:center}}
         th{{background:#f8f8f8; color:#666}}
-        .section-title{{font-size:14px;font-weight:bold;margin-top:20px;color:#444;border-left:4px solid #4B0082;padding-left:8px}}
+        .section-title{{font-size:16px;font-weight:bold;margin-top:30px;color:#444;border-left:5px solid #4B0082;padding-left:10px;background:#eee;padding:5px 10px}}
         
-        /* 统计栏样式 */
         .stats-bar {{
             display: flex;
             justify-content: space-around;
@@ -245,9 +291,16 @@ def generate_report():
             flex-wrap: wrap;
         }}
         .stats-bar span {{ font-size: 14px; }}
-        
-        /* 恒星表格表头特殊颜色 */
         .star-table th {{ background: #e9ecef; color: #333; }}
+
+        .detailed-house {{ border: 1px solid #ddd; padding: 15px; margin-top: 20px; border-radius: 8px; background: #fff; }}
+        .house-header {{ font-size: 18px; font-weight: bold; color: #4B0082; border-bottom: 2px solid #4B0082; padding-bottom: 5px; margin-bottom: 10px; }}
+        .cusp-info {{ font-size: 14px; font-weight: bold; background: #f0f0f0; padding: 5px 10px; border-radius: 4px; margin-bottom: 15px; }}
+        .planet-detail {{ border-left: 3px solid #666; padding-left: 15px; margin-bottom: 20px; font-size: 13px; line-height: 1.6; }}
+        .planet-title {{ font-size: 15px; font-weight: bold; color: #333; margin-top: 10px; }}
+        .score-line {{ color: #555; }}
+        .total-score {{ font-weight: bold; color: #d32f2f; font-size: 14px; margin-top: 3px; border-top: 1px dashed #ccc; padding-top: 3px; }}
+        .aspect-details {{ font-size: 12px; color: #777; margin-top: 5px; font-style: italic; }}
     </style></head>
     <body>
     <div class="card">
@@ -265,7 +318,7 @@ def generate_report():
         <div class="flex">
             <div class="chart">
                 <svg viewBox="0 0 800 800">{create_pro_svg(planets, aspects)}</svg>
-                <div class="section-title" style="margin-top: 20px;">Major Aspects</div>
+                <div class="section-title">Major Aspects</div>
                 <table>
                     <thead><tr><th>P1</th><th>P2</th><th>Type</th><th>Orb</th></tr></thead>
                     <tbody>{a_rows}</tbody>
@@ -277,7 +330,7 @@ def generate_report():
                     <thead><tr><th>Planet</th><th>Sign</th><th>Deg</th><th>House</th></tr></thead>
                     <tbody>{p_rows}</tbody>
                 </table>
-                <div class="section-title" style="margin-top: 20px;">Fixed Star Conjunction</div>
+                <div class="section-title">Fixed Star Conjunction</div>
                 {stats_html}
                 <table class="star-table">
                     <thead><tr><th>P1</th><th>P2</th><th>Orb</th><th>Meaning</th></tr></thead>
@@ -285,6 +338,9 @@ def generate_report():
                 </table>
             </div>
         </div>
+
+        <div class="section-title">Detailed Calculation & House Analysis</div>
+        {detailed_html}
     </div>
     </body></html>"""
     
@@ -293,34 +349,7 @@ def generate_report():
         f.write(html)
     print(f"\nSuccess! File generated: {filename}")
     
-    # 获取绝对路径，避免路径问题
     report_path = os.path.abspath(filename)
-
-    # === 修复后的 AI 分析调用段 ===
-    '''
-    if HAS_AI:
-        try:
-            # 只有当 ai_analysis 模块导入成功且函数存在时才执行
-            print("💡 正在深度解读第1宫...")
-            generate_and_append_analysis_1(report_path)
-            print("💡 正在深度解读第2宫...")
-            generate_and_append_analysis_2(report_path)
-            print("💡 正在深度解读第3宫...")
-            generate_and_append_analysis_3(report_path)
-            print("💡 正在深度解读第4宫...")
-            generate_and_append_analysis_4(report_path)
-            print("💡 正在深度解读第5宫...")
-            generate_and_append_analysis_5(report_path)
-            print("💡 正在深度解读第6宫...")
-            generate_and_append_analysis_6(report_path)
-            print("💡 正在深度解读第7宫...")
-            generate_and_append_analysis_7(report_path)
-        except Exception as e:
-            print(f"⚠️ AI 分析未能完成（但不影响报告生成）: {e}")
-    # ====================================
-    '''
-
-    # 确保无论 AI 是否成功，都会打开报告文件
     webbrowser.open('file://' + report_path)
 
 if __name__ == "__main__":
