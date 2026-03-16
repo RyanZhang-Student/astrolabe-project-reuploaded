@@ -1,5 +1,6 @@
 import os
 import webbrowser
+import json
 from constants import *
 from utils import *
 from engine import get_astronomical_data
@@ -203,19 +204,19 @@ def generate_report():
     a_rows = "".join([f"<tr><td>{a['p1']}</td><td>{a['p2']}</td><td style='color:{ASPECT_COLORS.get(a['type'], 'black')}; font-weight:bold'>{a['type']}</td><td>{a['diff']}°</td></tr>" for a in aspects])
     c_rows = "".join([get_classical_row(h, asc_lon, planets, is_day) for h in range(1, 13)])
     
-    s_rows = ""
-    if star_aspects:
-        for sa in star_aspects:
-            s_rows += f"<tr><td>{sa['planet']}</td><td>{sa['star']}</td><td>{sa['orb']:.2f}°</td><td>{sa['meaning']}</td></tr>"
-    else:
-        s_rows = "<tr><td colspan='4'>No major fixed star conjunctions found (<1°).</td></tr>"
+    star_aspects_json = json.dumps(star_aspects) if star_aspects else "[]"
+
+    def get_stat_span(count, label, category, title):
+        if count > 0:
+            return f'''<span class="clickable-stat" onclick="openStarModal('{category}', '{title}')">{label}: {count}</span>'''
+        return f"<span>{label}: {count}</span>"
 
     stats_html = f"""
     <div class="stats-bar">
-        <span>👑 ROYAL STARS: {star_stats['royal']}</span>
-        <span>✨ BEHENIAN STARS: {star_stats['behenian']}</span>
-        <span>⚔️ PRACTICAL STARS: {star_stats['practical']}</span>
-        <span>📚 ROBSON STARS: {star_stats['robson']}</span>
+        {get_stat_span(star_stats['royal'], '👑 ROYAL STARS', 'is_royal', 'Royal Star Conjunctions')}
+        {get_stat_span(star_stats['behenian'], '✨ BEHENIAN STARS', 'is_behenian', 'Behenian Star Conjunctions')}
+        {get_stat_span(star_stats['practical'], '⚔️ PRACTICAL STARS', 'is_practical', 'Practical Star Conjunctions')}
+        {get_stat_span(star_stats['robson'], '📚 ROBSON STARS', 'is_robson', 'Robson Star Conjunctions')}
     </div>
     """
 
@@ -247,7 +248,13 @@ def generate_report():
             flex-wrap: wrap;
         }}
         .stats-bar span {{ font-size: 14px; }}
+        .clickable-stat {{ text-decoration: underline; cursor: pointer; color: #4B0082; }}
         .star-table th {{ background: #e9ecef; color: #333; }}
+        .modal {{ display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.4); }}
+        .modal-content {{ background-color: #fefefe; margin: 10% auto; padding: 20px; border: 1px solid #888; width: 80%; max-width: 600px; border-radius: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.3); }}
+        .close-btn {{ color: #aaa; float: right; font-size: 28px; font-weight: bold; cursor: pointer; margin-top: -10px; }}
+        .close-btn:hover, .close-btn:focus {{ color: black; text-decoration: none; cursor: pointer; }}
+        #modalTitle {{ margin-top: 0; color: #4B0082; }}
 
         .detailed-house {{ border: 1px solid #ddd; padding: 15px; margin-top: 20px; border-radius: 8px; background: #fff; }}
         .house-header {{ font-size: 18px; font-weight: bold; color: #4B0082; border-bottom: 2px solid #4B0082; padding-bottom: 5px; margin-bottom: 10px; }}
@@ -288,16 +295,49 @@ def generate_report():
                 </table>
                 <div class="section-title">Fixed Star Conjunction</div>
                 {stats_html}
-                <table class="star-table">
-                    <thead><tr><th>P1</th><th>P2</th><th>Orb</th><th>Meaning</th></tr></thead>
-                    <tbody>{s_rows}</tbody>
-                </table>
             </div>
         </div>
 
         <div class="section-title">Detailed Calculation & House Analysis</div>
         {detailed_html}
     </div>
+    <div id="starModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeStarModal()">&times;</span>
+            <h3 id="modalTitle">Star Conjunctions</h3>
+            <table class="star-table">
+                <thead><tr><th>Planet</th><th>Star</th><th>Orb</th><th>Meaning</th></tr></thead>
+                <tbody id="modalBody"></tbody>
+            </table>
+        </div>
+    </div>
+    <script>
+        window.starData = {star_aspects_json};
+        function openStarModal(category, title) {{
+            if (!window.starData || window.starData.length === 0) return;
+            const tbody = document.getElementById('modalBody');
+            tbody.innerHTML = '';
+            const filtered = window.starData.filter(function(sa) {{ return sa[category]; }});
+            if (filtered.length === 0) return;
+            
+            document.getElementById('modalTitle').innerText = title;
+            filtered.forEach(function(sa) {{
+                const tr = document.createElement('tr');
+                tr.innerHTML = '<td>' + sa.planet + '</td><td>' + sa.star + '</td><td>' + sa.orb.toFixed(2) + '°</td><td>' + sa.meaning + '</td>';
+                tbody.appendChild(tr);
+            }});
+            document.getElementById('starModal').style.display = 'block';
+        }}
+        function closeStarModal() {{
+            document.getElementById('starModal').style.display = 'none';
+        }}
+        window.onclick = function(event) {{
+            let modal = document.getElementById('starModal');
+            if (event.target == modal) {{
+                modal.style.display = "none";
+            }}
+        }}
+    </script>
     </body></html>"""
     
     filename = f"report_{user_name}.html"

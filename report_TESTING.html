@@ -24,7 +24,13 @@
             flex-wrap: wrap;
         }
         .stats-bar span { font-size: 14px; }
+        .clickable-stat { text-decoration: underline; cursor: pointer; color: #4B0082; }
         .star-table th { background: #e9ecef; color: #333; }
+        .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.4); }
+        .modal-content { background-color: #fefefe; margin: 10% auto; padding: 20px; border: 1px solid #888; width: 80%; max-width: 600px; border-radius: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
+        .close-btn { color: #aaa; float: right; font-size: 28px; font-weight: bold; cursor: pointer; margin-top: -10px; }
+        .close-btn:hover, .close-btn:focus { color: black; text-decoration: none; cursor: pointer; }
+        #modalTitle { margin-top: 0; color: #4B0082; }
 
         .detailed-house { border: 1px solid #ddd; padding: 15px; margin-top: 20px; border-radius: 8px; background: #fff; }
         .house-header { font-size: 18px; font-weight: bold; color: #4B0082; border-bottom: 2px solid #4B0082; padding-bottom: 5px; margin-bottom: 10px; }
@@ -67,15 +73,11 @@
                 
     <div class="stats-bar">
         <span>👑 ROYAL STARS: 0</span>
-        <span>✨ BEHENIAN STARS: 2</span>
-        <span>⚔️ PRACTICAL STARS: 3</span>
-        <span>📚 ROBSON STARS: 7</span>
+        <span class="clickable-stat" onclick="openStarModal('is_behenian', 'Behenian Star Conjunctions')">✨ BEHENIAN STARS: 2</span>
+        <span class="clickable-stat" onclick="openStarModal('is_practical', 'Practical Star Conjunctions')">⚔️ PRACTICAL STARS: 3</span>
+        <span class="clickable-stat" onclick="openStarModal('is_robson', 'Robson Star Conjunctions')">📚 ROBSON STARS: 8</span>
     </div>
     
-                <table class="star-table">
-                    <thead><tr><th>P1</th><th>P2</th><th>Orb</th><th>Meaning</th></tr></thead>
-                    <tbody><tr><td>Venus</td><td>Princeps</td><td>0.54°</td><td>Keen intellect, research ability, and success in specialized fields.</td></tr><tr><td>Mars</td><td>Denebola</td><td>0.72°</td><td>Nobility, daring, but potential for public disgrace or judgment.</td></tr><tr><td>Saturn</td><td>Polaris</td><td>0.39°</td><td>Guidance, path-finding, and potential for sickness.</td></tr><tr><td>Saturn</td><td>Betelgeuse</td><td>0.20°</td><td>Great fortune, fame, and martial honor.</td></tr><tr><td>Midheaven</td><td>Algedi</td><td>0.74°</td><td>Beneficence, sacrificial nature, and spiritual focus.</td></tr><tr><td>Asc</td><td>Algol</td><td>0.14°</td><td>Most evil star; violence, intensity, danger.</td></tr><tr><td>Asc</td><td>Caput Algol</td><td>0.14°</td><td>Extreme misfortune, violence, and intense passion.</td></tr></tbody>
-                </table>
             </div>
         </div>
 
@@ -451,4 +453,41 @@
             </div>
             </details>
     </div>
+    <div id="starModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeStarModal()">&times;</span>
+            <h3 id="modalTitle">Star Conjunctions</h3>
+            <table class="star-table">
+                <thead><tr><th>Planet</th><th>Star</th><th>Orb</th><th>Meaning</th></tr></thead>
+                <tbody id="modalBody"></tbody>
+            </table>
+        </div>
+    </div>
+    <script>
+        window.starData = [{"planet": "Sun", "star": "Diadem", "orb": 0.8402043252435476, "meaning": "Sacrifice of oneself for others, quiet heroism, and female dignity.", "is_royal": false, "is_behenian": false, "is_practical": false, "is_robson": true}, {"planet": "Venus", "star": "Princeps", "orb": 0.537934850622463, "meaning": "Keen intellect, research ability, and success in specialized fields.", "is_royal": false, "is_behenian": false, "is_practical": false, "is_robson": true}, {"planet": "Mars", "star": "Denebola", "orb": 0.7151351673566921, "meaning": "Nobility, daring, but potential for public disgrace or judgment.", "is_royal": false, "is_behenian": false, "is_practical": false, "is_robson": true}, {"planet": "Saturn", "star": "Polaris", "orb": 0.38809397032619586, "meaning": "Guidance, path-finding, and potential for sickness.", "is_royal": false, "is_behenian": false, "is_practical": false, "is_robson": true}, {"planet": "Saturn", "star": "Betelgeuse", "orb": 0.20399479287846134, "meaning": "Great fortune, fame, and martial honor.", "is_royal": false, "is_behenian": false, "is_practical": true, "is_robson": true}, {"planet": "Midheaven", "star": "Algedi", "orb": 0.7386543096201308, "meaning": "Beneficence, sacrificial nature, and spiritual focus.", "is_royal": false, "is_behenian": false, "is_practical": false, "is_robson": true}, {"planet": "Asc", "star": "Algol", "orb": 0.13588622519466753, "meaning": "Most evil star; violence, intensity, danger.", "is_royal": false, "is_behenian": true, "is_practical": true, "is_robson": true}, {"planet": "Asc", "star": "Caput Algol", "orb": 0.13588622519466753, "meaning": "Extreme misfortune, violence, and intense passion.", "is_royal": false, "is_behenian": true, "is_practical": true, "is_robson": true}];
+        function openStarModal(category, title) {
+            if (!window.starData || window.starData.length === 0) return;
+            const tbody = document.getElementById('modalBody');
+            tbody.innerHTML = '';
+            const filtered = window.starData.filter(function(sa) { return sa[category]; });
+            if (filtered.length === 0) return;
+            
+            document.getElementById('modalTitle').innerText = title;
+            filtered.forEach(function(sa) {
+                const tr = document.createElement('tr');
+                tr.innerHTML = '<td>' + sa.planet + '</td><td>' + sa.star + '</td><td>' + sa.orb.toFixed(2) + '°</td><td>' + sa.meaning + '</td>';
+                tbody.appendChild(tr);
+            });
+            document.getElementById('starModal').style.display = 'block';
+        }
+        function closeStarModal() {
+            document.getElementById('starModal').style.display = 'none';
+        }
+        window.onclick = function(event) {
+            let modal = document.getElementById('starModal');
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+    </script>
     </body></html>

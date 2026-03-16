@@ -42,12 +42,21 @@ def calculate_star_conjunctions_and_stats(planets_data, stars_data, orb=1.0):
             
             # 判断是否合相
             if diff <= orb:
+                # 检查各类星星的归属
+                is_royal = any(r_star in s_name for r_star in ROYAL_STARS)
+                is_behenian = any(b_star in s_name for b_star in BEHENIAN_STARS)
+                is_practical = any(p_star in s_name for p_star in PRACTICAL_STARS)
+
                 # 1. 记录合相数据
                 conjunctions.append({
                     "planet": p_name,
                     "star": s_name,
                     "orb": diff,
-                    "meaning": star['meaning']
+                    "meaning": star['meaning'],
+                    "is_royal": is_royal,
+                    "is_behenian": is_behenian,
+                    "is_practical": is_practical,
+                    "is_robson": True
                 })
                 
                 # 2. 进行分类统计
@@ -56,15 +65,15 @@ def calculate_star_conjunctions_and_stats(planets_data, stars_data, orb=1.0):
                 stats["robson"] += 1
                 
                 # 检查 Royal Stars (模糊匹配，防止 "Difda (Deneb)" 匹配不上 "Difda")
-                if any(r_star in s_name for r_star in ROYAL_STARS):
+                if is_royal:
                     stats["royal"] += 1
                     
                 # 检查 Behenian Stars
-                if any(b_star in s_name for b_star in BEHENIAN_STARS):
+                if is_behenian:
                     stats["behenian"] += 1
                     
                 # 检查 Practical Stars
-                if any(p_star in s_name for p_star in PRACTICAL_STARS):
+                if is_practical:
                     stats["practical"] += 1
 
     return conjunctions, stats
