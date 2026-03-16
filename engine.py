@@ -17,6 +17,26 @@ try:
 except Exception:
     pass
 
+def lookup_local_city(query):
+    """
+    Search for a city in the local world_cities.json file.
+    Matches against city name (case-insensitive).
+    """
+    try:
+        import json
+        with open('world_cities.json', 'r', encoding='utf-8') as f:
+            cities = json.load(f)
+        
+        # Clean query: e.g., "BEIJING-CN" -> "BEIJING"
+        clean_query = query.split('-')[0].strip().upper()
+        
+        for city in cities:
+            if city['name'].upper() == clean_query:
+                return city['lat'], city['lng'], f"{city['name']} ({city['country']}) [Local]"
+    except Exception:
+        pass
+    return None
+
 def get_astronomical_data(dob_input, location_input):
     try:
         p = dob_input.split('-')
@@ -24,12 +44,18 @@ def get_astronomical_data(dob_input, location_input):
     except Exception as e:
         return None, f"Time Format Error: {e}"
 
-    geolocator = Nominatim(user_agent="Astrolabe_Pro_V9", ssl_context=ctx, adapter_factory=geopy.adapters.URLLibAdapter)
-    try:
-        loc = geolocator.geocode(location_input, timeout=10)
-        lat, lng, formatted_location = (loc.latitude, loc.longitude, loc.address) if loc else (39.9, 116.4, "Default (Beijing)")
-    except:
-        lat, lng, formatted_location = 39.9, 116.4, "Default (Beijing)"
+    # Try local lookup first
+    local_res = lookup_local_city(location_input)
+    if local_res:
+        lat, lng, formatted_location = local_res
+    else:
+        # Fallback to online geocoder
+        geolocator = Nominatim(user_agent="Astrolabe_Pro_V17", ssl_context=ctx, adapter_factory=geopy.adapters.URLLibAdapter)
+        try:
+            loc = geolocator.geocode(location_input, timeout=10)
+            lat, lng, formatted_location = (loc.latitude, loc.longitude, loc.address) if loc else (39.9, 116.4, "Default (Beijing)")
+        except:
+            lat, lng, formatted_location = 39.9, 116.4, "Default (Beijing)"
 
     tf = TimezoneFinder()
     tz_str = tf.timezone_at(lng=lng, lat=lat) or 'UTC'
@@ -37,7 +63,8 @@ def get_astronomical_data(dob_input, location_input):
     localized_dt = local_tz.localize(local_dt)
     utc_dt = localized_dt.astimezone(pytz.utc)
 
-    ts = load.timescale()
+    # Use BUILTIN=TRUE to avoid downloading deltat.tdb and leap_seconds.list
+    ts = load.timescale(builtin=True)
     eph = load('de421.bsp')
     t = ts.from_datetime(utc_dt)
     observer = eph['earth'] + wgs84.latlon(lat, lng)
