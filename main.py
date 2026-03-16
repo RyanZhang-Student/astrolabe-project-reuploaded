@@ -193,6 +193,8 @@ def generate_report():
     asc_lon, is_day = planets['Asc']['lon'], is_day_chart(planets)
     sun_lon, moon_lon = planets['Sun']['lon'], planets['Moon']['lon']
     planets['Fortune'] = {'lon': (asc_lon + (moon_lon - sun_lon if is_day else sun_lon - moon_lon)) % 360, 'is_retro': False}
+    for h in range(1, 13):
+        planets[f'House {h}'] = {'lon': (asc_lon + (h - 1) * 30) % 360, 'is_retro': False}
     for p in planets: planets[p]['house'] = determine_house(planets[p]['lon'], asc_lon)
 
     aspects = get_aspects(planets)
@@ -200,7 +202,7 @@ def generate_report():
     star_raw_data = get_star_longitudes(ts, t)
     star_aspects, star_stats = calculate_star_conjunctions_and_stats(planets, star_raw_data, orb=1.0)
     
-    p_rows = "".join([f"<tr><td>{p}</td><td>{get_zodiac_sign(d['lon'])[0]}</td><td>{int(get_zodiac_sign(d['lon'])[1])}°</td><td>{d.get('house', '-')}</td></tr>" for p, d in planets.items()])
+    p_rows = "".join([f"<tr><td>{p}</td><td>{get_zodiac_sign(d['lon'])[0]}</td><td>{int(get_zodiac_sign(d['lon'])[1])}°</td><td>{d.get('house', '-')}</td></tr>" for p, d in planets.items() if not p.startswith('House ')])
     a_rows = "".join([f"<tr><td>{a['p1']}</td><td>{a['p2']}</td><td style='color:{ASPECT_COLORS.get(a['type'], 'black')}; font-weight:bold'>{a['type']}</td><td>{a['diff']}°</td></tr>" for a in aspects])
     c_rows = "".join([get_classical_row(h, asc_lon, planets, is_day) for h in range(1, 13)])
     

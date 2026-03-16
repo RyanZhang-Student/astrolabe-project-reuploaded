@@ -38,12 +38,14 @@ def get_aspects(planets):
     aspects = []
     p_names = list(planets.keys())
     check_list = ['Sun', 'Moon', 'Mercury', 'Venus', 'Mars', 'Jupiter', 'Saturn', 'Uranus', 'Neptune', 'Pluto', 'Asc', 'Node', 'Fortune']
+    check_list.extend([f'House {i}' for i in range(1, 13)])
     orb_map = {'Conjunction': (0, 8), 'Opposition': (180, 8), 'Trine': (120, 8), 'Square': (90, 8), 'Sextile': (60, 6)}
     
     for i in range(len(p_names)):
         for j in range(i + 1, len(p_names)):
             p1, p2 = p_names[i], p_names[j]
             if p1 not in check_list or p2 not in check_list: continue
+            if p1.startswith('House ') and p2.startswith('House '): continue
             lon1, lon2 = planets[p1]['lon'], planets[p2]['lon']
             diff = abs(lon1 - lon2)
             if diff > 180: diff = 360 - diff

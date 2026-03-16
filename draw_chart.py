@@ -77,7 +77,7 @@ def create_pro_svg(planets, aspects):
         svg.append(f'<line x1="{x1}" y1="{y1}" x2="{x2}" y2="{y2}" stroke="{color}" stroke-width="1" opacity="0.6"/>')
     
     for name, data in planets.items():
-        if name in ['Midheaven', 'IC', 'Asc', 'Dsc']: continue
+        if name in ['Midheaven', 'IC', 'Asc', 'Dsc'] or name.startswith('House '): continue
         draw_lon = (data['lon'] - asc_lon) % 360
         color = PLANET_COLORS.get(name, 'black')
         px, py = pol2cart(cx, cy, r_in - 15, draw_lon)
