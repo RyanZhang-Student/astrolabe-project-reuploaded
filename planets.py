@@ -155,6 +155,17 @@ FIXED_STARS_DATA = [
     {"name": "Achernar", "ra": "01h 37m 43s", "dec": "-57° 14' 12\"", "meaning": "High office in religion or government, philosophical success, and sudden benefits."},
     {"name": "Markab", "ra": "23h 04m 46s", "dec": "+15° 12' 19\"", "meaning": "Ambition, great mental power, and success in legal or military affairs, but danger from fire/sharp objects."},
     {"name": "Scheat", "ra": "23h 03m 46s", "dec": "+28° 04' 58\"", "meaning": "Extremely high intellect, literary or poetic talent, but associated with sudden tragedy or floods."},
+    
+    # === ADDITIONAL CLASSICAL STARS ===
+    {"name": "Deneb Algedi", "ra": "21h 47m 02s", "dec": "-16° 07' 38\"", "meaning": "Life and death, justice, sorrow and joy; a Behenian star."},
+    {"name": "Mirfak", "ra": "03h 24m 19s", "dec": "+49° 51' 40\"", "meaning": "Boldness, adventure, active mindset, but potential for rashness."},
+    {"name": "Benetnash", "ra": "13h 47m 32s", "dec": "+49° 18' 48\"", "meaning": "Association with death, mourning, and massive social shifts (also known as Alkaid)."},
+    {"name": "Ascella", "ra": "19h 02m 36s", "dec": "-29° 52' 48\"", "meaning": "Good fortune, happiness, and influential friends."},
+    {"name": "Nunki", "ra": "18h 55m 15s", "dec": "-26° 17' 48\"", "meaning": "Truthfulness, optimism, and religious mind."},
+    {"name": "Acumen", "ra": "17h 50m 14s", "dec": "-34° 47' 31\"", "meaning": "Eyesight problems, but great mental perception and leadership."},
+    {"name": "Aculeus", "ra": "17h 53m 27s", "dec": "-34° 49' 24\"", "meaning": "Eyesight problems, but associated with mental sharpness and facing attacks."},
+    {"name": "Diadem", "ra": "13h 09m 59s", "dec": "+17° 31' 46\"", "meaning": "Sacrifice of oneself for others, quiet heroism, and female dignity."},
+    {"name": "Tejat Posterior", "ra": "06h 22m 57s", "dec": "+22° 30' 48\"", "meaning": "Success, pride, eloquence, and protection."},
 ]
 
 def parse_ra_to_hours(ra_str):
