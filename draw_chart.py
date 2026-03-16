@@ -69,8 +69,15 @@ def create_pro_svg(planets, aspects):
         svg.append(f'<text x="{x_des_txt}" y="{y_des_txt}" font-size="14" font-weight="bold" text-anchor="middle" dominant-baseline="middle" fill="{asc_color}">DES</text>')
 
     for asp in aspects:
-        lon1_draw = (planets[asp['p1']]['lon'] - asc_lon) % 360
-        lon2_draw = (planets[asp['p2']]['lon'] - asc_lon) % 360
+        p1, p2 = asp['p1'], asp['p2']
+        # Skip drawing aspects for house cusps and major angles to keep the chart clean
+        if p1 in ['Asc', 'Midheaven', 'IC', 'Dsc'] or p1.startswith('House '):
+            continue
+        if p2 in ['Asc', 'Midheaven', 'IC', 'Dsc'] or p2.startswith('House '):
+            continue
+
+        lon1_draw = (planets[p1]['lon'] - asc_lon) % 360
+        lon2_draw = (planets[p2]['lon'] - asc_lon) % 360
         x1, y1 = pol2cart(cx, cy, r_in - 10, lon1_draw)
         x2, y2 = pol2cart(cx, cy, r_in - 10, lon2_draw)
         color = ASPECT_COLORS.get(asp['type'], '#eee')
