@@ -290,11 +290,6 @@ def generate_report():
         <div class="flex">
             <div class="chart">
                 <svg viewBox="0 0 800 800">{create_pro_svg(planets, aspects)}</svg>
-                <div class="section-title">Major Aspects</div>
-                <table>
-                    <thead><tr><th>P1</th><th>P2</th><th>Type</th><th>Orb</th></tr></thead>
-                    <tbody>{a_rows}</tbody>
-                </table>
             </div>
             <div class="tables">
                 <div class="section-title">Modern Placements</div>
@@ -302,10 +297,17 @@ def generate_report():
                     <thead><tr><th>Planet</th><th>Sign</th><th>Deg</th><th>House</th></tr></thead>
                     <tbody>{p_rows}</tbody>
                 </table>
-                <div class="section-title">Fixed Star Conjunction</div>
-                {stats_html}
             </div>
         </div>
+
+        <div class="section-title">Fixed Star Conjunction</div>
+        {stats_html}
+
+        <div class="section-title">Major Aspects</div>
+        <table>
+            <thead><tr><th>P1</th><th>P2</th><th>Type</th><th>Orb</th></tr></thead>
+            <tbody>{a_rows}</tbody>
+        </table>
 
         <div class="section-title">Detailed Calculation & House Analysis</div>
         {detailed_html}
