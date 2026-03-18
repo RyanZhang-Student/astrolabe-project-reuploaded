@@ -1,0 +1,519 @@
+<!DOCTYPE html><html><head><meta charset="UTF-8">
+    <style>
+        body{font-family:sans-serif;background:#f4f7f6;padding:20px;color:#333}
+        .card{background:white;max-width:1400px;margin:auto;padding:30px;border-radius:15px;box-shadow:0 4px 15px rgba(0,0,0,0.1)}
+        .header{border-bottom:2px solid #333;margin-bottom:20px}
+        .flex{display:flex;gap:30px;flex-wrap:wrap}
+        .chart{flex:1;min-width:400px}
+        svg{width:100%;height:auto;overflow:visible}
+        .tables{flex:2;min-width:500px}
+        table{width:100%;border-collapse:collapse;margin-top:10px;font-size:11px}
+        th,td{border:1px solid #ddd;padding:6px 4px;text-align:center}
+        th{background:#f8f8f8; color:#666}
+        .section-title{font-size:16px;font-weight:bold;margin-top:30px;color:#444;border-left:5px solid #4B0082;padding-left:10px;background:#eee;padding:5px 10px}
+        
+        .stats-bar {
+            display: flex;
+            justify-content: space-around;
+            background: #f8f9fa;
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #eee;
+            font-weight: bold;
+            flex-wrap: wrap;
+        }
+        .stats-bar span { font-size: 14px; }
+        .clickable-stat { text-decoration: underline; cursor: pointer; color: #4B0082; }
+        .star-table th { background: #e9ecef; color: #333; }
+        .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.4); }
+        .modal-content { background-color: #fefefe; margin: 10% auto; padding: 20px; border: 1px solid #888; width: 80%; max-width: 600px; border-radius: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
+        .close-btn { color: #aaa; float: right; font-size: 28px; font-weight: bold; cursor: pointer; margin-top: -10px; }
+        .close-btn:hover, .close-btn:focus { color: black; text-decoration: none; cursor: pointer; }
+        #modalTitle { margin-top: 0; color: #4B0082; }
+
+        .detailed-house { border: 1px solid #ddd; padding: 15px; margin-top: 20px; border-radius: 8px; background: #fff; }
+        .house-header { font-size: 18px; font-weight: bold; color: #4B0082; border-bottom: 2px solid #4B0082; padding-bottom: 5px; margin-bottom: 10px; }
+        .cusp-info { font-size: 14px; font-weight: bold; background: #f0f0f0; padding: 5px 10px; border-radius: 4px; margin-bottom: 15px; }
+        .planet-detail { border-left: 3px solid #666; padding-left: 15px; margin-bottom: 20px; font-size: 13px; line-height: 1.6; }
+        .planet-title { font-size: 15px; font-weight: bold; color: #333; margin-top: 10px; }
+        .score-line { color: #555; }
+        .total-score { font-weight: bold; color: #d32f2f; font-size: 14px; margin-top: 3px; border-top: 1px dashed #ccc; padding-top: 3px; }
+        .aspect-details { font-size: 12px; color: #777; margin-top: 5px; font-style: italic; }
+    </style></head>
+    <body>
+    <div class="card">
+        <div class="header">
+            <h2>ALDEBARANTEST - Classical Analysis</h2>
+            <p>2024-05-31 12:00 (Europe/London) | LONDON (GB) [Local]</p>
+        </div>
+        
+        <div class="section-title">Classical Lord Evaluation</div>
+        <table>
+            <thead><tr><th>House</th><th>Cusp</th><th>Ruler</th><th>Pos H</th><th>Pos Sign</th><th>Deg</th><th>State</th><th>Own Term</th><th>Own Face</th><th>Own Trip</th><th>Combust</th><th>Retro</th><th>Mut. Rec</th><th>Mut. Rej</th><th>Rej By</th><th>Rec By</th><th>Pattern</th></tr></thead>
+            <tbody><tr><td>1</td><td>Virgo</td><td>Mercury</td><td>9</td><td>Taurus</td><td>24°11'</td><td>Peregrine</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>Moon⭐⭐ (有效)<br>Venus⭐⭐⭐ (暗中)</td><td>-</td><td>Mars</td><td>Venus, Moon, Saturn</td><td>-</td></tr><tr><td>2</td><td>Libra</td><td>Venus</td><td>10</td><td>Gemini</td><td>9°0'</td><td>Peregrine</td><td>-</td><td>-</td><td>-</td><td>Yes</td><td>-</td><td>Mercury⭐⭐⭐ (暗中)<br>Saturn⭐ (暗中)</td><td>-</td><td>Jupiter</td><td>Mercury, Jupiter</td><td>-</td></tr><tr><td>3</td><td>Scorpio</td><td>Mars</td><td>8</td><td>Aries</td><td>23°7'</td><td>Domicile</td><td>Yes</td><td>-</td><td>-</td><td>-</td><td>-</td><td>Sun⭐⭐ (暗中)</td><td>-</td><td>Venus, Saturn</td><td>Sun</td><td>-</td></tr><tr><td>4</td><td>Sagittarius</td><td>Jupiter</td><td>9</td><td>Gemini</td><td>0°56'</td><td>Detriment</td><td>-</td><td>Yes</td><td>-</td><td>-</td><td>-</td><td>Mercury⭐⭐⭐ (有效)<br>Saturn⭐ (暗中)</td><td>-</td><td>Jupiter</td><td>Mercury</td><td>-</td></tr><tr><td>5</td><td>Capricorn</td><td>Saturn</td><td>7</td><td>Pisces</td><td>18°22'</td><td>Peregrine</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>Venus⭐⭐ (暗中)<br>Jupiter⭐⭐⭐ (暗中)</td><td>-</td><td>Mercury, Mercury</td><td>Jupiter, Venus, Mercury</td><td>-</td></tr><tr><td>6</td><td>Aquarius</td><td>Saturn</td><td>7</td><td>Pisces</td><td>18°22'</td><td>Peregrine</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>Venus⭐⭐ (暗中)<br>Jupiter⭐⭐⭐ (暗中)</td><td>-</td><td>Mercury, Mercury</td><td>Jupiter, Venus, Mercury</td><td>-</td></tr><tr><td>7</td><td>Pisces</td><td>Jupiter</td><td>9</td><td>Gemini</td><td>0°56'</td><td>Detriment</td><td>-</td><td>Yes</td><td>-</td><td>-</td><td>-</td><td>Mercury⭐⭐⭐ (有效)<br>Saturn⭐ (暗中)</td><td>-</td><td>Jupiter</td><td>Mercury</td><td>-</td></tr><tr><td>8</td><td>Aries</td><td>Mars</td><td>8</td><td>Aries</td><td>23°7'</td><td>Domicile</td><td>Yes</td><td>-</td><td>-</td><td>-</td><td>-</td><td>Sun⭐⭐ (暗中)</td><td>-</td><td>Venus, Saturn</td><td>Sun</td><td>-</td></tr><tr><td>9</td><td>Taurus</td><td>Venus</td><td>10</td><td>Gemini</td><td>9°0'</td><td>Peregrine</td><td>-</td><td>-</td><td>-</td><td>Yes</td><td>-</td><td>Mercury⭐⭐⭐ (暗中)<br>Saturn⭐ (暗中)</td><td>-</td><td>Jupiter</td><td>Mercury, Jupiter</td><td>-</td></tr><tr><td>10</td><td>Gemini</td><td>Mercury</td><td>9</td><td>Taurus</td><td>24°11'</td><td>Peregrine</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>Moon⭐⭐ (有效)<br>Venus⭐⭐⭐ (暗中)</td><td>-</td><td>Mars</td><td>Venus, Moon, Saturn</td><td>-</td></tr><tr><td>11</td><td>Cancer</td><td>Moon</td><td>7</td><td>Pisces</td><td>19°5'</td><td>Peregrine</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>Venus⭐⭐ (暗中)<br>Jupiter⭐⭐⭐ (暗中)</td><td>-</td><td>Mercury, Mercury</td><td>Jupiter, Venus, Mars</td><td>-</td></tr><tr><td>12</td><td>Leo</td><td>Sun</td><td>10</td><td>Gemini</td><td>10°8'</td><td>Peregrine</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>Mercury⭐⭐⭐ (暗中)<br>Saturn⭐ (暗中)</td><td>-</td><td>Jupiter</td><td>Mercury, Jupiter</td><td>-</td></tr></tbody>
+        </table>
+
+        <div class="flex">
+            <div class="chart">
+                <svg viewBox="0 0 800 800"><defs><marker id="arrowhead_brown" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#8B4513" /></marker></defs><marker id="arrowhead_red" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#FF0000" /></marker><circle cx="400" cy="400" r="350" stroke="#333" stroke-width="2" fill="white"/><line x1="653.5582101375271" y1="281.2219124928607" x2="716.9477626719089" y2="251.52739061607588" stroke="#ccc" /><text x="640.9484415082375" y="197.09891933567366" font-size="14" font-weight="bold" text-anchor="middle" dominant-baseline="middle" fill="#555">Ari</text><line x1="560.1988075636418" y1="170.35605373712275" x2="600.2485094545523" y2="112.94506717140342" stroke="#ccc" /><text x="507.2169310162394" y="103.8082889352591" font-size="14" font-weight="bold" text-anchor="middle" dominant-baseline="middle" fill="#555">Tau</text><line x1="423.9142638746497" y1="121.02310492921885" x2="429.89282984331214" y2="51.27888116152354" stroke="#ccc" /><text x="344.75673044349645" y="89.8819883194343" font-size="14" font-weight="bold" text-anchor="middle" dominant-baseline="middle" fill="#555">Gem</text><line x1="281.22191249286055" y1="146.44178986247297" x2="251.5273906160757" y2="83.05223732809122" stroke="#ccc" /><text x="197.0989193356736" y="159.0515584917626" font-size="14" font-weight="bold" text-anchor="middle" dominant-baseline="middle" fill="#555">Can</text><line x1="170.3560537371227" y1="239.8011924363583" x2="112.94506717140337" y2="199.75149054544787" stroke="#ccc" /><text x="103.80828893525904" y="292.7830689837608" font-size="14" font-weight="bold" text-anchor="middle" dominant-baseline="middle" fill="#555">Leo</text><line x1="121.02310492921885" y1="376.0857361253503" x2="51.27888116152354" y2="370.1071701566879" stroke="#ccc" /><text x="89.8819883194343" y="455.2432695565036" font-size="14" font-weight="bold" text-anchor="middle" dominant-baseline="middle" fill="#555">Vir</text><line x1="146.44178986247286" y1="518.7780875071393" x2="83.05223732809111" y2="548.4726093839241" stroke="#ccc" /><text x="159.05155849176253" y="602.9010806643264" font-size="14" font-weight="bold" text-anchor="middle" dominant-baseline="middle" fill="#555">Lib</text><line x1="239.80119243635824" y1="629.6439462628773" x2="199.75149054544778" y2="687.0549328285966" stroke="#ccc" /><text x="292.78306898376064" y="696.191711064741" font-size="14" font-weight="bold" text-anchor="middle" dominant-baseline="middle" fill="#555">Sco</text><line x1="376.08573612535014" y1="678.9768950707811" x2="370.1071701566877" y2="748.7211188384764" stroke="#ccc" /><text x="455.2432695565035" y="710.1180116805658" font-size="14" font-weight="bold" text-anchor="middle" dominant-baseline="middle" fill="#555">Sag</text><line x1="518.7780875071393" y1="653.5582101375271" x2="548.4726093839241" y2="716.9477626719089" stroke="#ccc" /><text x="602.9010806643264" y="640.9484415082375" font-size="14" font-weight="bold" text-anchor="middle" dominant-baseline="middle" fill="#555">Cap</text><line x1="629.6439462628773" y1="560.1988075636418" x2="687.0549328285965" y2="600.2485094545523" stroke="#ccc" /><text x="696.191711064741" y="507.21693101623936" font-size="14" font-weight="bold" text-anchor="middle" dominant-baseline="middle" fill="#555">Aqu</text><line x1="678.9768950707811" y1="423.91426387464986" x2="748.7211188384764" y2="429.8928298433123" stroke="#ccc" /><text x="710.1180116805658" y="344.75673044349656" font-size="14" font-weight="bold" text-anchor="middle" dominant-baseline="middle" fill="#555">Pis</text><line x1="50.0" y1="400.00000000000006" x2="38.0" y2="400.00000000000006" stroke="red" stroke-width="2"/><text x="28.118556878708716" y="499.6453323644706" font-size="14" font-weight="bold" text-anchor="middle" dominant-baseline="middle" fill="red">H1</text><line x1="96.89110867544645" y1="575.0" x2="86.49880383003318" y2="581.0" stroke="red" stroke-width="2"/><text x="127.76388924317922" y="672.2361107568208" font-size="14" font-weight="bold" text-anchor="middle" dominant-baseline="middle" fill="red">H2</text><line x1="225.00000000000009" y1="703.1088913245536" x2="219.00000000000009" y2="713.5011961699669" stroke="red" stroke-width="2"/><text x="300.3546676355295" y="771.8814431212913" font-size="14" font-weight="bold" text-anchor="middle" dominant-baseline="middle" fill="red">H3</text><line x1="400.0" y1="750.0" x2="400.0" y2="762.0" stroke="red" stroke-width="2"/><text x="499.6453323644705" y="771.8814431212913" font-size="14" font-weight="bold" text-anchor="middle" dominant-baseline="middle" fill="red">H4</text><line x1="575.0" y1="703.1088913245535" x2="581.0" y2="713.5011961699668" stroke="red" stroke-width="2"/><text x="672.2361107568208" y="672.2361107568208" font-size="14" font-weight="bold" text-anchor="middle" dominant-baseline="middle" fill="red">H5</text><line x1="703.1088913245535" y1="575.0" x2="713.5011961699668" y2="581.0" stroke="red" stroke-width="2"/><text x="771.8814431212913" y="499.6453323644705" font-size="14" font-weight="bold" text-anchor="middle" dominant-baseline="middle" fill="red">H6</text><line x1="750.0" y1="400.0" x2="762.0" y2="400.0" stroke="red" stroke-width="2"/><text x="771.8814431212913" y="300.3546676355295" font-size="14" font-weight="bold" text-anchor="middle" dominant-baseline="middle" fill="red">H7</text><line x1="703.1088913245535" y1="225.00000000000003" x2="713.5011961699668" y2="219.00000000000003" stroke="red" stroke-width="2"/><text x="672.2361107568208" y="127.76388924317922" font-size="14" font-weight="bold" text-anchor="middle" dominant-baseline="middle" fill="red">H8</text><line x1="575.0" y1="96.8911086754465" x2="581.0" y2="86.49880383003324" stroke="red" stroke-width="2"/><text x="499.6453323644705" y="28.118556878708716" font-size="14" font-weight="bold" text-anchor="middle" dominant-baseline="middle" fill="red">H9</text><line x1="400.0" y1="50.0" x2="400.0" y2="38.0" stroke="red" stroke-width="2"/><text x="300.3546676355295" y="28.118556878708716" font-size="14" font-weight="bold" text-anchor="middle" dominant-baseline="middle" fill="red">H10</text><line x1="225.00000000000009" y1="96.89110867544639" x2="219.00000000000009" y2="86.49880383003313" stroke="red" stroke-width="2"/><text x="127.76388924317922" y="127.76388924317916" font-size="14" font-weight="bold" text-anchor="middle" dominant-baseline="middle" fill="red">H11</text><line x1="96.89110867544645" y1="225.00000000000003" x2="86.49880383003318" y2="219.00000000000003" stroke="red" stroke-width="2"/><text x="28.118556878708716" y="300.3546676355294" font-size="14" font-weight="bold" text-anchor="middle" dominant-baseline="middle" fill="red">H12</text><circle cx="400" cy="400" r="280" stroke="#ccc" fill="none"/><circle cx="438.1887264050372" cy="137.76609453474327" r="4" fill="#8B4513"/><text x="442.51197845089047" y="108.07923731226134" font-size="11" font-weight="bold" text-anchor="middle" fill="#8B4513">Mi</text><line x1="349.56205946504525" y1="746.3466675956222" x2="452.5995665578814" y2="38.809903793136925" stroke="#8B4513" stroke-width="1.5" stroke-dasharray="8,4" marker-end="url(#arrowhead_brown)" /><text x="345.9593494268342" y="771.0857152810237" font-size="14" font-weight="bold" text-anchor="middle" dominant-baseline="middle" fill="#8B4513">IC</text><text x="455.48173458845025" y="19.018665644815655" font-size="14" font-weight="bold" text-anchor="middle" dominant-baseline="middle" fill="#8B4513">MC</text><line x1="750.0" y1="400.0" x2="35.0" y2="400.00000000000006" stroke="#FF0000" stroke-width="1.5" stroke-dasharray="8,4" marker-end="url(#arrowhead_red)" opacity="0.8"/><circle cx="135.0" cy="400.00000000000006" r="4" fill="#FF0000"/><text x="105.0" y="400.00000000000006" font-size="11" font-weight="bold" text-anchor="middle" fill="#FF0000">As</text><text x="15.0" y="400.00000000000006" font-size="14" font-weight="bold" text-anchor="middle" dominant-baseline="middle" fill="#FF0000">ASC</text><text x="775.0" y="400.0" font-size="14" font-weight="bold" text-anchor="middle" dominant-baseline="middle" fill="#FF0000">DES</text><line x1="375.328025068618" y1="131.12959691891479" x2="380.6590844081326" y2="130.69361503286217" stroke="#333" stroke-width="1" opacity="0.6"/><line x1="375.328025068618" y1="131.12959691891479" x2="612.8828186257304" y2="233.92500027407974" stroke="#00BFFF" stroke-width="1" opacity="0.6"/><line x1="375.328025068618" y1="131.12959691891479" x2="357.99179996354275" y2="133.28796215825395" stroke="#333" stroke-width="1" opacity="0.6"/><line x1="661.7575846773184" y1="333.7960207850276" x2="450.1950605913315" y2="134.7068491418737" stroke="#00BFFF" stroke-width="1" opacity="0.6"/><line x1="661.7575846773184" y1="333.7960207850276" x2="662.5596416628051" y2="337.0521281543261" stroke="#333" stroke-width="1" opacity="0.6"/><line x1="661.7575846773184" y1="333.7960207850276" x2="451.96499544521197" y2="135.04785479566488" stroke="#00BFFF" stroke-width="1" opacity="0.6"/><line x1="661.7575846773184" y1="333.7960207850276" x2="357.99179996354275" y2="133.28796215825395" stroke="#FF0000" stroke-width="1" opacity="0.6"/><line x1="450.1950605913315" y1="134.7068491418737" x2="418.60414349606265" y2="130.64171472780367" stroke="#333" stroke-width="1" opacity="0.6"/><line x1="450.1950605913315" y1="134.7068491418737" x2="662.5596416628051" y2="337.0521281543261" stroke="#00BFFF" stroke-width="1" opacity="0.6"/><line x1="450.1950605913315" y1="134.7068491418737" x2="451.96499544521197" y2="135.04785479566488" stroke="#333" stroke-width="1" opacity="0.6"/><line x1="450.1950605913315" y1="134.7068491418737" x2="645.8508105971936" y2="288.3873711056725" stroke="#00BFFF" stroke-width="1" opacity="0.6"/><line x1="450.1950605913315" y1="134.7068491418737" x2="625.6110289070257" y2="548.3228358531255" stroke="#006400" stroke-width="1" opacity="0.6"/><line x1="380.6590844081326" y1="130.69361503286217" x2="625.6110289070257" y2="548.3228358531255" stroke="#006400" stroke-width="1" opacity="0.6"/><line x1="380.6590844081326" y1="130.69361503286217" x2="612.8828186257304" y2="233.92500027407974" stroke="#00BFFF" stroke-width="1" opacity="0.6"/><line x1="380.6590844081326" y1="130.69361503286217" x2="357.99179996354275" y2="133.28796215825395" stroke="#333" stroke-width="1" opacity="0.6"/><line x1="418.60414349606265" y1="130.64171472780367" x2="451.96499544521197" y2="135.04785479566488" stroke="#333" stroke-width="1" opacity="0.6"/><line x1="418.60414349606265" y1="130.64171472780367" x2="645.8508105971936" y2="288.3873711056725" stroke="#00BFFF" stroke-width="1" opacity="0.6"/><line x1="418.60414349606265" y1="130.64171472780367" x2="625.6110289070257" y2="548.3228358531255" stroke="#006400" stroke-width="1" opacity="0.6"/><line x1="662.5596416628051" y1="337.0521281543261" x2="451.96499544521197" y2="135.04785479566488" stroke="#00BFFF" stroke-width="1" opacity="0.6"/><line x1="662.5596416628051" y1="337.0521281543261" x2="357.99179996354275" y2="133.28796215825395" stroke="#FF0000" stroke-width="1" opacity="0.6"/><line x1="451.96499544521197" y1="135.04785479566488" x2="645.8508105971936" y2="288.3873711056725" stroke="#00BFFF" stroke-width="1" opacity="0.6"/><line x1="451.96499544521197" y1="135.04785479566488" x2="625.6110289070257" y2="548.3228358531255" stroke="#006400" stroke-width="1" opacity="0.6"/><line x1="645.8508105971936" y1="288.3873711056725" x2="625.6110289070257" y2="548.3228358531255" stroke="#00BFFF" stroke-width="1" opacity="0.6"/><line x1="612.8828186257304" y1="233.92500027407974" x2="357.99179996354275" y2="133.28796215825395" stroke="#00BFFF" stroke-width="1" opacity="0.6"/><circle cx="375.78491349327317" cy="136.10867845745338" r="4" fill="#FFD700"/><text x="373.0435829453418" y="106.2341892262217" font-size="11" font-weight="bold" text-anchor="middle" fill="#FFD700">Su</text><circle cx="656.9102219981088" cy="335.0220204001197" r="4" fill="#708090"/><text x="685.9943980733664" y="327.6660227095672" font-size="11" font-weight="bold" text-anchor="middle" fill="#708090">Mo</text><circle cx="449.26552243223284" cy="139.61968526887608" r="4" fill="#2E8B57"/><text x="454.8427513868252" y="110.14266850686204" font-size="11" font-weight="bold" text-anchor="middle" fill="#2E8B57">Me</text><circle cx="381.0172495116857" cy="135.68077031003133" r="4" fill="#FF69B4"/><text x="378.86825889036714" y="105.75783864701606" font-size="11" font-weight="bold" text-anchor="middle" fill="#FF69B4">Ve</text><circle cx="576.5147991856563" cy="202.34493260114115" r="4" fill="#FF4500"/><text x="596.4976066406363" y="179.9688872352326" font-size="11" font-weight="bold" text-anchor="middle" fill="#FF4500">Ma</text><circle cx="418.25962232020964" cy="135.62983112173322" r="4" fill="#DAA520"/><text x="420.3267493753277" y="105.70113275815584" font-size="11" font-weight="bold" text-anchor="middle" fill="#DAA520">Ju</text><circle cx="657.6974260764568" cy="338.21782948480154" r="4" fill="#4B0082"/><text x="686.8707195945462" y="331.22362150194886" font-size="11" font-weight="bold" text-anchor="middle" fill="#4B0082">Sa</text><circle cx="451.00268071474505" cy="139.95437600315256" r="4" fill="#40E0D0"/><text x="456.77656909754637" y="110.51524875822639" font-size="11" font-weight="bold" text-anchor="middle" fill="#40E0D0">Ur</text><circle cx="641.2980178083567" cy="290.45427164075267" r="4" fill="#0000FF"/><text x="668.6147745413782" y="278.0528684302718" font-size="11" font-weight="bold" text-anchor="middle" fill="#0000FF">Ne</text><circle cx="621.4330468902289" cy="545.5761166706602" r="4" fill="#800000"/><text x="646.5009389910095" y="562.056431765452" font-size="11" font-weight="bold" text-anchor="middle" fill="#800000">Pl</text><circle cx="608.9405442067352" cy="237.00046323196716" r="4" fill="#555"/><text x="632.5941907207053" y="218.5476854846427" font-size="11" font-weight="bold" text-anchor="middle" fill="#555">No</text><circle cx="358.7697295938475" cy="138.22707397013812" r="4" fill="#FF8C00"/><text x="354.1021518120189" y="108.59240309883302" font-size="11" font-weight="bold" text-anchor="middle" fill="#FF8C00">Fo</text></svg>
+                <div class="section-title">Major Aspects</div>
+                <table>
+                    <thead><tr><th>P1</th><th>P2</th><th>Type</th><th>Orb</th></tr></thead>
+                    <tbody><tr><td>Sun</td><td>Venus</td><td style='color:#333; font-weight:bold'>Conjunction</td><td>1.14°</td></tr><tr><td>Sun</td><td>Node</td><td style='color:#00BFFF; font-weight:bold'>Sextile</td><td>2.72°</td></tr><tr><td>Sun</td><td>Asc</td><td style='color:#FF0000; font-weight:bold'>Square</td><td>5.24°</td></tr><tr><td>Sun</td><td>Fortune</td><td style='color:#333; font-weight:bold'>Conjunction</td><td>3.71°</td></tr><tr><td>Sun</td><td>House 1</td><td style='color:#FF0000; font-weight:bold'>Square</td><td>5.24°</td></tr><tr><td>Sun</td><td>House 2</td><td style='color:#006400; font-weight:bold'>Trine</td><td>5.24°</td></tr><tr><td>Sun</td><td>House 4</td><td style='color:#00008B; font-weight:bold'>Opposition</td><td>5.24°</td></tr><tr><td>Sun</td><td>House 6</td><td style='color:#006400; font-weight:bold'>Trine</td><td>5.24°</td></tr><tr><td>Sun</td><td>House 7</td><td style='color:#FF0000; font-weight:bold'>Square</td><td>5.24°</td></tr><tr><td>Sun</td><td>House 8</td><td style='color:#00BFFF; font-weight:bold'>Sextile</td><td>5.24°</td></tr><tr><td>Sun</td><td>House 10</td><td style='color:#333; font-weight:bold'>Conjunction</td><td>5.24°</td></tr><tr><td>Sun</td><td>House 12</td><td style='color:#00BFFF; font-weight:bold'>Sextile</td><td>5.24°</td></tr><tr><td>Moon</td><td>Mercury</td><td style='color:#00BFFF; font-weight:bold'>Sextile</td><td>5.09°</td></tr><tr><td>Moon</td><td>Saturn</td><td style='color:#333; font-weight:bold'>Conjunction</td><td>0.71°</td></tr><tr><td>Moon</td><td>Uranus</td><td style='color:#00BFFF; font-weight:bold'>Sextile</td><td>4.71°</td></tr><tr><td>Moon</td><td>Fortune</td><td style='color:#FF0000; font-weight:bold'>Square</td><td>5.24°</td></tr><tr><td>Mercury</td><td>Jupiter</td><td style='color:#333; font-weight:bold'>Conjunction</td><td>6.76°</td></tr><tr><td>Mercury</td><td>Saturn</td><td style='color:#00BFFF; font-weight:bold'>Sextile</td><td>5.8°</td></tr><tr><td>Mercury</td><td>Uranus</td><td style='color:#333; font-weight:bold'>Conjunction</td><td>0.38°</td></tr><tr><td>Mercury</td><td>Neptune</td><td style='color:#00BFFF; font-weight:bold'>Sextile</td><td>5.13°</td></tr><tr><td>Mercury</td><td>Pluto</td><td style='color:#006400; font-weight:bold'>Trine</td><td>7.39°</td></tr><tr><td>Venus</td><td>Pluto</td><td style='color:#006400; font-weight:bold'>Trine</td><td>7.43°</td></tr><tr><td>Venus</td><td>Node</td><td style='color:#00BFFF; font-weight:bold'>Sextile</td><td>3.85°</td></tr><tr><td>Venus</td><td>Asc</td><td style='color:#FF0000; font-weight:bold'>Square</td><td>4.11°</td></tr><tr><td>Venus</td><td>Fortune</td><td style='color:#333; font-weight:bold'>Conjunction</td><td>4.84°</td></tr><tr><td>Venus</td><td>House 1</td><td style='color:#FF0000; font-weight:bold'>Square</td><td>4.11°</td></tr><tr><td>Venus</td><td>House 2</td><td style='color:#006400; font-weight:bold'>Trine</td><td>4.11°</td></tr><tr><td>Venus</td><td>House 4</td><td style='color:#00008B; font-weight:bold'>Opposition</td><td>4.11°</td></tr><tr><td>Venus</td><td>House 6</td><td style='color:#006400; font-weight:bold'>Trine</td><td>4.11°</td></tr><tr><td>Venus</td><td>House 7</td><td style='color:#FF0000; font-weight:bold'>Square</td><td>4.11°</td></tr><tr><td>Venus</td><td>House 8</td><td style='color:#00BFFF; font-weight:bold'>Sextile</td><td>4.11°</td></tr><tr><td>Venus</td><td>House 10</td><td style='color:#333; font-weight:bold'>Conjunction</td><td>4.11°</td></tr><tr><td>Venus</td><td>House 12</td><td style='color:#00BFFF; font-weight:bold'>Sextile</td><td>4.11°</td></tr><tr><td>Jupiter</td><td>Uranus</td><td style='color:#333; font-weight:bold'>Conjunction</td><td>7.15°</td></tr><tr><td>Jupiter</td><td>Neptune</td><td style='color:#00BFFF; font-weight:bold'>Sextile</td><td>1.63°</td></tr><tr><td>Jupiter</td><td>Pluto</td><td style='color:#006400; font-weight:bold'>Trine</td><td>0.63°</td></tr><tr><td>Jupiter</td><td>Asc</td><td style='color:#FF0000; font-weight:bold'>Square</td><td>3.95°</td></tr><tr><td>Jupiter</td><td>House 1</td><td style='color:#FF0000; font-weight:bold'>Square</td><td>3.95°</td></tr><tr><td>Jupiter</td><td>House 2</td><td style='color:#006400; font-weight:bold'>Trine</td><td>3.95°</td></tr><tr><td>Jupiter</td><td>House 4</td><td style='color:#00008B; font-weight:bold'>Opposition</td><td>3.95°</td></tr><tr><td>Jupiter</td><td>House 6</td><td style='color:#006400; font-weight:bold'>Trine</td><td>3.95°</td></tr><tr><td>Jupiter</td><td>House 7</td><td style='color:#FF0000; font-weight:bold'>Square</td><td>3.95°</td></tr><tr><td>Jupiter</td><td>House 8</td><td style='color:#00BFFF; font-weight:bold'>Sextile</td><td>3.95°</td></tr><tr><td>Jupiter</td><td>House 10</td><td style='color:#333; font-weight:bold'>Conjunction</td><td>3.95°</td></tr><tr><td>Jupiter</td><td>House 12</td><td style='color:#00BFFF; font-weight:bold'>Sextile</td><td>3.95°</td></tr><tr><td>Saturn</td><td>Uranus</td><td style='color:#00BFFF; font-weight:bold'>Sextile</td><td>5.42°</td></tr><tr><td>Saturn</td><td>Fortune</td><td style='color:#FF0000; font-weight:bold'>Square</td><td>4.53°</td></tr><tr><td>Uranus</td><td>Neptune</td><td style='color:#00BFFF; font-weight:bold'>Sextile</td><td>5.51°</td></tr><tr><td>Uranus</td><td>Pluto</td><td style='color:#006400; font-weight:bold'>Trine</td><td>7.77°</td></tr><tr><td>Neptune</td><td>Pluto</td><td style='color:#00BFFF; font-weight:bold'>Sextile</td><td>2.26°</td></tr><tr><td>Neptune</td><td>House 2</td><td style='color:#00008B; font-weight:bold'>Opposition</td><td>5.58°</td></tr><tr><td>Neptune</td><td>House 4</td><td style='color:#006400; font-weight:bold'>Trine</td><td>5.58°</td></tr><tr><td>Neptune</td><td>House 5</td><td style='color:#FF0000; font-weight:bold'>Square</td><td>5.58°</td></tr><tr><td>Neptune</td><td>House 6</td><td style='color:#00BFFF; font-weight:bold'>Sextile</td><td>5.58°</td></tr><tr><td>Neptune</td><td>House 8</td><td style='color:#333; font-weight:bold'>Conjunction</td><td>5.58°</td></tr><tr><td>Neptune</td><td>House 10</td><td style='color:#00BFFF; font-weight:bold'>Sextile</td><td>5.58°</td></tr><tr><td>Neptune</td><td>House 11</td><td style='color:#FF0000; font-weight:bold'>Square</td><td>5.58°</td></tr><tr><td>Neptune</td><td>House 12</td><td style='color:#006400; font-weight:bold'>Trine</td><td>5.58°</td></tr><tr><td>Pluto</td><td>House 2</td><td style='color:#006400; font-weight:bold'>Trine</td><td>3.32°</td></tr><tr><td>Pluto</td><td>House 3</td><td style='color:#FF0000; font-weight:bold'>Square</td><td>3.32°</td></tr><tr><td>Pluto</td><td>House 4</td><td style='color:#00BFFF; font-weight:bold'>Sextile</td><td>3.32°</td></tr><tr><td>Pluto</td><td>House 6</td><td style='color:#333; font-weight:bold'>Conjunction</td><td>3.32°</td></tr><tr><td>Pluto</td><td>House 8</td><td style='color:#00BFFF; font-weight:bold'>Sextile</td><td>3.32°</td></tr><tr><td>Pluto</td><td>House 9</td><td style='color:#FF0000; font-weight:bold'>Square</td><td>3.32°</td></tr><tr><td>Pluto</td><td>House 10</td><td style='color:#006400; font-weight:bold'>Trine</td><td>3.32°</td></tr><tr><td>Pluto</td><td>House 12</td><td style='color:#00008B; font-weight:bold'>Opposition</td><td>3.32°</td></tr><tr><td>Node</td><td>Fortune</td><td style='color:#00BFFF; font-weight:bold'>Sextile</td><td>0.99°</td></tr><tr><td>Node</td><td>House 2</td><td style='color:#00008B; font-weight:bold'>Opposition</td><td>7.96°</td></tr><tr><td>Node</td><td>House 4</td><td style='color:#006400; font-weight:bold'>Trine</td><td>7.96°</td></tr><tr><td>Node</td><td>House 5</td><td style='color:#FF0000; font-weight:bold'>Square</td><td>7.96°</td></tr><tr><td>Node</td><td>House 8</td><td style='color:#333; font-weight:bold'>Conjunction</td><td>7.96°</td></tr><tr><td>Node</td><td>House 11</td><td style='color:#FF0000; font-weight:bold'>Square</td><td>7.96°</td></tr><tr><td>Node</td><td>House 12</td><td style='color:#006400; font-weight:bold'>Trine</td><td>7.96°</td></tr><tr><td>Asc</td><td>House 1</td><td style='color:#333; font-weight:bold'>Conjunction</td><td>0.0°</td></tr><tr><td>Asc</td><td>House 3</td><td style='color:#00BFFF; font-weight:bold'>Sextile</td><td>0.0°</td></tr><tr><td>Asc</td><td>House 4</td><td style='color:#FF0000; font-weight:bold'>Square</td><td>0.0°</td></tr><tr><td>Asc</td><td>House 5</td><td style='color:#006400; font-weight:bold'>Trine</td><td>0.0°</td></tr><tr><td>Asc</td><td>House 7</td><td style='color:#00008B; font-weight:bold'>Opposition</td><td>0.0°</td></tr><tr><td>Asc</td><td>House 9</td><td style='color:#006400; font-weight:bold'>Trine</td><td>0.0°</td></tr><tr><td>Asc</td><td>House 10</td><td style='color:#FF0000; font-weight:bold'>Square</td><td>0.0°</td></tr><tr><td>Asc</td><td>House 11</td><td style='color:#00BFFF; font-weight:bold'>Sextile</td><td>0.0°</td></tr></tbody>
+                </table>
+            </div>
+            <div class="tables">
+                <div class="section-title">Modern Placements</div>
+                <table>
+                    <thead><tr><th>Planet</th><th>Sign</th><th>Deg</th><th>House</th></tr></thead>
+                    <tbody><tr><td>Sun</td><td>Gemini</td><td>10°</td><td>10</td></tr><tr><td>Moon</td><td>Pisces</td><td>19°</td><td>7</td></tr><tr><td>Mercury</td><td>Taurus</td><td>24°</td><td>9</td></tr><tr><td>Venus</td><td>Gemini</td><td>9°</td><td>10</td></tr><tr><td>Mars</td><td>Aries</td><td>23°</td><td>8</td></tr><tr><td>Jupiter</td><td>Gemini</td><td>0°</td><td>9</td></tr><tr><td>Saturn</td><td>Pisces</td><td>18°</td><td>7</td></tr><tr><td>Uranus</td><td>Taurus</td><td>23°</td><td>9</td></tr><tr><td>Neptune</td><td>Pisces</td><td>29°</td><td>7</td></tr><tr><td>Pluto</td><td>Aquarius</td><td>1°</td><td>5</td></tr><tr><td>Node</td><td>Aries</td><td>12°</td><td>8</td></tr><tr><td>Midheaven</td><td>Taurus</td><td>26°</td><td>9</td></tr><tr><td>Asc</td><td>Virgo</td><td>4°</td><td>1</td></tr><tr><td>Fortune</td><td>Gemini</td><td>13°</td><td>10</td></tr></tbody>
+                </table>
+                <div class="section-title">Fixed Star Conjunction</div>
+                
+    <div class="stats-bar">
+        <span class="clickable-stat" onclick="openStarModal('is_royal', 'Royal Star Conjunctions')">👑 ROYAL STARS: 2</span>
+        <span class="clickable-stat" onclick="openStarModal('is_behenian', 'Behenian Star Conjunctions')">✨ BEHENIAN STARS: 3</span>
+        <span class="clickable-stat" onclick="openStarModal('is_practical', 'Practical Star Conjunctions')">⚔️ PRACTICAL STARS: 3</span>
+        <span class="clickable-stat" onclick="openStarModal('is_robson', 'Robson Star Conjunctions')">📚 ROBSON STARS: 7</span>
+    </div>
+    
+            </div>
+        </div>
+
+        <div class="section-title">Detailed Calculation & House Analysis</div>
+        
+        <details class="detailed-house">
+            <summary class="house-header" style="cursor: pointer; outline: none;">
+                第 1 宫 <span style="font-size:14px; color:#888; font-weight:normal; margin-left:10px;">▼ 点击展开/收缩</span>
+            </summary>
+            <div class="cusp-info">
+                宫头: Virgo | 宫主星: Mercury (1宫主) 飞入 9宫
+            </div>
+        
+            <div class="planet-detail ruler-focus">
+                <div class="planet-title">宫主星: Mercury (1宫头守护)</div>
+                <div>星体: Mercury(1宫头守护)</div>
+                <div>落宫: 9宫 | 星座: Taurus | 度数: 24°11'</div>
+                <div class="score-line">先天分: 状态:平 | 入界: 否 | 入面: 否 | 三分: 否 | 先天分: +0</div>
+                <div class="score-line">后天分: 落宫: +2 | 燃烧: 否 | 逆行: 否 | 燃烧径: 否 | 后天分: +2</div>
+                <div class="score-line">外交: 互容: Venus | 互拒: 无 | 被拒: Moon(S), Saturn(S) | 被接纳: Sun, Jupiter | 外交分: +4</div>
+                <div class="score-line total-score">先天后天总分: +6 | 格局: 无(+0.0) | 重要性: +6</div>
+                <div class="aspect-details">
+                    <div>相位1: 对方星体: Moon | 对方宫位: 7 | 相位: 六合相位(60°) | 强度: 5.09° (15.1%)</div><div>相位2: 对方星体: Jupiter | 对方宫位: 9 | 相位: 合相(0°) | 强度: 6.76° (32.4%)</div><div>相位3: 对方星体: Saturn | 对方宫位: 7 | 相位: 六合相位(60°) | 强度: 5.8° (3.3%)</div><div>相位4: 对方星体: Uranus | 对方宫位: 9 | 相位: 合相(0°) | 强度: 0.38° (96.2%)</div><div>相位5: 对方星体: Neptune | 对方宫位: 7 | 相位: 六合相位(60°) | 强度: 5.13° (14.5%)</div><div>相位6: 对方星体: Pluto | 对方宫位: 5 | 相位: 三分(120°) | 强度: 7.39° (7.6%)</div><div>相位7: 对方星体: Midheaven | 对方宫位: 9 | 相位: 合相(0°) | 强度: 2.43° (75.7%)</div>
+                </div>
+            </div>
+            </details>
+        <details class="detailed-house">
+            <summary class="house-header" style="cursor: pointer; outline: none;">
+                第 2 宫 <span style="font-size:14px; color:#888; font-weight:normal; margin-left:10px;">▼ 点击展开/收缩</span>
+            </summary>
+            <div class="cusp-info">
+                宫头: Libra | 宫主星: Venus (2宫主) 飞入 10宫
+            </div>
+        
+            <div class="planet-detail ruler-focus">
+                <div class="planet-title">宫主星: Venus (2宫头守护)</div>
+                <div>星体: Venus(2宫头守护)</div>
+                <div>落宫: 10宫 | 星座: Gemini | 度数: 9°0'</div>
+                <div class="score-line">先天分: 状态:平 | 入界: 否 | 入面: 否 | 三分: 否 | 先天分: +0</div>
+                <div class="score-line">后天分: 落宫: +5 | 燃烧: 是 | 逆行: 否 | 燃烧径: 否 | 后天分: +0</div>
+                <div class="score-line">外交: 互容: Mercury | 互拒: 无 | 被拒: 无 | 被接纳: Moon, Saturn | 外交分: +4.8</div>
+                <div class="score-line total-score">先天后天总分: +4.8 | 格局: 无(+0.0) | 重要性: +4.8</div>
+                <div class="aspect-details">
+                    <div>相位1: 对方星体: Sun | 对方宫位: 10 | 相位: 合相(0°) | 强度: 1.14° (88.6%)</div><div>相位2: 对方星体: Jupiter | 对方宫位: 9 | 相位: 合相(0°) | 强度: 8.06° (19.4%)</div><div>相位3: 对方星体: Pluto | 对方宫位: 5 | 相位: 三分(120°) | 强度: 7.43° (7.1%)</div><div>相位4: 对方星体: Node | 对方宫位: 8 | 相位: 六合相位(60°) | 强度: 3.85° (35.8%)</div><div>相位5: 对方星体: Asc | 对方宫位: 1 | 相位: 刑相位(90°) | 强度: 4.11° (48.7%)</div><div>相位6: 对方星体: Fortune | 对方宫位: 10 | 相位: 合相(0°) | 强度: 4.84° (51.6%)</div><div>相位7: 对方星体: House 1 | 对方宫位: 1 | 相位: 刑相位(90°) | 强度: 4.11° (48.7%)</div><div>相位8: 对方星体: House 2 | 对方宫位: 2 | 相位: 三分(120°) | 强度: 4.11° (48.7%)</div>
+                </div>
+            </div>
+            </details>
+        <details class="detailed-house">
+            <summary class="house-header" style="cursor: pointer; outline: none;">
+                第 3 宫 <span style="font-size:14px; color:#888; font-weight:normal; margin-left:10px;">▼ 点击展开/收缩</span>
+            </summary>
+            <div class="cusp-info">
+                宫头: Scorpio | 宫主星: Mars (3宫主) 飞入 8宫
+            </div>
+        
+            <div class="planet-detail ruler-focus">
+                <div class="planet-title">宫主星: Mars (3宫头守护)</div>
+                <div>星体: Mars(3宫头守护)</div>
+                <div>落宫: 8宫 | 星座: Aries | 度数: 23°7'</div>
+                <div class="score-line">先天分: 状态:庙 | 入界: 是 | 入面: 否 | 三分: 否 | 先天分: +7</div>
+                <div class="score-line">后天分: 落宫: -5 | 燃烧: 否 | 逆行: 否 | 燃烧径: 否 | 后天分: -5</div>
+                <div class="score-line">外交: 互容: 无 | 互拒: 无 | 被拒: 无 | 被接纳: 无 | 外交分: +0</div>
+                <div class="score-line total-score">先天后天总分: +2 | 格局: 无(+0.0) | 重要性: +2</div>
+                <div class="aspect-details">
+                    无重大相位
+                </div>
+            </div>
+            </details>
+        <details class="detailed-house">
+            <summary class="house-header" style="cursor: pointer; outline: none;">
+                第 4 宫 <span style="font-size:14px; color:#888; font-weight:normal; margin-left:10px;">▼ 点击展开/收缩</span>
+            </summary>
+            <div class="cusp-info">
+                宫头: Sagittarius | 宫主星: Jupiter (4宫主) 飞入 9宫
+            </div>
+        
+            <div class="planet-detail ruler-focus">
+                <div class="planet-title">宫主星: Jupiter (4宫头守护)</div>
+                <div>星体: Jupiter(4宫头守护)</div>
+                <div>落宫: 9宫 | 星座: Gemini | 度数: 0°56'</div>
+                <div class="score-line">先天分: 状态:失 | 入界: 否 | 入面: 是 | 三分: 否 | 先天分: -4</div>
+                <div class="score-line">后天分: 落宫: +2 | 燃烧: 否 | 逆行: 否 | 燃烧径: 否 | 后天分: +2</div>
+                <div class="score-line">外交: 互容: 无 | 互拒: 无 | 被拒: 无 | 被接纳: Moon, Saturn | 外交分: +0.8</div>
+                <div class="score-line total-score">先天后天总分: -1.2 | 格局: 无(+0.0) | 重要性: -1.2</div>
+                <div class="aspect-details">
+                    <div>相位1: 对方星体: Sun | 对方宫位: 10 | 相位: 合相(0°) | 强度: 9.19° (8.1%)</div><div>相位2: 对方星体: Mercury | 对方宫位: 9 | 相位: 合相(0°) | 强度: 6.76° (32.4%)</div><div>相位3: 对方星体: Venus | 对方宫位: 10 | 相位: 合相(0°) | 强度: 8.06° (19.4%)</div><div>相位4: 对方星体: Uranus | 对方宫位: 9 | 相位: 合相(0°) | 强度: 7.15° (28.5%)</div><div>相位5: 对方星体: Neptune | 对方宫位: 7 | 相位: 六合相位(60°) | 强度: 1.63° (72.8%)</div><div>相位6: 对方星体: Pluto | 对方宫位: 5 | 相位: 三分(120°) | 强度: 0.63° (92.1%)</div><div>相位7: 对方星体: Midheaven | 对方宫位: 9 | 相位: 合相(0°) | 强度: 4.33° (56.7%)</div><div>相位8: 对方星体: Asc | 对方宫位: 1 | 相位: 刑相位(90°) | 强度: 3.95° (50.6%)</div>
+                </div>
+            </div>
+            </details>
+        <details class="detailed-house">
+            <summary class="house-header" style="cursor: pointer; outline: none;">
+                第 5 宫 <span style="font-size:14px; color:#888; font-weight:normal; margin-left:10px;">▼ 点击展开/收缩</span>
+            </summary>
+            <div class="cusp-info">
+                宫头: Capricorn | 宫主星: Saturn (5宫主) 飞入 7宫
+            </div>
+        
+            <div class="planet-detail ruler-focus">
+                <div class="planet-title">宫主星: Saturn (5宫头守护)</div>
+                <div>星体: Saturn(5宫头守护)</div>
+                <div>落宫: 7宫 | 星座: Pisces | 度数: 18°22'</div>
+                <div class="score-line">先天分: 状态:平 | 入界: 否 | 入面: 否 | 三分: 否 | 先天分: +0</div>
+                <div class="score-line">后天分: 落宫: +5 | 燃烧: 否 | 逆行: 否 | 燃烧径: 否 | 后天分: +5</div>
+                <div class="score-line">外交: 互容: 无 | 互拒: 无 | 被拒: 无 | 被接纳: 无 | 外交分: +0</div>
+                <div class="score-line total-score">先天后天总分: +5 | 格局: 无(+0.0) | 重要性: +5</div>
+                <div class="aspect-details">
+                    <div>相位1: 对方星体: Moon | 对方宫位: 7 | 相位: 合相(0°) | 强度: 0.71° (92.9%)</div><div>相位2: 对方星体: Mercury | 对方宫位: 9 | 相位: 六合相位(60°) | 强度: 5.8° (3.3%)</div><div>相位3: 对方星体: Uranus | 对方宫位: 9 | 相位: 六合相位(60°) | 强度: 5.42° (9.6%)</div><div>相位4: 对方星体: Fortune | 对方宫位: 10 | 相位: 刑相位(90°) | 强度: 4.53° (43.4%)</div>
+                </div>
+            </div>
+            
+            <div class="planet-detail">
+                <div class="planet-title">宫内星体: Pluto</div>
+                <div>星体: Pluto</div>
+                <div>落宫: 5宫 | 星座: Aquarius | 度数: 1°34'</div>
+                <div class="score-line">先天分: 状态:平 | 入界: 否 | 入面: 否 | 三分: 否 | 先天分: +0</div>
+                <div class="score-line">后天分: 落宫: +3 | 燃烧: 否 | 逆行: 是 | 燃烧径: 否 | 后天分: -2</div>
+                <div class="score-line">外交: 互容: 无 | 互拒: 无 | 被拒: 无 | 被接纳: 无 | 外交分: +0</div>
+                <div class="score-line total-score">先天后天总分: -2 | 格局: 无(+0.0) | 重要性: -2</div>
+                <div class="aspect-details">
+                    <div>相位1: 对方星体: Mercury | 对方宫位: 9 | 相位: 三分(120°) | 强度: 7.39° (7.6%)</div><div>相位2: 对方星体: Venus | 对方宫位: 10 | 相位: 三分(120°) | 强度: 7.43° (7.1%)</div><div>相位3: 对方星体: Jupiter | 对方宫位: 9 | 相位: 三分(120°) | 强度: 0.63° (92.1%)</div><div>相位4: 对方星体: Uranus | 对方宫位: 9 | 相位: 三分(120°) | 强度: 7.77° (2.8%)</div><div>相位5: 对方星体: Neptune | 对方宫位: 7 | 相位: 六合相位(60°) | 强度: 2.26° (62.3%)</div><div>相位6: 对方星体: Midheaven | 对方宫位: 9 | 相位: 三分(120°) | 强度: 4.96° (38.0%)</div><div>相位7: 对方星体: House 2 | 对方宫位: 2 | 相位: 三分(120°) | 强度: 3.32° (58.5%)</div><div>相位8: 对方星体: House 3 | 对方宫位: 3 | 相位: 刑相位(90°) | 强度: 3.32° (58.5%)</div>
+                </div>
+            </div>
+            </details>
+        <details class="detailed-house">
+            <summary class="house-header" style="cursor: pointer; outline: none;">
+                第 6 宫 <span style="font-size:14px; color:#888; font-weight:normal; margin-left:10px;">▼ 点击展开/收缩</span>
+            </summary>
+            <div class="cusp-info">
+                宫头: Aquarius | 宫主星: Saturn (6宫主) 飞入 7宫
+            </div>
+        
+            <div class="planet-detail ruler-focus">
+                <div class="planet-title">宫主星: Saturn (6宫头守护)</div>
+                <div>星体: Saturn(6宫头守护)</div>
+                <div>落宫: 7宫 | 星座: Pisces | 度数: 18°22'</div>
+                <div class="score-line">先天分: 状态:平 | 入界: 否 | 入面: 否 | 三分: 否 | 先天分: +0</div>
+                <div class="score-line">后天分: 落宫: +5 | 燃烧: 否 | 逆行: 否 | 燃烧径: 否 | 后天分: +5</div>
+                <div class="score-line">外交: 互容: 无 | 互拒: 无 | 被拒: 无 | 被接纳: 无 | 外交分: +0</div>
+                <div class="score-line total-score">先天后天总分: +5 | 格局: 无(+0.0) | 重要性: +5</div>
+                <div class="aspect-details">
+                    <div>相位1: 对方星体: Moon | 对方宫位: 7 | 相位: 合相(0°) | 强度: 0.71° (92.9%)</div><div>相位2: 对方星体: Mercury | 对方宫位: 9 | 相位: 六合相位(60°) | 强度: 5.8° (3.3%)</div><div>相位3: 对方星体: Uranus | 对方宫位: 9 | 相位: 六合相位(60°) | 强度: 5.42° (9.6%)</div><div>相位4: 对方星体: Fortune | 对方宫位: 10 | 相位: 刑相位(90°) | 强度: 4.53° (43.4%)</div>
+                </div>
+            </div>
+            </details>
+        <details class="detailed-house">
+            <summary class="house-header" style="cursor: pointer; outline: none;">
+                第 7 宫 <span style="font-size:14px; color:#888; font-weight:normal; margin-left:10px;">▼ 点击展开/收缩</span>
+            </summary>
+            <div class="cusp-info">
+                宫头: Pisces | 宫主星: Jupiter (7宫主) 飞入 9宫
+            </div>
+        
+            <div class="planet-detail ruler-focus">
+                <div class="planet-title">宫主星: Jupiter (7宫头守护)</div>
+                <div>星体: Jupiter(7宫头守护)</div>
+                <div>落宫: 9宫 | 星座: Gemini | 度数: 0°56'</div>
+                <div class="score-line">先天分: 状态:失 | 入界: 否 | 入面: 是 | 三分: 否 | 先天分: -4</div>
+                <div class="score-line">后天分: 落宫: +2 | 燃烧: 否 | 逆行: 否 | 燃烧径: 否 | 后天分: +2</div>
+                <div class="score-line">外交: 互容: 无 | 互拒: 无 | 被拒: 无 | 被接纳: Moon, Saturn | 外交分: +0.8</div>
+                <div class="score-line total-score">先天后天总分: -1.2 | 格局: 无(+0.0) | 重要性: -1.2</div>
+                <div class="aspect-details">
+                    <div>相位1: 对方星体: Sun | 对方宫位: 10 | 相位: 合相(0°) | 强度: 9.19° (8.1%)</div><div>相位2: 对方星体: Mercury | 对方宫位: 9 | 相位: 合相(0°) | 强度: 6.76° (32.4%)</div><div>相位3: 对方星体: Venus | 对方宫位: 10 | 相位: 合相(0°) | 强度: 8.06° (19.4%)</div><div>相位4: 对方星体: Uranus | 对方宫位: 9 | 相位: 合相(0°) | 强度: 7.15° (28.5%)</div><div>相位5: 对方星体: Neptune | 对方宫位: 7 | 相位: 六合相位(60°) | 强度: 1.63° (72.8%)</div><div>相位6: 对方星体: Pluto | 对方宫位: 5 | 相位: 三分(120°) | 强度: 0.63° (92.1%)</div><div>相位7: 对方星体: Midheaven | 对方宫位: 9 | 相位: 合相(0°) | 强度: 4.33° (56.7%)</div><div>相位8: 对方星体: Asc | 对方宫位: 1 | 相位: 刑相位(90°) | 强度: 3.95° (50.6%)</div>
+                </div>
+            </div>
+            
+            <div class="planet-detail">
+                <div class="planet-title">宫内星体: Moon</div>
+                <div>星体: Moon</div>
+                <div>落宫: 7宫 | 星座: Pisces | 度数: 19°5'</div>
+                <div class="score-line">先天分: 状态:平 | 入界: 否 | 入面: 否 | 三分: 否 | 先天分: +0</div>
+                <div class="score-line">后天分: 落宫: +5 | 燃烧: 否 | 逆行: 否 | 燃烧径: 否 | 后天分: +5</div>
+                <div class="score-line">外交: 互容: 无 | 互拒: 无 | 被拒: 无 | 被接纳: Mercury | 外交分: +0.4</div>
+                <div class="score-line total-score">先天后天总分: +5.4 | 格局: 无(+0.0) | 重要性: +5.4</div>
+                <div class="aspect-details">
+                    <div>相位1: 对方星体: Mercury | 对方宫位: 9 | 相位: 六合相位(60°) | 强度: 5.09° (15.1%)</div><div>相位2: 对方星体: Saturn | 对方宫位: 7 | 相位: 合相(0°) | 强度: 0.71° (92.9%)</div><div>相位3: 对方星体: Uranus | 对方宫位: 9 | 相位: 六合相位(60°) | 强度: 4.71° (21.5%)</div><div>相位4: 对方星体: Fortune | 对方宫位: 10 | 相位: 刑相位(90°) | 强度: 5.24° (34.5%)</div>
+                </div>
+            </div>
+            
+            <div class="planet-detail">
+                <div class="planet-title">宫内星体: Saturn</div>
+                <div>星体: Saturn</div>
+                <div>落宫: 7宫 | 星座: Pisces | 度数: 18°22'</div>
+                <div class="score-line">先天分: 状态:平 | 入界: 否 | 入面: 否 | 三分: 否 | 先天分: +0</div>
+                <div class="score-line">后天分: 落宫: +5 | 燃烧: 否 | 逆行: 否 | 燃烧径: 否 | 后天分: +5</div>
+                <div class="score-line">外交: 互容: 无 | 互拒: 无 | 被拒: 无 | 被接纳: 无 | 外交分: +0</div>
+                <div class="score-line total-score">先天后天总分: +5 | 格局: 无(+0.0) | 重要性: +5</div>
+                <div class="aspect-details">
+                    <div>相位1: 对方星体: Moon | 对方宫位: 7 | 相位: 合相(0°) | 强度: 0.71° (92.9%)</div><div>相位2: 对方星体: Mercury | 对方宫位: 9 | 相位: 六合相位(60°) | 强度: 5.8° (3.3%)</div><div>相位3: 对方星体: Uranus | 对方宫位: 9 | 相位: 六合相位(60°) | 强度: 5.42° (9.6%)</div><div>相位4: 对方星体: Fortune | 对方宫位: 10 | 相位: 刑相位(90°) | 强度: 4.53° (43.4%)</div>
+                </div>
+            </div>
+            
+            <div class="planet-detail">
+                <div class="planet-title">宫内星体: Neptune</div>
+                <div>星体: Neptune</div>
+                <div>落宫: 7宫 | 星座: Pisces | 度数: 29°19'</div>
+                <div class="score-line">先天分: 状态:平 | 入界: 否 | 入面: 否 | 三分: 否 | 先天分: +0</div>
+                <div class="score-line">后天分: 落宫: +5 | 燃烧: 否 | 逆行: 否 | 燃烧径: 否 | 后天分: +5</div>
+                <div class="score-line">外交: 互容: 无 | 互拒: 无 | 被拒: 无 | 被接纳: 无 | 外交分: +0</div>
+                <div class="score-line total-score">先天后天总分: +5 | 格局: 无(+0.0) | 重要性: +5</div>
+                <div class="aspect-details">
+                    <div>相位1: 对方星体: Mercury | 对方宫位: 9 | 相位: 六合相位(60°) | 强度: 5.13° (14.5%)</div><div>相位2: 对方星体: Jupiter | 对方宫位: 9 | 相位: 六合相位(60°) | 强度: 1.63° (72.8%)</div><div>相位3: 对方星体: Uranus | 对方宫位: 9 | 相位: 六合相位(60°) | 强度: 5.51° (8.1%)</div><div>相位4: 对方星体: Pluto | 对方宫位: 5 | 相位: 六合相位(60°) | 强度: 2.26° (62.3%)</div><div>相位5: 对方星体: Midheaven | 对方宫位: 9 | 相位: 六合相位(60°) | 强度: 2.7° (55.0%)</div><div>相位6: 对方星体: House 2 | 对方宫位: 2 | 相位: 对分(180°) | 强度: 5.58° (44.2%)</div><div>相位7: 对方星体: House 4 | 对方宫位: 4 | 相位: 三分(120°) | 强度: 5.58° (30.2%)</div><div>相位8: 对方星体: House 5 | 对方宫位: 4 | 相位: 刑相位(90°) | 强度: 5.58° (30.2%)</div>
+                </div>
+            </div>
+            </details>
+        <details class="detailed-house">
+            <summary class="house-header" style="cursor: pointer; outline: none;">
+                第 8 宫 <span style="font-size:14px; color:#888; font-weight:normal; margin-left:10px;">▼ 点击展开/收缩</span>
+            </summary>
+            <div class="cusp-info">
+                宫头: Aries | 宫主星: Mars (8宫主) 飞入 8宫
+            </div>
+        
+            <div class="planet-detail ruler-focus">
+                <div class="planet-title">宫主星: Mars (8宫头守护)</div>
+                <div>星体: Mars(8宫头守护)</div>
+                <div>落宫: 8宫 | 星座: Aries | 度数: 23°7'</div>
+                <div class="score-line">先天分: 状态:庙 | 入界: 是 | 入面: 否 | 三分: 否 | 先天分: +7</div>
+                <div class="score-line">后天分: 落宫: -5 | 燃烧: 否 | 逆行: 否 | 燃烧径: 否 | 后天分: -5</div>
+                <div class="score-line">外交: 互容: 无 | 互拒: 无 | 被拒: 无 | 被接纳: 无 | 外交分: +0</div>
+                <div class="score-line total-score">先天后天总分: +2 | 格局: 无(+0.0) | 重要性: +2</div>
+                <div class="aspect-details">
+                    无重大相位
+                </div>
+            </div>
+            
+            <div class="planet-detail">
+                <div class="planet-title">宫内星体: Node</div>
+                <div>星体: Node</div>
+                <div>落宫: 8宫 | 星座: Aries | 度数: 12°51'</div>
+                <div class="score-line">先天分: 状态:平 | 入界: 否 | 入面: 否 | 三分: 否 | 先天分: +0</div>
+                <div class="score-line">后天分: 落宫: -5 | 燃烧: 否 | 逆行: 是 | 燃烧径: 否 | 后天分: -10</div>
+                <div class="score-line">外交: 互容: 无 | 互拒: 无 | 被拒: 无 | 被接纳: 无 | 外交分: +0</div>
+                <div class="score-line total-score">先天后天总分: -10 | 格局: 无(+0.0) | 重要性: -10</div>
+                <div class="aspect-details">
+                    <div>相位1: 对方星体: Sun | 对方宫位: 10 | 相位: 六合相位(60°) | 强度: 2.72° (54.7%)</div><div>相位2: 对方星体: Venus | 对方宫位: 10 | 相位: 六合相位(60°) | 强度: 3.85° (35.8%)</div><div>相位3: 对方星体: Fortune | 对方宫位: 10 | 相位: 六合相位(60°) | 强度: 0.99° (83.5%)</div><div>相位4: 对方星体: House 2 | 对方宫位: 2 | 相位: 对分(180°) | 强度: 7.96° (20.4%)</div><div>相位5: 对方星体: House 4 | 对方宫位: 4 | 相位: 三分(120°) | 强度: 7.96° (0.5%)</div><div>相位6: 对方星体: House 5 | 对方宫位: 4 | 相位: 刑相位(90°) | 强度: 7.96° (0.5%)</div><div>相位7: 对方星体: House 8 | 对方宫位: 7 | 相位: 合相(0°) | 强度: 7.96° (20.4%)</div><div>相位8: 对方星体: House 11 | 对方宫位: 11 | 相位: 刑相位(90°) | 强度: 7.96° (0.5%)</div>
+                </div>
+            </div>
+            </details>
+        <details class="detailed-house">
+            <summary class="house-header" style="cursor: pointer; outline: none;">
+                第 9 宫 <span style="font-size:14px; color:#888; font-weight:normal; margin-left:10px;">▼ 点击展开/收缩</span>
+            </summary>
+            <div class="cusp-info">
+                宫头: Taurus | 宫主星: Venus (9宫主) 飞入 10宫
+            </div>
+        
+            <div class="planet-detail ruler-focus">
+                <div class="planet-title">宫主星: Venus (9宫头守护)</div>
+                <div>星体: Venus(9宫头守护)</div>
+                <div>落宫: 10宫 | 星座: Gemini | 度数: 9°0'</div>
+                <div class="score-line">先天分: 状态:平 | 入界: 否 | 入面: 否 | 三分: 否 | 先天分: +0</div>
+                <div class="score-line">后天分: 落宫: +5 | 燃烧: 是 | 逆行: 否 | 燃烧径: 否 | 后天分: +0</div>
+                <div class="score-line">外交: 互容: Mercury | 互拒: 无 | 被拒: 无 | 被接纳: Moon, Saturn | 外交分: +4.8</div>
+                <div class="score-line total-score">先天后天总分: +4.8 | 格局: 无(+0.0) | 重要性: +4.8</div>
+                <div class="aspect-details">
+                    <div>相位1: 对方星体: Sun | 对方宫位: 10 | 相位: 合相(0°) | 强度: 1.14° (88.6%)</div><div>相位2: 对方星体: Jupiter | 对方宫位: 9 | 相位: 合相(0°) | 强度: 8.06° (19.4%)</div><div>相位3: 对方星体: Pluto | 对方宫位: 5 | 相位: 三分(120°) | 强度: 7.43° (7.1%)</div><div>相位4: 对方星体: Node | 对方宫位: 8 | 相位: 六合相位(60°) | 强度: 3.85° (35.8%)</div><div>相位5: 对方星体: Asc | 对方宫位: 1 | 相位: 刑相位(90°) | 强度: 4.11° (48.7%)</div><div>相位6: 对方星体: Fortune | 对方宫位: 10 | 相位: 合相(0°) | 强度: 4.84° (51.6%)</div><div>相位7: 对方星体: House 1 | 对方宫位: 1 | 相位: 刑相位(90°) | 强度: 4.11° (48.7%)</div><div>相位8: 对方星体: House 2 | 对方宫位: 2 | 相位: 三分(120°) | 强度: 4.11° (48.7%)</div>
+                </div>
+            </div>
+            
+            <div class="planet-detail">
+                <div class="planet-title">宫内星体: Mercury</div>
+                <div>星体: Mercury</div>
+                <div>落宫: 9宫 | 星座: Taurus | 度数: 24°11'</div>
+                <div class="score-line">先天分: 状态:平 | 入界: 否 | 入面: 否 | 三分: 否 | 先天分: +0</div>
+                <div class="score-line">后天分: 落宫: +2 | 燃烧: 否 | 逆行: 否 | 燃烧径: 否 | 后天分: +2</div>
+                <div class="score-line">外交: 互容: Venus | 互拒: 无 | 被拒: Moon(S), Saturn(S) | 被接纳: Sun, Jupiter | 外交分: +4</div>
+                <div class="score-line total-score">先天后天总分: +6 | 格局: 无(+0.0) | 重要性: +6</div>
+                <div class="aspect-details">
+                    <div>相位1: 对方星体: Moon | 对方宫位: 7 | 相位: 六合相位(60°) | 强度: 5.09° (15.1%)</div><div>相位2: 对方星体: Jupiter | 对方宫位: 9 | 相位: 合相(0°) | 强度: 6.76° (32.4%)</div><div>相位3: 对方星体: Saturn | 对方宫位: 7 | 相位: 六合相位(60°) | 强度: 5.8° (3.3%)</div><div>相位4: 对方星体: Uranus | 对方宫位: 9 | 相位: 合相(0°) | 强度: 0.38° (96.2%)</div><div>相位5: 对方星体: Neptune | 对方宫位: 7 | 相位: 六合相位(60°) | 强度: 5.13° (14.5%)</div><div>相位6: 对方星体: Pluto | 对方宫位: 5 | 相位: 三分(120°) | 强度: 7.39° (7.6%)</div><div>相位7: 对方星体: Midheaven | 对方宫位: 9 | 相位: 合相(0°) | 强度: 2.43° (75.7%)</div>
+                </div>
+            </div>
+            
+            <div class="planet-detail">
+                <div class="planet-title">宫内星体: Jupiter</div>
+                <div>星体: Jupiter</div>
+                <div>落宫: 9宫 | 星座: Gemini | 度数: 0°56'</div>
+                <div class="score-line">先天分: 状态:失 | 入界: 否 | 入面: 是 | 三分: 否 | 先天分: -4</div>
+                <div class="score-line">后天分: 落宫: +2 | 燃烧: 否 | 逆行: 否 | 燃烧径: 否 | 后天分: +2</div>
+                <div class="score-line">外交: 互容: 无 | 互拒: 无 | 被拒: 无 | 被接纳: Moon, Saturn | 外交分: +0.8</div>
+                <div class="score-line total-score">先天后天总分: -1.2 | 格局: 无(+0.0) | 重要性: -1.2</div>
+                <div class="aspect-details">
+                    <div>相位1: 对方星体: Sun | 对方宫位: 10 | 相位: 合相(0°) | 强度: 9.19° (8.1%)</div><div>相位2: 对方星体: Mercury | 对方宫位: 9 | 相位: 合相(0°) | 强度: 6.76° (32.4%)</div><div>相位3: 对方星体: Venus | 对方宫位: 10 | 相位: 合相(0°) | 强度: 8.06° (19.4%)</div><div>相位4: 对方星体: Uranus | 对方宫位: 9 | 相位: 合相(0°) | 强度: 7.15° (28.5%)</div><div>相位5: 对方星体: Neptune | 对方宫位: 7 | 相位: 六合相位(60°) | 强度: 1.63° (72.8%)</div><div>相位6: 对方星体: Pluto | 对方宫位: 5 | 相位: 三分(120°) | 强度: 0.63° (92.1%)</div><div>相位7: 对方星体: Midheaven | 对方宫位: 9 | 相位: 合相(0°) | 强度: 4.33° (56.7%)</div><div>相位8: 对方星体: Asc | 对方宫位: 1 | 相位: 刑相位(90°) | 强度: 3.95° (50.6%)</div>
+                </div>
+            </div>
+            
+            <div class="planet-detail">
+                <div class="planet-title">宫内星体: Uranus</div>
+                <div>星体: Uranus</div>
+                <div>落宫: 9宫 | 星座: Taurus | 度数: 23°48'</div>
+                <div class="score-line">先天分: 状态:平 | 入界: 否 | 入面: 否 | 三分: 否 | 先天分: +0</div>
+                <div class="score-line">后天分: 落宫: +2 | 燃烧: 否 | 逆行: 否 | 燃烧径: 否 | 后天分: +2</div>
+                <div class="score-line">外交: 互容: 无 | 互拒: 无 | 被拒: 无 | 被接纳: 无 | 外交分: +0</div>
+                <div class="score-line total-score">先天后天总分: +2 | 格局: 无(+0.0) | 重要性: +2</div>
+                <div class="aspect-details">
+                    <div>相位1: 对方星体: Moon | 对方宫位: 7 | 相位: 六合相位(60°) | 强度: 4.71° (21.5%)</div><div>相位2: 对方星体: Mercury | 对方宫位: 9 | 相位: 合相(0°) | 强度: 0.38° (96.2%)</div><div>相位3: 对方星体: Jupiter | 对方宫位: 9 | 相位: 合相(0°) | 强度: 7.15° (28.5%)</div><div>相位4: 对方星体: Saturn | 对方宫位: 7 | 相位: 六合相位(60°) | 强度: 5.42° (9.6%)</div><div>相位5: 对方星体: Neptune | 对方宫位: 7 | 相位: 六合相位(60°) | 强度: 5.51° (8.1%)</div><div>相位6: 对方星体: Pluto | 对方宫位: 5 | 相位: 三分(120°) | 强度: 7.77° (2.8%)</div><div>相位7: 对方星体: Midheaven | 对方宫位: 9 | 相位: 合相(0°) | 强度: 2.81° (71.9%)</div>
+                </div>
+            </div>
+            </details>
+        <details class="detailed-house">
+            <summary class="house-header" style="cursor: pointer; outline: none;">
+                第 10 宫 <span style="font-size:14px; color:#888; font-weight:normal; margin-left:10px;">▼ 点击展开/收缩</span>
+            </summary>
+            <div class="cusp-info">
+                宫头: Gemini | 宫主星: Mercury (10宫主) 飞入 9宫
+            </div>
+        
+            <div class="planet-detail ruler-focus">
+                <div class="planet-title">宫主星: Mercury (10宫头守护)</div>
+                <div>星体: Mercury(10宫头守护)</div>
+                <div>落宫: 9宫 | 星座: Taurus | 度数: 24°11'</div>
+                <div class="score-line">先天分: 状态:平 | 入界: 否 | 入面: 否 | 三分: 否 | 先天分: +0</div>
+                <div class="score-line">后天分: 落宫: +2 | 燃烧: 否 | 逆行: 否 | 燃烧径: 否 | 后天分: +2</div>
+                <div class="score-line">外交: 互容: Venus | 互拒: 无 | 被拒: Moon(S), Saturn(S) | 被接纳: Sun, Jupiter | 外交分: +4</div>
+                <div class="score-line total-score">先天后天总分: +6 | 格局: 无(+0.0) | 重要性: +6</div>
+                <div class="aspect-details">
+                    <div>相位1: 对方星体: Moon | 对方宫位: 7 | 相位: 六合相位(60°) | 强度: 5.09° (15.1%)</div><div>相位2: 对方星体: Jupiter | 对方宫位: 9 | 相位: 合相(0°) | 强度: 6.76° (32.4%)</div><div>相位3: 对方星体: Saturn | 对方宫位: 7 | 相位: 六合相位(60°) | 强度: 5.8° (3.3%)</div><div>相位4: 对方星体: Uranus | 对方宫位: 9 | 相位: 合相(0°) | 强度: 0.38° (96.2%)</div><div>相位5: 对方星体: Neptune | 对方宫位: 7 | 相位: 六合相位(60°) | 强度: 5.13° (14.5%)</div><div>相位6: 对方星体: Pluto | 对方宫位: 5 | 相位: 三分(120°) | 强度: 7.39° (7.6%)</div><div>相位7: 对方星体: Midheaven | 对方宫位: 9 | 相位: 合相(0°) | 强度: 2.43° (75.7%)</div>
+                </div>
+            </div>
+            
+            <div class="planet-detail">
+                <div class="planet-title">宫内星体: Sun</div>
+                <div>星体: Sun</div>
+                <div>落宫: 10宫 | 星座: Gemini | 度数: 10°8'</div>
+                <div class="score-line">先天分: 状态:平 | 入界: 否 | 入面: 否 | 三分: 否 | 先天分: +0</div>
+                <div class="score-line">后天分: 落宫: +5 | 燃烧: 否 | 逆行: 否 | 燃烧径: 否 | 后天分: +5</div>
+                <div class="score-line">外交: 互容: 无 | 互拒: 无 | 被拒: 无 | 被接纳: Mars | 外交分: +0.4</div>
+                <div class="score-line total-score">先天后天总分: +5.4 | 格局: 无(+0.0) | 重要性: +5.4</div>
+                <div class="aspect-details">
+                    <div>相位1: 对方星体: Venus | 对方宫位: 10 | 相位: 合相(0°) | 强度: 1.14° (88.6%)</div><div>相位2: 对方星体: Jupiter | 对方宫位: 9 | 相位: 合相(0°) | 强度: 9.19° (8.1%)</div><div>相位3: 对方星体: Node | 对方宫位: 8 | 相位: 六合相位(60°) | 强度: 2.72° (54.7%)</div><div>相位4: 对方星体: Asc | 对方宫位: 1 | 相位: 刑相位(90°) | 强度: 5.24° (34.5%)</div><div>相位5: 对方星体: Fortune | 对方宫位: 10 | 相位: 合相(0°) | 强度: 3.71° (62.9%)</div><div>相位6: 对方星体: House 1 | 对方宫位: 1 | 相位: 刑相位(90°) | 强度: 5.24° (34.5%)</div><div>相位7: 对方星体: House 2 | 对方宫位: 2 | 相位: 三分(120°) | 强度: 5.24° (34.5%)</div><div>相位8: 对方星体: House 4 | 对方宫位: 4 | 相位: 对分(180°) | 强度: 5.24° (47.6%)</div>
+                </div>
+            </div>
+            
+            <div class="planet-detail">
+                <div class="planet-title">宫内星体: Venus</div>
+                <div>星体: Venus</div>
+                <div>落宫: 10宫 | 星座: Gemini | 度数: 9°0'</div>
+                <div class="score-line">先天分: 状态:平 | 入界: 否 | 入面: 否 | 三分: 否 | 先天分: +0</div>
+                <div class="score-line">后天分: 落宫: +5 | 燃烧: 是 | 逆行: 否 | 燃烧径: 否 | 后天分: +0</div>
+                <div class="score-line">外交: 互容: Mercury | 互拒: 无 | 被拒: 无 | 被接纳: Moon, Saturn | 外交分: +4.8</div>
+                <div class="score-line total-score">先天后天总分: +4.8 | 格局: 无(+0.0) | 重要性: +4.8</div>
+                <div class="aspect-details">
+                    <div>相位1: 对方星体: Sun | 对方宫位: 10 | 相位: 合相(0°) | 强度: 1.14° (88.6%)</div><div>相位2: 对方星体: Jupiter | 对方宫位: 9 | 相位: 合相(0°) | 强度: 8.06° (19.4%)</div><div>相位3: 对方星体: Pluto | 对方宫位: 5 | 相位: 三分(120°) | 强度: 7.43° (7.1%)</div><div>相位4: 对方星体: Node | 对方宫位: 8 | 相位: 六合相位(60°) | 强度: 3.85° (35.8%)</div><div>相位5: 对方星体: Asc | 对方宫位: 1 | 相位: 刑相位(90°) | 强度: 4.11° (48.7%)</div><div>相位6: 对方星体: Fortune | 对方宫位: 10 | 相位: 合相(0°) | 强度: 4.84° (51.6%)</div><div>相位7: 对方星体: House 1 | 对方宫位: 1 | 相位: 刑相位(90°) | 强度: 4.11° (48.7%)</div><div>相位8: 对方星体: House 2 | 对方宫位: 2 | 相位: 三分(120°) | 强度: 4.11° (48.7%)</div>
+                </div>
+            </div>
+            
+            <div class="planet-detail">
+                <div class="planet-title">宫内星体: Fortune</div>
+                <div>星体: Fortune</div>
+                <div>落宫: 10宫 | 星座: Gemini | 度数: 13°51'</div>
+                <div class="score-line">先天分: 状态:平 | 入界: 否 | 入面: 否 | 三分: 否 | 先天分: +0</div>
+                <div class="score-line">后天分: 落宫: +5 | 燃烧: 是 | 逆行: 否 | 燃烧径: 否 | 后天分: +0</div>
+                <div class="score-line">外交: 互容: 无 | 互拒: 无 | 被拒: 无 | 被接纳: 无 | 外交分: +0</div>
+                <div class="score-line total-score">先天后天总分: +0 | 格局: 无(+0.0) | 重要性: +0</div>
+                <div class="aspect-details">
+                    <div>相位1: 对方星体: Sun | 对方宫位: 10 | 相位: 合相(0°) | 强度: 3.71° (62.9%)</div><div>相位2: 对方星体: Moon | 对方宫位: 7 | 相位: 刑相位(90°) | 强度: 5.24° (34.5%)</div><div>相位3: 对方星体: Venus | 对方宫位: 10 | 相位: 合相(0°) | 强度: 4.84° (51.6%)</div><div>相位4: 对方星体: Saturn | 对方宫位: 7 | 相位: 刑相位(90°) | 强度: 4.53° (43.4%)</div><div>相位5: 对方星体: Node | 对方宫位: 8 | 相位: 六合相位(60°) | 强度: 0.99° (83.5%)</div><div>相位6: 对方星体: House 4 | 对方宫位: 4 | 相位: 对分(180°) | 强度: 8.95° (10.5%)</div><div>相位7: 对方星体: House 10 | 对方宫位: 10 | 相位: 合相(0°) | 强度: 8.95° (10.5%)</div>
+                </div>
+            </div>
+            </details>
+        <details class="detailed-house">
+            <summary class="house-header" style="cursor: pointer; outline: none;">
+                第 11 宫 <span style="font-size:14px; color:#888; font-weight:normal; margin-left:10px;">▼ 点击展开/收缩</span>
+            </summary>
+            <div class="cusp-info">
+                宫头: Cancer | 宫主星: Moon (11宫主) 飞入 7宫
+            </div>
+        
+            <div class="planet-detail ruler-focus">
+                <div class="planet-title">宫主星: Moon (11宫头守护)</div>
+                <div>星体: Moon(11宫头守护)</div>
+                <div>落宫: 7宫 | 星座: Pisces | 度数: 19°5'</div>
+                <div class="score-line">先天分: 状态:平 | 入界: 否 | 入面: 否 | 三分: 否 | 先天分: +0</div>
+                <div class="score-line">后天分: 落宫: +5 | 燃烧: 否 | 逆行: 否 | 燃烧径: 否 | 后天分: +5</div>
+                <div class="score-line">外交: 互容: 无 | 互拒: 无 | 被拒: 无 | 被接纳: Mercury | 外交分: +0.4</div>
+                <div class="score-line total-score">先天后天总分: +5.4 | 格局: 无(+0.0) | 重要性: +5.4</div>
+                <div class="aspect-details">
+                    <div>相位1: 对方星体: Mercury | 对方宫位: 9 | 相位: 六合相位(60°) | 强度: 5.09° (15.1%)</div><div>相位2: 对方星体: Saturn | 对方宫位: 7 | 相位: 合相(0°) | 强度: 0.71° (92.9%)</div><div>相位3: 对方星体: Uranus | 对方宫位: 9 | 相位: 六合相位(60°) | 强度: 4.71° (21.5%)</div><div>相位4: 对方星体: Fortune | 对方宫位: 10 | 相位: 刑相位(90°) | 强度: 5.24° (34.5%)</div>
+                </div>
+            </div>
+            </details>
+        <details class="detailed-house">
+            <summary class="house-header" style="cursor: pointer; outline: none;">
+                第 12 宫 <span style="font-size:14px; color:#888; font-weight:normal; margin-left:10px;">▼ 点击展开/收缩</span>
+            </summary>
+            <div class="cusp-info">
+                宫头: Leo | 宫主星: Sun (12宫主) 飞入 10宫
+            </div>
+        
+            <div class="planet-detail ruler-focus">
+                <div class="planet-title">宫主星: Sun (12宫头守护)</div>
+                <div>星体: Sun(12宫头守护)</div>
+                <div>落宫: 10宫 | 星座: Gemini | 度数: 10°8'</div>
+                <div class="score-line">先天分: 状态:平 | 入界: 否 | 入面: 否 | 三分: 否 | 先天分: +0</div>
+                <div class="score-line">后天分: 落宫: +5 | 燃烧: 否 | 逆行: 否 | 燃烧径: 否 | 后天分: +5</div>
+                <div class="score-line">外交: 互容: 无 | 互拒: 无 | 被拒: 无 | 被接纳: Mars | 外交分: +0.4</div>
+                <div class="score-line total-score">先天后天总分: +5.4 | 格局: 无(+0.0) | 重要性: +5.4</div>
+                <div class="aspect-details">
+                    <div>相位1: 对方星体: Venus | 对方宫位: 10 | 相位: 合相(0°) | 强度: 1.14° (88.6%)</div><div>相位2: 对方星体: Jupiter | 对方宫位: 9 | 相位: 合相(0°) | 强度: 9.19° (8.1%)</div><div>相位3: 对方星体: Node | 对方宫位: 8 | 相位: 六合相位(60°) | 强度: 2.72° (54.7%)</div><div>相位4: 对方星体: Asc | 对方宫位: 1 | 相位: 刑相位(90°) | 强度: 5.24° (34.5%)</div><div>相位5: 对方星体: Fortune | 对方宫位: 10 | 相位: 合相(0°) | 强度: 3.71° (62.9%)</div><div>相位6: 对方星体: House 1 | 对方宫位: 1 | 相位: 刑相位(90°) | 强度: 5.24° (34.5%)</div><div>相位7: 对方星体: House 2 | 对方宫位: 2 | 相位: 三分(120°) | 强度: 5.24° (34.5%)</div><div>相位8: 对方星体: House 4 | 对方宫位: 4 | 相位: 对分(180°) | 强度: 5.24° (47.6%)</div>
+                </div>
+            </div>
+            </details>
+    </div>
+    <div id="starModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeStarModal()">&times;</span>
+            <h3 id="modalTitle">Star Conjunctions</h3>
+            <table class="star-table">
+                <thead><tr><th>Planet</th><th>Star</th><th>Orb</th><th>Meaning</th></tr></thead>
+                <tbody id="modalBody"></tbody>
+            </table>
+        </div>
+    </div>
+    <script>
+        window.starData = [{"planet": "Sun", "star": "Aldebaran", "orb": 0.3597857297695555, "meaning": "Great success and honor, but danger of integrity loss.", "is_royal": true, "is_behenian": false, "is_practical": false, "is_robson": false}, {"planet": "Venus", "star": "Aldebaran", "orb": 0.775295593874759, "meaning": "Great success and honor, but danger of integrity loss.", "is_royal": true, "is_behenian": false, "is_practical": false, "is_robson": false}, {"planet": "Mars", "star": "Acamar", "orb": 0.12931784417222758, "meaning": "Success in public office and high positions.", "is_royal": false, "is_behenian": false, "is_practical": false, "is_robson": true}, {"planet": "Jupiter", "star": "Pleiades", "orb": 0.9779773325181012, "meaning": "Sensitivity, blindness (metaphorical), and group influence.", "is_royal": false, "is_behenian": false, "is_practical": false, "is_robson": true}, {"planet": "Jupiter", "star": "Alcyone", "orb": 0.9619222241136214, "meaning": "Ambition, honor, but potential for bereavement.", "is_royal": false, "is_behenian": true, "is_practical": false, "is_robson": false}, {"planet": "Uranus", "star": "Zaurak", "orb": 0.9960292331447178, "meaning": "Melancholy, fear of death, and long-term worry.", "is_royal": false, "is_behenian": false, "is_practical": false, "is_robson": true}, {"planet": "Neptune", "star": "Scheat", "orb": 0.05336309053200239, "meaning": "Extremely high intellect, literary or poetic talent, but associated with sudden tragedy or floods.", "is_royal": false, "is_behenian": false, "is_practical": true, "is_robson": false}, {"planet": "Pluto", "star": "Albireo", "orb": 0.32205247334781006, "meaning": "Contemplative nature, artistic talent, and pleasant appearance.", "is_royal": false, "is_behenian": false, "is_practical": false, "is_robson": true}, {"planet": "Pluto", "star": "Altair", "orb": 0.2028903465457006, "meaning": "Boldness, courage, sudden but ephemeral wealth, and command.", "is_royal": false, "is_behenian": false, "is_practical": true, "is_robson": false}, {"planet": "Node", "star": "Alderamin", "orb": 0.09084036846799037, "meaning": "Gentle authority, dignity, and trial.", "is_royal": false, "is_behenian": false, "is_practical": false, "is_robson": true}, {"planet": "Midheaven", "star": "Algol", "orb": 0.45262798422951533, "meaning": "Most evil star; violence, intensity, danger.", "is_royal": false, "is_behenian": true, "is_practical": false, "is_robson": false}, {"planet": "Midheaven", "star": "Caput Algol", "orb": 0.45262798422951533, "meaning": "Extreme misfortune, violence, and intense passion.", "is_royal": false, "is_behenian": true, "is_practical": false, "is_robson": false}, {"planet": "House 7", "star": "Deneb Adige", "orb": 0.43092478258881783, "meaning": "Brilliant intellect, quick learning, and success in arts and sciences.", "is_royal": false, "is_behenian": false, "is_practical": true, "is_robson": false}, {"planet": "House 9", "star": "Sharatan", "orb": 0.9357038542084624, "meaning": "Violence, defeat, and accidents.", "is_royal": false, "is_behenian": false, "is_practical": false, "is_robson": true}, {"planet": "House 11", "star": "Tejat Posterior", "orb": 0.39494167726545015, "meaning": "Success, pride, eloquence, and protection.", "is_royal": false, "is_behenian": false, "is_practical": false, "is_robson": true}];
+        function openStarModal(category, title) {
+            if (!window.starData || window.starData.length === 0) return;
+            const tbody = document.getElementById('modalBody');
+            tbody.innerHTML = '';
+            const filtered = window.starData.filter(function(sa) { return sa[category]; });
+            if (filtered.length === 0) return;
+            
+            document.getElementById('modalTitle').innerText = title;
+            filtered.forEach(function(sa) {
+                const tr = document.createElement('tr');
+                tr.innerHTML = '<td>' + sa.planet + '</td><td>' + sa.star + '</td><td>' + sa.orb.toFixed(2) + '°</td><td>' + sa.meaning + '</td>';
+                tbody.appendChild(tr);
+            });
+            document.getElementById('starModal').style.display = 'block';
+        }
+        function closeStarModal() {
+            document.getElementById('starModal').style.display = 'none';
+        }
+        window.onclick = function(event) {
+            let modal = document.getElementById('starModal');
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+    </script>
+    </body></html>

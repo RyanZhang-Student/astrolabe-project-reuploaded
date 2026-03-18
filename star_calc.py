@@ -42,15 +42,27 @@ def calculate_star_conjunctions_and_stats(planets_data, stars_data, orb=1.0):
             
             # 判断是否合相
             if diff <= orb:
-                # 检查各类星星的归属
+                # 检查各类星星的归属 (按优先级: Royal > Behenian > Practical > Robson)
                 is_royal = any(r_star in s_name for r_star in ROYAL_STARS)
-                is_behenian = any(b_star in s_name for b_star in BEHENIAN_STARS)
-                is_practical = any(p_star in s_name for p_star in PRACTICAL_STARS)
+                is_behenian = False
+                is_practical = False
+                is_robson = False
 
-                # 如果既不是Royal, Behenian, 也不是Practical，那就是普通的 Robson star
-                is_robson = not (is_royal or is_behenian or is_practical)
+                if is_royal:
+                    stats["royal"] += 1
+                else:
+                    is_behenian = any(b_star in s_name for b_star in BEHENIAN_STARS)
+                    if is_behenian:
+                        stats["behenian"] += 1
+                    else:
+                        is_practical = any(p_star in s_name for p_star in PRACTICAL_STARS)
+                        if is_practical:
+                            stats["practical"] += 1
+                        else:
+                            is_robson = True
+                            stats["robson"] += 1
 
-                # 1. 记录合相数据
+                # 记录合相数据
                 conjunctions.append({
                     "planet": p_name,
                     "star": s_name,
@@ -61,23 +73,5 @@ def calculate_star_conjunctions_and_stats(planets_data, stars_data, orb=1.0):
                     "is_practical": is_practical,
                     "is_robson": is_robson
                 })
-                
-                # 2. 进行分类统计
-                
-                # Robson: 只统计非前三类的星
-                if is_robson:
-                    stats["robson"] += 1
-                
-                # 检查 Royal Stars (模糊匹配，防止 "Difda (Deneb)" 匹配不上 "Difda")
-                if is_royal:
-                    stats["royal"] += 1
-                    
-                # 检查 Behenian Stars
-                if is_behenian:
-                    stats["behenian"] += 1
-                    
-                # 检查 Practical Stars
-                if is_practical:
-                    stats["practical"] += 1
 
     return conjunctions, stats
