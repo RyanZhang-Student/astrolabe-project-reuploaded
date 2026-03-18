@@ -28,10 +28,10 @@ def calculate_essential_score(planet, sign, degree, is_day):
     
     if is_domicile:
         score += 5
-        status.append("庙")
+        status.append("Dom")
     if is_exalted:
         score += 4
-        status.append("旺")
+        status.append("Exalt")
     if is_trip:
         score += 3
     if is_term:
@@ -44,23 +44,23 @@ def calculate_essential_score(planet, sign, degree, is_day):
     
     if is_detriment:
         score -= 5
-        status.append("失")
+        status.append("Det")
     if is_fall:
         score -= 4
-        status.append("落")
+        status.append("Fall")
         
     # 游走判定：没有任何正面得位，且不在自己的陷弱位
     if not (is_domicile or is_exalted or is_trip or is_term or is_face) and not (is_detriment or is_fall):
         # 严格来说，古典黄金黎明或中世纪标准有些许差异，这里按常见扣分
         # score -= 5 
-        status.append("平")
+        status.append("Per")
 
     return {
         "score": score,
-        "status": status[0] if status else "平",
-        "in_term": "是" if is_term else "否",
-        "in_face": "是" if is_face else "否",
-        "in_trip": "是" if is_trip else "否"
+        "status": status[0] if status else "Per",
+        "in_term": "Yes" if is_term else "No",
+        "in_face": "Yes" if is_face else "No",
+        "in_trip": "Yes" if is_trip else "No"
     }
 
 def calculate_accidental_score(planet_name, p_data, all_planets, asc_lon):
@@ -108,11 +108,11 @@ def calculate_accidental_score(planet_name, p_data, all_planets, asc_lon):
 
     return {
         "score": score,
-        "house": f"{house}宫",
+        "house": f"House {house}",
         "house_score": house_score,
-        "is_combust": "是" if is_combust else "否",
-        "is_retro": "是" if is_retro else "否",
-        "is_via_combusta": "是" if is_via_combusta else "否"
+        "is_combust": "Yes" if is_combust else "No",
+        "is_retro": "Yes" if is_retro else "No",
+        "is_via_combusta": "Yes" if is_via_combusta else "No"
     }
 
 def calculate_diplomacy(planet_name, all_planets, is_day):
@@ -177,10 +177,10 @@ def calculate_diplomacy(planet_name, all_planets, is_day):
             
     return {
         "score": round(diplomacy_score, 1),
-        "mut_rec": ", ".join(mut_rec) if mut_rec else "无",
-        "mut_rej": ", ".join(mut_rej) if mut_rej else "无",
-        "rej_by": ", ".join(rej_by) if rej_by else "无",
-        "accepted_by": ", ".join(accepted_by) if accepted_by else "无"
+        "mut_rec": ", ".join(mut_rec) if mut_rec else "None",
+        "mut_rej": ", ".join(mut_rej) if mut_rej else "None",
+        "rej_by": ", ".join(rej_by) if rej_by else "None",
+        "accepted_by": ", ".join(accepted_by) if accepted_by else "None"
     }
 
 def get_aspects_for_planet(planet_name, all_planets):
@@ -192,7 +192,7 @@ def get_aspects_for_planet(planet_name, all_planets):
     p1_lon = all_planets[planet_name]['lon']
     
     # 映射中文
-    name_map = {'Conjunction': '合相', 'Opposition': '对分', 'Trine': '三分', 'Square': '刑相位', 'Sextile': '六合相位'}
+    name_map = {'Conjunction': 'Conjunction', 'Opposition': 'Opposition', 'Trine': 'Trine', 'Square': 'Square', 'Sextile': 'Sextile'}
     
     for other_name, other_data in all_planets.items():
         if other_name == planet_name: continue

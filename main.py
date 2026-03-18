@@ -48,8 +48,8 @@ def get_classical_row(house_num, asc_lon, planets, is_day):
     for r in receptions:
         # 根据等级添加视觉标签
         level_tag = "⭐" * r['level']
-        status = " (有效)" if r['has_aspect'] else " (暗中)"
-        reject = " [❗互拒]" if r['is_rejected'] else ""
+        status = " (Effective)" if r['has_aspect'] else " (Hidden)"
+        reject = " [❗Mutual Rejection]" if r['is_rejected'] else ""
         rel_info = f"{r['from']}{level_tag}{status}{reject}"
         rel_str_list.append(rel_info)
     rel_final_str = "<br>".join(rel_str_list) if rel_str_list else "-"
@@ -95,17 +95,17 @@ def generate_detailed_html(planets, asc_lon, is_day):
         if ruler_name in planets:
             ruler_lon = planets[ruler_name]['lon']
             ruler_flying_house = determine_house(ruler_lon, asc_lon)
-            ruler_info_str = f"宫主星: {ruler_name} ({h_num}宫主) 飞入 {ruler_flying_house}宫"
+            ruler_info_str = f"House Lord: {ruler_name} (Lord of H{h_num}) placed in House {ruler_flying_house}"
         else:
-            ruler_info_str = f"宫主星: {ruler_name} (数据缺失)"
+            ruler_info_str = f"House Lord: {ruler_name} (Data Unavailable)"
         
         section = [f"""
         <details class="detailed-house">
             <summary class="house-header" style="cursor: pointer; outline: none;">
-                第 {h_num} 宫 <span style="font-size:14px; color:#888; font-weight:normal; margin-left:10px;">▼ 点击展开/收缩</span>
+                House {h_num} <span style="font-size:14px; color:#888; font-weight:normal; margin-left:10px;">▼ Click to Expand/Collapse</span>
             </summary>
             <div class="cusp-info">
-                宫头: {cusp_sign} | {ruler_info_str}
+                Cusp: {cusp_sign} | {ruler_info_str}
             </div>
         """]
         
@@ -122,19 +122,19 @@ def generate_detailed_html(planets, asc_lon, is_day):
             total_score = essential['score'] + accidental['score'] + diplomacy['score']
             
             p_aspects = get_aspects_for_planet(p_name, planets)
-            aspect_rows = "".join([f"<div>相位{i}: 对方星体: {asp['target']} | 对方宫位: {asp['target_house']} | 相位: {asp['type']} | 强度: {asp['orb']}° ({asp['intensity']}%)</div>" for i, asp in enumerate(p_aspects[:8], 1)])
+            aspect_rows = "".join([f"<div>Aspect {i}: Target: {asp['target']} | Target House: {asp['target_house']} | Aspect: {asp['type']} | Orb: {asp['orb']}° ({asp['intensity']}%)</div>" for i, asp in enumerate(p_aspects[:8], 1)])
 
             section.append(f"""
             <div class="planet-detail ruler-focus">
-                <div class="planet-title">宫主星: {p_name} ({h_num}宫头守护)</div>
-                <div>星体: {p_name}({h_num}宫头守护)</div>
-                <div>落宫: {accidental['house']} | 星座: {p_sign} | 度数: {int(p_deg)}°{int((p_deg%1)*60)}'</div>
-                <div class="score-line">先天分: 状态:{essential['status']} | 入界: {essential['in_term']} | 入面: {essential['in_face']} | 三分: {essential['in_trip']} | 先天分: {essential['score']:+g}</div>
-                <div class="score-line">后天分: 落宫: {accidental['house_score']:+g} | 燃烧: {accidental['is_combust']} | 逆行: {accidental['is_retro']} | 燃烧径: {accidental['is_via_combusta']} | 后天分: {accidental['score']:+g}</div>
-                <div class="score-line">外交: 互容: {diplomacy['mut_rec']} | 互拒: {diplomacy['mut_rej']} | 被拒: {diplomacy['rej_by']} | 被接纳: {diplomacy['accepted_by']} | 外交分: {diplomacy['score']:+g}</div>
-                <div class="score-line total-score">先天后天总分: {total_score:+g} | 格局: 无(+0.0) | 重要性: {total_score:+g}</div>
+                <div class="planet-title">House Lord: {p_name} (Lord of H{h_num} Cusp)</div>
+                <div>Planet: {p_name}(Lord of H{h_num} Cusp)</div>
+                <div>House: {accidental['house']} | Sign: {p_sign} | Degree: {int(p_deg)}°{int((p_deg%1)*60)}'</div>
+                <div class="score-line">Essential: State: {essential['status']} | Term: {essential['in_term']} | Face: {essential['in_face']} | Trip: {essential['in_trip']} | Essential Score: {essential['score']:+g}</div>
+                <div class="score-line">Accidental: House: {accidental['house_score']:+g} | Combust: {accidental['is_combust']} | Retro: {accidental['is_retro']} | Via Combusta: {accidental['is_via_combusta']} | Accidental Score: {accidental['score']:+g}</div>
+                <div class="score-line">Diplomacy: Mut. Rec: {diplomacy['mut_rec']} | Mut. Rej: {diplomacy['mut_rej']} | Rej. By: {diplomacy['rej_by']} | Rec. By: {diplomacy['accepted_by']} | Diplomacy Score: {diplomacy['score']:+g}</div>
+                <div class="score-line total-score">Total Score: {total_score:+g} | Pattern: None(+0.0) | Importance/Score: {total_score:+g}</div>
                 <div class="aspect-details">
-                    {aspect_rows if aspect_rows else "无重大相位"}
+                    {aspect_rows if aspect_rows else "No major aspects"}
                 </div>
             </div>
             """)
@@ -153,19 +153,19 @@ def generate_detailed_html(planets, asc_lon, is_day):
             total_score = essential['score'] + accidental['score'] + diplomacy['score']
             
             p_aspects = get_aspects_for_planet(p_name, planets)
-            aspect_rows = "".join([f"<div>相位{i}: 对方星体: {asp['target']} | 对方宫位: {asp['target_house']} | 相位: {asp['type']} | 强度: {asp['orb']}° ({asp['intensity']}%)</div>" for i, asp in enumerate(p_aspects[:8], 1)])
+            aspect_rows = "".join([f"<div>Aspect {i}: Target: {asp['target']} | Target House: {asp['target_house']} | Aspect: {asp['type']} | Orb: {asp['orb']}° ({asp['intensity']}%)</div>" for i, asp in enumerate(p_aspects[:8], 1)])
 
             section.append(f"""
             <div class="planet-detail">
-                <div class="planet-title">宫内星体: {p_name}</div>
-                <div>星体: {p_name}</div>
-                <div>落宫: {accidental['house']} | 星座: {p_sign} | 度数: {int(p_deg)}°{int((p_deg%1)*60)}'</div>
-                <div class="score-line">先天分: 状态:{essential['status']} | 入界: {essential['in_term']} | 入面: {essential['in_face']} | 三分: {essential['in_trip']} | 先天分: {essential['score']:+g}</div>
-                <div class="score-line">后天分: 落宫: {accidental['house_score']:+g} | 燃烧: {accidental['is_combust']} | 逆行: {accidental['is_retro']} | 燃烧径: {accidental['is_via_combusta']} | 后天分: {accidental['score']:+g}</div>
-                <div class="score-line">外交: 互容: {diplomacy['mut_rec']} | 互拒: {diplomacy['mut_rej']} | 被拒: {diplomacy['rej_by']} | 被接纳: {diplomacy['accepted_by']} | 外交分: {diplomacy['score']:+g}</div>
-                <div class="score-line total-score">先天后天总分: {total_score:+g} | 格局: 无(+0.0) | 重要性: {total_score:+g}</div>
+                <div class="planet-title">Planet in House: {p_name}</div>
+                <div>Planet: {p_name}</div>
+                <div>House: {accidental['house']} | Sign: {p_sign} | Degree: {int(p_deg)}°{int((p_deg%1)*60)}'</div>
+                <div class="score-line">Essential: State: {essential['status']} | Term: {essential['in_term']} | Face: {essential['in_face']} | Trip: {essential['in_trip']} | Essential Score: {essential['score']:+g}</div>
+                <div class="score-line">Accidental: House: {accidental['house_score']:+g} | Combust: {accidental['is_combust']} | Retro: {accidental['is_retro']} | Via Combusta: {accidental['is_via_combusta']} | Accidental Score: {accidental['score']:+g}</div>
+                <div class="score-line">Diplomacy: Mut. Rec: {diplomacy['mut_rec']} | Mut. Rej: {diplomacy['mut_rej']} | Rej. By: {diplomacy['rej_by']} | Rec. By: {diplomacy['accepted_by']} | Diplomacy Score: {diplomacy['score']:+g}</div>
+                <div class="score-line total-score">Total Score: {total_score:+g} | Pattern: None(+0.0) | Importance/Score: {total_score:+g}</div>
                 <div class="aspect-details">
-                    {aspect_rows if aspect_rows else "无重大相位"}
+                    {aspect_rows if aspect_rows else "No major aspects"}
                 </div>
             </div>
             """)
