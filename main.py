@@ -194,7 +194,7 @@ def generate_report():
     sun_lon, moon_lon = planets['Sun']['lon'], planets['Moon']['lon']
     planets['Fortune'] = {'lon': (asc_lon + (moon_lon - sun_lon if is_day else sun_lon - moon_lon)) % 360, 'is_retro': False}
     for h in range(1, 13):
-        planets[f'House {h}'] = {'lon': (asc_lon + (h - 1) * 30) % 360, 'is_retro': False}
+        planets[f'House {h} cusp head'] = {'lon': (asc_lon + (h - 1) * 30) % 360, 'is_retro': False}
     for p in planets: planets[p]['house'] = determine_house(planets[p]['lon'], asc_lon)
 
     aspects = get_aspects(planets)
