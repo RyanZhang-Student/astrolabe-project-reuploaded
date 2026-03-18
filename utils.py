@@ -39,7 +39,6 @@ def get_aspects(planets):
     p_names = list(planets.keys())
     check_list = ['Sun', 'Moon', 'Mercury', 'Venus', 'Mars', 'Jupiter', 'Saturn', 'Uranus', 'Neptune', 'Pluto', 'Asc', 'Node', 'Fortune']
     check_list.extend([f'House {i} cusp head' for i in range(1, 13)])
-    orb_map = {'Conjunction': (0, 8), 'Opposition': (180, 8), 'Trine': (120, 8), 'Square': (90, 8), 'Sextile': (60, 6)}
     
     for i in range(len(p_names)):
         for j in range(i + 1, len(p_names)):
@@ -49,9 +48,17 @@ def get_aspects(planets):
             lon1, lon2 = planets[p1]['lon'], planets[p2]['lon']
             diff = abs(lon1 - lon2)
             if diff > 180: diff = 360 - diff
-            for name, (angle, orb) in orb_map.items():
-                if abs(diff - angle) <= orb:
-                    aspects.append({'p1': p1, 'p2': p2, 'type': name, 'diff': round(abs(diff-angle), 2)})
+            for name, (angle, max_orb) in ASPECT_ORBS.items():
+                orb = abs(diff - angle)
+                if orb <= max_orb:
+                    strength = (1 - orb / max_orb) * 100
+                    aspects.append({
+                        'p1': p1, 
+                        'p2': p2, 
+                        'type': name, 
+                        'diff': round(orb, 2),
+                        'strength': round(strength, 1)
+                    })
     return aspects
 
 def check_aspect(p1_name, p2_name, planets, orb=8):

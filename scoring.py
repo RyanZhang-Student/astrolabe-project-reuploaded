@@ -191,8 +191,6 @@ def get_aspects_for_planet(planet_name, all_planets):
     results = []
     p1_lon = all_planets[planet_name]['lon']
     
-    # 常用许容度
-    orb_map = {'Conjunction': (0, 10), 'Opposition': (180, 10), 'Trine': (120, 8), 'Square': (90, 8), 'Sextile': (60, 6)}
     # 映射中文
     name_map = {'Conjunction': '合相', 'Opposition': '对分', 'Trine': '三分', 'Square': '刑相位', 'Sextile': '六合相位'}
     
@@ -203,7 +201,7 @@ def get_aspects_for_planet(planet_name, all_planets):
         diff = abs(p1_lon - p2_lon)
         if diff > 180: diff = 360 - diff
         
-        for asp_type, (angle, max_orb) in orb_map.items():
+        for asp_type, (angle, max_orb) in ASPECT_ORBS.items():
             orb = abs(diff - angle)
             if orb <= max_orb:
                 intensity = (1 - orb/max_orb) * 100

@@ -13,6 +13,14 @@ ASPECT_COLORS = {
     'Square': '#FF0000', 'Sextile': '#00BFFF'
 }
 
+ASPECT_ORBS = {
+    'Conjunction': (0, 10),
+    'Opposition': (180, 10),
+    'Trine': (120, 8),
+    'Square': (90, 8),
+    'Sextile': (60, 6)
+}
+
 CLASSICAL_RULERS = {
     'Aries': 'Mars', 'Taurus': 'Venus', 'Gemini': 'Mercury', 'Cancer': 'Moon',
     'Leo': 'Sun', 'Virgo': 'Mercury', 'Libra': 'Venus', 'Scorpio': 'Mars',
