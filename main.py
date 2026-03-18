@@ -202,8 +202,15 @@ def generate_report():
     star_raw_data = get_star_longitudes(ts, t)
     star_aspects, star_stats = calculate_star_conjunctions_and_stats(planets, star_raw_data, orb=1.0)
     
+    def get_orb_style(s):
+        color = ""
+        if s >= 90: color = "#B22222"
+        elif s >= 60: color = "#FF8C00"
+        elif s >= 30: color = "#B406BD"
+        return f"style='font-weight:bold; color:{color}'" if color else "style='font-weight:bold'"
+
     p_rows = "".join([f"<tr><td>{p}</td><td>{get_zodiac_sign(d['lon'])[0]}</td><td>{int(get_zodiac_sign(d['lon'])[1])}°</td><td>{d.get('house', '-')}</td></tr>" for p, d in planets.items() if not p.startswith('House ')])
-    a_rows = "".join([f"<tr><td>{a['p1']}</td><td>{a['p2']}</td><td style='color:{ASPECT_COLORS.get(a['type'], 'black')}; font-weight:bold'>{a['type']}</td><td style='font-weight:bold'>{a['diff']}° ({a['strength']}%)</td></tr>" for a in aspects])
+    a_rows = "".join([f"<tr><td>{a['p1']}</td><td>{a['p2']}</td><td style='color:{ASPECT_COLORS.get(a['type'], 'black')}; font-weight:bold'>{a['type']}</td><td {get_orb_style(a['strength'])}>{a['diff']}° ({a['strength']}%)</td></tr>" for a in aspects])
     c_rows = "".join([get_classical_row(h, asc_lon, planets, is_day) for h in range(1, 13)])
     
     star_aspects_json = json.dumps(star_aspects) if star_aspects else "[]"
