@@ -203,7 +203,7 @@ def generate_report():
     star_aspects, star_stats = calculate_star_conjunctions_and_stats(planets, star_raw_data, orb=1.0)
     
     p_rows = "".join([f"<tr><td>{p}</td><td>{get_zodiac_sign(d['lon'])[0]}</td><td>{int(get_zodiac_sign(d['lon'])[1])}°</td><td>{d.get('house', '-')}</td></tr>" for p, d in planets.items() if not p.startswith('House ')])
-    a_rows = "".join([f"<tr><td>{a['p1']}</td><td>{a['p2']}</td><td style='color:{ASPECT_COLORS.get(a['type'], 'black')}; font-weight:bold'>{a['type']}</td><td>{a['diff']}° ({a['strength']}%)</td></tr>" for a in aspects])
+    a_rows = "".join([f"<tr><td>{a['p1']}</td><td>{a['p2']}</td><td style='color:{ASPECT_COLORS.get(a['type'], 'black')}; font-weight:bold'>{a['type']}</td><td style='font-weight:bold'>{a['diff']}° ({a['strength']}%)</td></tr>" for a in aspects])
     c_rows = "".join([get_classical_row(h, asc_lon, planets, is_day) for h in range(1, 13)])
     
     star_aspects_json = json.dumps(star_aspects) if star_aspects else "[]"
