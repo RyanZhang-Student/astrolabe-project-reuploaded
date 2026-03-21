@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Astrolabe - Premium Astrology Analysis</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="stars-container" id="stars"></div>
+    
+    <main class="container">
+        <header class="header">
+            <h1 class="glow-text">ASTROLABE</h1>
+            <p class="subtitle">Celestial Insights • Mathematical Precision</p>
+        </header>
+
+        <section class="form-card glass">
+            <div class="form-header">
+                <h2>Generate New Report</h2>
+                <p>Enter your birth details to reveal the stars' alignment.</p>
+            </div>
+            
+            <form id="astrolabe-form">
+                <div class="input-grid">
+                    <div class="input-group">
+                        <label for="name">Name</label>
+                        <input type="text" id="name" placeholder="E.G. RYAN" required>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label for="age">Age (Optional)</label>
+                        <input type="number" id="age" placeholder="25">
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label for="location">Birth City & Country</label>
+                    <input type="text" id="location" placeholder="E.G. BEIJING-CN" required>
+                    <small>Format: CITY-COUNTRY (e.g., NEW YORK-US)</small>
+                </div>
+
+                <div class="input-grid">
+                    <div class="input-group">
+                        <label for="birth-date">Birth Date</label>
+                        <input type="date" id="birth-date" required>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label for="birth-time">Birth Time</label>
+                        <input type="time" id="birth-time" required>
+                    </div>
+                </div>
+
+                <button type="submit" class="submit-btn" id="submit-btn">
+                    <span class="btn-text">Reveal My Astrology</span>
+                    <div class="btn-loader" id="loader"></div>
+                </button>
+            </form>
+        </section>
+
+        <div id="result-container" class="result-container hidden">
+            <div class="success-message glass">
+                <h3>Success!</h3>
+                <p>Your report has been generated. Click below to view it.</p>
+                <a id="report-link" href="#" target="_blank" class="view-btn">View Detailed Report</a>
+            </div>
+        </div>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>

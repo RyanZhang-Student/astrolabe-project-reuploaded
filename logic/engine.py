@@ -24,7 +24,9 @@ def lookup_local_city(query):
     """
     try:
         import json
-        with open('world_cities.json', 'r', encoding='utf-8') as f:
+        import os
+        data_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'world_cities.json')
+        with open(data_path, 'r', encoding='utf-8') as f:
             cities = json.load(f)
         
         # Clean query: e.g., "BEIJING-CN" -> "BEIJING"
@@ -65,7 +67,9 @@ def get_astronomical_data(dob_input, location_input):
 
     # Use BUILTIN=TRUE to avoid downloading deltat.tdb and leap_seconds.list
     ts = load.timescale(builtin=True)
-    eph = load('de421.bsp')
+    import os
+    eph_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'de421.bsp')
+    eph = load(eph_path)
     t = ts.from_datetime(utc_dt)
     observer = eph['earth'] + wgs84.latlon(lat, lng)
     
