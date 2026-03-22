@@ -40,16 +40,16 @@ window.timePicker = {
         }
 
         this.columns = {
-            year: { el: document.querySelector('#picker-year .picker-scroll'), range: [1900, 2100], current: new Date().getFullYear() },
-            month: { el: document.querySelector('#picker-month .picker-scroll'), range: [1, 12], current: new Date().getMonth() + 1 },
-            day: { el: document.querySelector('#picker-day .picker-scroll'), range: [1, 31], current: new Date().getDate() },
-            hour: { el: document.querySelector('#picker-hour .picker-scroll'), range: [0, 23], current: 12 },
-            minute: { el: document.querySelector('#picker-minute .picker-scroll'), range: [0, 59], current: 0 }
+            year: { el: document.querySelector('#picker-year .picker-scroll'), range: [1900, 2100], current: new Date().getFullYear(), isInfinite: false },
+            month: { el: document.querySelector('#picker-month .picker-scroll'), range: [1, 12], current: new Date().getMonth() + 1, isInfinite: true },
+            day: { el: document.querySelector('#picker-day .picker-scroll'), range: [1, 31], current: new Date().getDate(), isInfinite: true },
+            hour: { el: document.querySelector('#picker-hour .picker-scroll'), range: [0, 23], current: 12, isInfinite: true },
+            minute: { el: document.querySelector('#picker-minute .picker-scroll'), range: [0, 59], current: 0, isInfinite: true }
         };
 
         // Populate and attach scroll listeners
         for (const [key, config] of Object.entries(this.columns)) {
-            this.populateColumn(config);
+            this.populateColumn(key, config);
             config.el.addEventListener('scroll', () => this.handleScroll(key));
         }
 
@@ -57,26 +57,47 @@ window.timePicker = {
         this.hide(); // Ensure hidden on start
     },
 
-    populateColumn(config) {
+    populateColumn(key, config) {
         const [start, end] = config.range;
+        const count = end - start + 1;
+        const repetitions = config.isInfinite ? 10 : 1;
         let html = '';
-        for (let i = start; i <= end; i++) {
-            const val = i.toString().padStart(2, '0');
-            html += `<div class="picker-item" data-value="${i}">${val}</div>`;
+        
+        for (let r = 0; r < repetitions; r++) {
+            for (let i = start; i <= end; i++) {
+                const val = i.toString().padStart(2, '0');
+                html += `<div class="picker-item" data-value="${i}">${val}</div>`;
+            }
         }
         config.el.innerHTML = html;
+        config.itemCount = count;
+        config.itemHeight = 40;
 
         setTimeout(() => {
-            const index = config.current - start;
-            config.el.scrollTop = index * 40;
+            const middleRep = Math.floor(repetitions / 2);
+            const index = (config.current - start) + (middleRep * count);
+            config.el.scrollTop = index * config.itemHeight;
             this.updateSelection(config.el);
         }, 100);
     },
 
     handleScroll(key) {
+        const config = this.columns[key];
+        if (config.isInfinite) {
+            const setHeight = config.itemCount * config.itemHeight;
+            const scrollTop = config.el.scrollTop;
+
+            // Jump threshold: if we are within 2 sets from top or bottom, jump to the middle
+            if (scrollTop < setHeight * 2) {
+                config.el.scrollTop = scrollTop + setHeight * 4;
+            } else if (scrollTop > config.el.scrollHeight - setHeight * 3) {
+                config.el.scrollTop = scrollTop - setHeight * 4;
+            }
+        }
+
         if (this.scrollTimeout) clearTimeout(this.scrollTimeout);
         this.scrollTimeout = setTimeout(() => {
-            this.updateSelection(this.columns[key].el);
+            this.updateSelection(config.el);
         }, 50);
     },
 
