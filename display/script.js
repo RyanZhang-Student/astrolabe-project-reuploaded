@@ -21,14 +21,23 @@ function createStars() {
     }
 }
 
-// Time Picker Logic
-class TimePicker {
-    constructor() {
+// Time Picker Logic (Global Object for direct access)
+window.timePicker = {
+    modal: null,
+    columns: {},
+    dateInput: null,
+    timeInput: null,
+
+    init() {
+        console.log('TimePicker: Initializing...');
         this.modal = document.getElementById('time-picker-modal');
-        this.confirmBtn = document.getElementById('confirm-selection');
-        this.closeBtn = document.getElementById('close-picker');
         this.dateInput = document.getElementById('birth-date');
         this.timeInput = document.getElementById('birth-time');
+
+        if (!this.modal) {
+            console.error('TimePicker: Modal element not found!');
+            return;
+        }
 
         this.columns = {
             year: { el: document.querySelector('#picker-year .picker-scroll'), range: [1900, 2100], current: new Date().getFullYear() },
@@ -38,32 +47,15 @@ class TimePicker {
             minute: { el: document.querySelector('#picker-minute .picker-scroll'), range: [0, 59], current: 0 }
         };
 
-        this.init();
-    }
-
-    init() {
-        // Populate columns
+        // Populate and attach scroll listeners
         for (const [key, config] of Object.entries(this.columns)) {
             this.populateColumn(config);
             config.el.addEventListener('scroll', () => this.handleScroll(key));
         }
 
-        // Open modal
-        this.dateInput.addEventListener('click', () => this.show());
-        this.timeInput.addEventListener('click', () => this.show());
-
-        // Close modal
-        this.closeBtn.addEventListener('click', () => this.hide());
-        this.modal.addEventListener('click', (e) => {
-            if (e.target === this.modal) this.hide();
-        });
-
-        // Confirm selection
-        this.confirmBtn.addEventListener('click', () => {
-            this.applySelection();
-            this.hide();
-        });
-    }
+        console.log('TimePicker: Ready.');
+        this.hide(); // Ensure hidden on start
+    },
 
     populateColumn(config) {
         const [start, end] = config.range;
@@ -74,41 +66,61 @@ class TimePicker {
         }
         config.el.innerHTML = html;
 
-        // Initial scroll position
         setTimeout(() => {
             const index = config.current - start;
             config.el.scrollTop = index * 40;
             this.updateSelection(config.el);
         }, 100);
-    }
+    },
 
     handleScroll(key) {
         if (this.scrollTimeout) clearTimeout(this.scrollTimeout);
         this.scrollTimeout = setTimeout(() => {
             this.updateSelection(this.columns[key].el);
         }, 50);
-    }
+    },
 
     updateSelection(scrollEl) {
         const index = Math.round(scrollEl.scrollTop / 40);
         const items = scrollEl.querySelectorAll('.picker-item');
         items.forEach((item, i) => {
-            if (i === index) {
-                item.classList.add('selected');
-            } else {
-                item.classList.remove('selected');
-            }
+            if (i === index) item.classList.add('selected');
+            else item.classList.remove('selected');
         });
-    }
+    },
 
     getSelectedValue(key) {
         const config = this.columns[key];
         const index = Math.round(config.el.scrollTop / 40);
         const items = config.el.querySelectorAll('.picker-item');
         return items[index] ? parseInt(items[index].dataset.value) : config.range[0];
-    }
+    },
 
-    applySelection() {
+    show(e) {
+        if (e) { e.preventDefault(); e.stopPropagation(); }
+        console.log('TimePicker: Showing modal');
+        this.modal.classList.remove('hidden');
+        this.modal.style.setProperty('display', 'flex', 'important');
+        this.modal.style.setProperty('visibility', 'visible', 'important');
+        this.modal.style.setProperty('opacity', '1', 'important');
+        this.modal.style.setProperty('pointer-events', 'auto', 'important');
+        document.body.style.overflow = 'hidden';
+    },
+
+    hide(e) {
+        if (e) { e.preventDefault(); e.stopPropagation(); }
+        console.log('TimePicker: Hiding modal');
+        this.modal.classList.add('hidden');
+        this.modal.style.setProperty('display', 'none', 'important');
+        this.modal.style.setProperty('visibility', 'hidden', 'important');
+        this.modal.style.setProperty('opacity', '0', 'important');
+        this.modal.style.setProperty('pointer-events', 'none', 'important');
+        document.body.style.overflow = 'auto';
+    },
+
+    confirm(e) {
+        if (e) { e.preventDefault(); e.stopPropagation(); }
+        console.log('TimePicker: Confirming selection');
         const year = this.getSelectedValue('year');
         const month = this.getSelectedValue('month').toString().padStart(2, '0');
         const day = this.getSelectedValue('day').toString().padStart(2, '0');
@@ -117,22 +129,13 @@ class TimePicker {
 
         this.dateInput.value = `${year}-${month}-${day}`;
         this.timeInput.value = `${hour}:${minute}`;
+        this.hide();
     }
-
-    show() {
-        this.modal.classList.remove('hidden');
-        document.body.style.overflow = 'hidden';
-    }
-
-    hide() {
-        this.modal.classList.add('hidden');
-        document.body.style.overflow = 'auto';
-    }
-}
+};
 
 document.addEventListener('DOMContentLoaded', () => {
     createStars();
-    new TimePicker();
+    window.timePicker.init();
 
     const form = document.getElementById('astrolabe-form');
     const submitBtn = document.getElementById('submit-btn');
