@@ -150,16 +150,52 @@ window.timePicker = {
         document.body.style.overflow = 'auto';
     },
 
+    isLeapYear(year) {
+        return (year % 4 === 0 && year % 100 !== 0) || (year % 400 === 0);
+    },
+
+    getMaxDay(month, year) {
+        if (month === 2) {
+            return this.isLeapYear(year) ? 29 : 28;
+        }
+        if ([4, 6, 9, 11].includes(month)) {
+            return 30;
+        }
+        return 31;
+    },
+
     confirm(e) {
         if (e) { e.preventDefault(); e.stopPropagation(); }
         console.log('TimePicker: Confirming selection');
         const year = this.getSelectedValue('year');
-        const month = this.getSelectedValue('month').toString().padStart(2, '0');
-        const day = this.getSelectedValue('day').toString().padStart(2, '0');
+        const month = this.getSelectedValue('month');
+        const day = this.getSelectedValue('day');
         const hour = this.getSelectedValue('hour').toString().padStart(2, '0');
         const minute = this.getSelectedValue('minute').toString().padStart(2, '0');
 
-        this.dateInput.value = `${year}-${month}-${day}`;
+        const maxDay = this.getMaxDay(month, year);
+
+        if (day > maxDay) {
+            const monthNames = ['', 'January', 'February', 'March', 'April', 'May', 'June',
+                                'July', 'August', 'September', 'October', 'November', 'December'];
+            let reason = '';
+            if (month === 2) {
+                if (this.isLeapYear(year)) {
+                    reason = `${year} is a leap year, so February has at most 29 days.`;
+                } else {
+                    reason = `${year} is not a leap year, so February has at most 28 days.`;
+                }
+            } else {
+                reason = `${monthNames[month]} only has ${maxDay} days — day ${day} does not exist.`;
+            }
+            alert(`Invalid date: ${reason}\nPlease adjust your selection.`);
+            return; // Do not close the modal
+        }
+
+        const monthStr = month.toString().padStart(2, '0');
+        const dayStr = day.toString().padStart(2, '0');
+
+        this.dateInput.value = `${year}-${monthStr}-${dayStr}`;
         this.timeInput.value = `${hour}:${minute}`;
         this.hide();
     }
