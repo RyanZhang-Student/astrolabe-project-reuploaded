@@ -40,7 +40,7 @@ window.timePicker = {
         }
 
         this.columns = {
-            year: { el: document.querySelector('#picker-year .picker-scroll'), range: [1900, 2100], current: new Date().getFullYear(), isInfinite: false },
+            year: { el: document.querySelector('#picker-year .picker-scroll'), range: [1900, 2100], current: 2000, isInfinite: false },
             month: { el: document.querySelector('#picker-month .picker-scroll'), range: [1, 12], current: new Date().getMonth() + 1, isInfinite: true },
             day: { el: document.querySelector('#picker-day .picker-scroll'), range: [1, 31], current: new Date().getDate(), isInfinite: true },
             hour: { el: document.querySelector('#picker-hour .picker-scroll'), range: [0, 23], current: 12, isInfinite: true },
@@ -126,6 +126,17 @@ window.timePicker = {
         this.modal.style.setProperty('opacity', '1', 'important');
         this.modal.style.setProperty('pointer-events', 'auto', 'important');
         document.body.style.overflow = 'hidden';
+
+        // Refresh scroll positions when showing
+        for (const [key, config] of Object.entries(this.columns)) {
+            const [start, end] = config.range;
+            const count = end - start + 1;
+            const repetitions = config.isInfinite ? 10 : 1;
+            const middleRep = Math.floor(repetitions / 2);
+            const index = (config.current - start) + (middleRep * count);
+            config.el.scrollTop = index * 40; // match itemHeight
+            this.updateSelection(config.el);
+        }
     },
 
     hide(e) {
