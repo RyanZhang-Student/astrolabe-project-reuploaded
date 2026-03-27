@@ -1,6 +1,7 @@
 import os
 import sys
 import json
+import base64
 import datetime
 from flask import Flask, render_template, request, jsonify, send_from_directory
 
@@ -128,7 +129,9 @@ def calculate():
     detailed_html = astrolabe_main.generate_detailed_html(planets, asc_lon, is_day)
 
     # Note: Use create_pro_svg from logic.draw_chart directly or through main
-    svg_content = create_pro_svg(planets, aspects)
+    svg_inner = create_pro_svg(planets, aspects)
+    full_svg = f'<svg viewBox="0 0 800 800" xmlns="http://www.w3.org/2000/svg">{svg_inner}</svg>'
+    svg_base64 = base64.b64encode(full_svg.encode('utf-8')).decode('utf-8')
 
     # Use the HTML template from main.py
     # (Copied here to avoid modifying main.py too much)
@@ -174,7 +177,7 @@ def calculate():
             <tbody>{c_rows}</tbody>
         </table>
         <div class="flex">
-            <div class="chart"><svg viewBox="0 0 800 800">{svg_content}</svg></div>
+            <div class="chart"><img src="data:image/svg+xml;base64,{svg_base64}" alt="Natal Chart Photo" style="width:100%; height:auto;" /></div>
             <div class="tables">
                 <div class="section-title">Modern Placements</div>
                 <table><thead><tr><th>Planet</th><th>Sign</th><th>Deg</th><th>House</th></tr></thead><tbody>{p_rows}</tbody></table>
@@ -216,7 +219,8 @@ def calculate():
         'status': 'success',
         'report_url': f'/results/{filename}',
         'star_aspects': star_aspects,
-        'star_stats': star_stats
+        'star_stats': star_stats,
+        'chart_svg_base64': svg_base64
     })
 
 if __name__ == '__main__':

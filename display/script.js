@@ -449,6 +449,29 @@ document.addEventListener('DOMContentLoaded', () => {
                 reportLink.textContent = `View Report for ${name}`;
                 reportLink.href = `/results/report_${name.toUpperCase()}.html`;
 
+                // Render Chart Photo via Canvas to ensure it is a raster image, not decipherable HTML/SVG
+                if (result.chart_svg_base64) {
+                    const img = new Image();
+                    img.onload = function() {
+                        const canvas = document.createElement('canvas');
+                        canvas.width = 800; // SVG viewBox is 800x800
+                        canvas.height = 800;
+                        const ctx = canvas.getContext('2d');
+                        
+                        // Draw a solid background so it isn't transparent (assuming light theme chart)
+                        ctx.fillStyle = '#ffffff';
+                        ctx.fillRect(0, 0, canvas.width, canvas.height);
+                        
+                        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                        
+                        const ptrUrl = canvas.toDataURL('image/png');
+                        const chartImg = document.getElementById('natal-chart-img');
+                        chartImg.src = ptrUrl;
+                        document.getElementById('chart-image-container').classList.remove('hidden');
+                    };
+                    img.src = 'data:image/svg+xml;base64,' + result.chart_svg_base64;
+                }
+
                 // Render Star Conjunctions
                 if (result.star_stats) {
                     window.starData = result.star_aspects || [];
