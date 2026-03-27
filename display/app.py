@@ -24,9 +24,43 @@ import main as astrolabe_main
 
 app = Flask(__name__, static_folder='.', static_url_path='', template_folder='.')
 
+# Load cities once for autocomplete
+CITIES_DATA = []
+try:
+    cities_file = os.path.join(LOGIC_DIR, 'world_cities.json')
+    with open(cities_file, 'r', encoding='utf-8') as f:
+        CITIES_DATA = json.load(f)
+except Exception as e:
+    print(f"Warning: Could not load world_cities.json: {e}")
+
 @app.route('/')
 def index():
     return render_template('index.html')
+
+@app.route('/api/cities')
+def api_cities():
+    query = request.args.get('q', '').strip().upper()
+    if not query:
+        return jsonify([])
+    
+    matches = []
+    # Find up to 3 matches
+    for city in CITIES_DATA:
+        if city['name'].upper().startswith(query):
+            matches.append({'name': city['name'], 'country': city['country']})
+            if len(matches) == 3:
+                break
+                
+    # If less than 3, fallback to contains
+    if len(matches) < 3:
+        for city in CITIES_DATA:
+            name_upper = city['name'].upper()
+            if query in name_upper and not name_upper.startswith(query):
+                matches.append({'name': city['name'], 'country': city['country']})
+                if len(matches) == 3:
+                    break
+                    
+    return jsonify(matches)
 
 @app.route('/results/<path:filename>')
 def serve_results(filename):

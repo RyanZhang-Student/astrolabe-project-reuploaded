@@ -37,9 +37,10 @@
                     </div>
                 </div>
 
-                <div class="input-group">
+                <div class="input-group location-group" style="position: relative;">
                     <label for="location">Birth City & Country</label>
-                    <input type="text" id="location" placeholder="E.G. BEIJING-CHINA" required>
+                    <input type="text" id="location" placeholder="E.G. BEIJING-CHINA" autocomplete="off" required>
+                    <div id="autocomplete-list" class="autocomplete-items hidden"></div>
                     <small>Format: CITY-COUNTRY (e.g., NEW YORK-UNITED STATES)</small>
                 </div>
 

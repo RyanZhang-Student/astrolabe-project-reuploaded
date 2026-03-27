@@ -212,6 +212,66 @@ document.addEventListener('DOMContentLoaded', () => {
     const resultContainer = document.getElementById('result-container');
     const reportLink = document.getElementById('report-link');
 
+    const locationInput = document.getElementById('location');
+    const autocompleteList = document.getElementById('autocomplete-list');
+
+    const countryMap = {
+        'CN': 'CHINA', 'US': 'UNITED STATES', 'GB': 'UNITED KINGDOM',
+        'CA': 'CANADA', 'AU': 'AUSTRALIA', 'DE': 'GERMANY', 'FR': 'FRANCE', 'JP': 'JAPAN',
+        'IN': 'INDIA', 'BR': 'BRAZIL', 'RU': 'RUSSIA', 'KR': 'SOUTH KOREA',
+        'IT': 'ITALY', 'ES': 'SPAIN', 'MX': 'MEXICO', 'VN': 'VIETNAM', 'TH': 'THAILAND'
+    };
+
+    let debounceTimeout = null;
+
+    locationInput.addEventListener('input', function() {
+        const val = this.value;
+        if (!val) {
+            autocompleteList.classList.add('hidden');
+            return;
+        }
+
+        clearTimeout(debounceTimeout);
+        debounceTimeout = setTimeout(async () => {
+            try {
+                const response = await fetch(`/api/cities?q=${encodeURIComponent(val)}`);
+                const matches = await response.json();
+
+                if (!matches || matches.length === 0) {
+                    autocompleteList.classList.add('hidden');
+                    return;
+                }
+
+                autocompleteList.innerHTML = '';
+                matches.forEach(item => {
+                    const div = document.createElement('div');
+                    div.className = 'autocomplete-item';
+                    const countryName = countryMap[item.country] || item.country;
+                    div.innerHTML = `<strong>${item.name}</strong> - ${countryName}`;
+                    
+                    div.addEventListener('click', function(e) {
+                        locationInput.value = `${item.name}-${countryName}`;
+                        autocompleteList.classList.add('hidden');
+                    });
+                    
+                    autocompleteList.appendChild(div);
+                });
+                
+                autocompleteList.classList.remove('hidden');
+            } catch (err) {
+                console.error("Autocomplete fetch error: ", err);
+            }
+        }, 300);
+    });
+
+    // Close dropdown on click outside
+    document.addEventListener('click', function (e) {
+        if (e.target !== locationInput) {
+            autocompleteList.classList.add('hidden');
+        }
+    });
+
+    // Handle form submission
     form.addEventListener('submit', async (e) => {
         e.preventDefault();
 
