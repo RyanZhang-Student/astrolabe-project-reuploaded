@@ -224,6 +224,8 @@ document.addEventListener('DOMContentLoaded', () => {
             box.classList.add('selected');
             // Set hidden input value
             genderInput.value = box.dataset.value;
+            // Add class to container to enable post-selection hover styles
+            box.parentElement.classList.add('gender-selected');
         });
     });
 

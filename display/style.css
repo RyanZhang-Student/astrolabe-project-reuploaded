@@ -187,6 +187,11 @@ input:focus {
     background: rgba(109, 40, 217, 0.2);
 }
 
+.gender-options.gender-selected .gender-box:hover {
+    background: #ebef07;
+    color: #000;
+}
+
 .gender-box.selected {
     background: var(--primary);
     border-color: var(--primary);

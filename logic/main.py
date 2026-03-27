@@ -180,6 +180,7 @@ def generate_report():
     user_name = input("Enter Name: ").strip().upper()
     dob_input = input("Date (YYYY-MMDD-HHMM): ").strip()
     location_input = input("City-Country (e.g., BEIJING-CN): ").strip()
+    gender = input("Gender (Male/Female/Other): ").strip().capitalize()
 
     data_tuple = get_astronomical_data(dob_input, location_input)
     if data_tuple[0] is None: 
@@ -278,7 +279,7 @@ def generate_report():
     <div class="card">
         <div class="header">
             <h2>{user_name} - Classical Analysis</h2>
-            <p>{localized_dt.strftime('%Y-%m-%d %H:%M')} ({tz_str}) | {formatted_location}</p>
+            <p>{localized_dt.strftime('%Y-%m-%d %H:%M')} | {gender} | {formatted_location}</p>
         </div>
         
         <div class="section-title">Classical Lord Evaluation</div>

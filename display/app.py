@@ -166,7 +166,7 @@ def calculate():
     <div class="card">
         <div class="header">
             <h2>{user_name} - Classical Analysis</h2>
-            <p>{localized_dt.strftime('%Y-%m-%d %H:%M')} ({tz_str}) | {formatted_location}</p>
+            <p>{localized_dt.strftime('%Y-%m-%d %H:%M')} | {gender} | {formatted_location}</p>
         </div>
         <div class="section-title">Classical Lord Evaluation</div>
         <table>
