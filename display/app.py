@@ -70,7 +70,7 @@ def serve_results(filename):
 def calculate():
     data = request.json
     user_name = data.get('name', 'USER').upper()
-    gender = data.get('gender') # Male, Female, LGBTQ
+    gender = data.get('gender') # Male, Female, Other
     dob_input = data.get('dob') # YYYY-MMDD-HHMM
     location_input = data.get('location') # CITY-COUNTRY
     

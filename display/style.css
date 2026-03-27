@@ -26,7 +26,10 @@ body {
     align-items: center;
 }
 
-h1, h2, h3, .submit-btn {
+h1,
+h2,
+h3,
+.submit-btn {
     font-family: 'Outfit', sans-serif;
 }
 
@@ -49,8 +52,17 @@ h1, h2, h3, .submit-btn {
 }
 
 @keyframes twinkle {
-    0%, 100% { opacity: 0.3; transform: scale(1); }
-    50% { opacity: 1; transform: scale(1.2); }
+
+    0%,
+    100% {
+        opacity: 0.3;
+        transform: scale(1);
+    }
+
+    50% {
+        opacity: 1;
+        transform: scale(1.2);
+    }
 }
 
 .container {
@@ -154,7 +166,8 @@ input:focus {
 .gender-options {
     display: flex;
     gap: 0.5rem;
-    height: 3.25rem; /* Match input height roughly */
+    height: 3.25rem;
+    /* Match input height roughly */
 }
 
 .gender-box {
@@ -217,7 +230,7 @@ small {
     border-radius: 0.75rem;
     overflow: hidden;
     margin-top: 0.2rem;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
 }
 
 .autocomplete-item {
@@ -235,7 +248,8 @@ small {
 }
 
 .autocomplete-item:hover {
-    background-color: rgba(109, 40, 217, 0.5); /* Primary glow color */
+    background-color: rgba(109, 40, 217, 0.5);
+    /* Primary glow color */
 }
 
 .submit-btn {
@@ -279,7 +293,9 @@ small {
 }
 
 @keyframes spin {
-    to { transform: rotate(360deg); }
+    to {
+        transform: rotate(360deg);
+    }
 }
 
 .result-container {
@@ -298,8 +314,15 @@ small {
 }
 
 @keyframes slideUp {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 .view-btn {
@@ -346,8 +369,15 @@ small {
 }
 
 @keyframes scaleUp {
-    from { opacity: 0; transform: scale(0.9); }
-    to { opacity: 1; transform: scale(1); }
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
 }
 
 .picker-header {
@@ -393,13 +423,17 @@ small {
     height: 100%;
     overflow-y: scroll;
     scroll-snap-type: y mandatory;
-    scrollbar-width: none; /* Hide scrollbar Firefox */
-    -ms-overflow-style: none; /* Hide scrollbar IE/Edge */
-    padding: 80px 0; /* Center first/last items */
+    scrollbar-width: none;
+    /* Hide scrollbar Firefox */
+    -ms-overflow-style: none;
+    /* Hide scrollbar IE/Edge */
+    padding: 80px 0;
+    /* Center first/last items */
 }
 
 .picker-scroll::-webkit-scrollbar {
-    display: none; /* Hide scrollbar Chrome/Safari */
+    display: none;
+    /* Hide scrollbar Chrome/Safari */
 }
 
 .picker-item {

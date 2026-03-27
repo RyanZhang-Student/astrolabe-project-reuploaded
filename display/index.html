@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,11 +8,14 @@
     <link rel="stylesheet" href="style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Outfit:wght@300;400;600;800&display=swap"
+        rel="stylesheet">
 </head>
+
 <body>
     <div class="stars-container" id="stars"></div>
-    
+
     <main class="container">
         <header class="header">
             <h1 class="glow-text">ASTROLABE</h1>
@@ -23,28 +27,28 @@
                 <h2>Generate New Report</h2>
                 <p>Enter your birth details to reveal the stars' alignment.</p>
             </div>
-            
+
             <form id="astrolabe-form">
                 <div class="input-grid">
                     <div class="input-group">
                         <label for="name">Name</label>
                         <input type="text" id="name" placeholder="E.G. RYAN" required>
                     </div>
-                    
+
                     <div class="input-group">
                         <label>Gender (Required)</label>
                         <div class="gender-options">
                             <div class="gender-box" data-value="Male">
-                                <span class="gender-icon">👨</span>
+                                <span class="gender-icon">♂️ </span>
                                 <span class="gender-label">Male</span>
                             </div>
                             <div class="gender-box" data-value="Female">
-                                <span class="gender-icon">👩</span>
+                                <span class="gender-icon">♀️</span>
                                 <span class="gender-label">Female</span>
                             </div>
-                            <div class="gender-box" data-value="LGBTQ">
+                            <div class="gender-box" data-value="Other">
                                 <span class="gender-icon">🌈</span>
-                                <span class="gender-label">LGBTQ</span>
+                                <span class="gender-label">Other</span>
                             </div>
                         </div>
                         <input type="hidden" id="gender" required>
@@ -61,12 +65,14 @@
                 <div class="input-grid">
                     <div class="input-group">
                         <label for="birth-date">Birth Date</label>
-                        <input type="text" id="birth-date" placeholder="Select Date" readonly required onclick="window.timePicker.show(event)">
+                        <input type="text" id="birth-date" placeholder="Select Date" readonly required
+                            onclick="window.timePicker.show(event)">
                     </div>
-                    
+
                     <div class="input-group">
                         <label for="birth-time">Birth Time</label>
-                        <input type="text" id="birth-time" placeholder="Select Time" readonly required onclick="window.timePicker.show(event)">
+                        <input type="text" id="birth-time" placeholder="Select Time" readonly required
+                            onclick="window.timePicker.show(event)">
                     </div>
                 </div>
 
@@ -87,11 +93,14 @@
     </main>
 
     <!-- Custom iOS-style Time Picker Modal -->
-    <div id="time-picker-modal" class="modal-overlay hidden" style="display: none !important; z-index: 9999; visibility: hidden; opacity: 0; pointer-events: none;" onclick="window.timePicker.hide(event)">
+    <div id="time-picker-modal" class="modal-overlay hidden"
+        style="display: none !important; z-index: 9999; visibility: hidden; opacity: 0; pointer-events: none;"
+        onclick="window.timePicker.hide(event)">
         <div class="picker-container glass" onclick="event.stopPropagation()">
             <div class="picker-header">
                 <h3>Select Birth Time</h3>
-                <button type="button" id="close-picker" class="close-btn" onclick="window.timePicker.hide(event)">&times;</button>
+                <button type="button" id="close-picker" class="close-btn"
+                    onclick="window.timePicker.hide(event)">&times;</button>
             </div>
             <div class="picker-content">
                 <div class="picker-column" id="picker-year">
@@ -117,11 +126,13 @@
                 <div class="selection-highlight"></div>
             </div>
             <div class="picker-footer">
-                <button type="button" id="confirm-selection" class="confirm-btn" onclick="window.timePicker.confirm(event)">Confirm Selection</button>
+                <button type="button" id="confirm-selection" class="confirm-btn"
+                    onclick="window.timePicker.confirm(event)">Confirm Selection</button>
             </div>
         </div>
     </div>
 
     <script src="script.js"></script>
 </body>
+
 </html>
