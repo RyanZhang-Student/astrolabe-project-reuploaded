@@ -578,28 +578,91 @@ small {
     border-radius: 10px;
 }
 
-.star-table {
-    width: 100%;
-    border-collapse: collapse;
-    color: var(--text-light);
-    font-size: 0.9rem;
+.star-pagination-body {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    overflow-y: auto; /* keep scrollbar space */
+    padding-right: 0.5rem;
+    gap: 1rem;
+    min-height: 250px;
 }
 
-.star-table th, .star-table td {
-    padding: 1rem;
-    text-align: left;
-    border-bottom: 1px solid var(--glass-border);
+.nav-btn {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid var(--glass-border);
+    color: white;
+    font-size: 1.5rem;
+    width: 3rem;
+    height: 3rem;
+    border-radius: 0.5rem; /* square buttons */
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    flex-shrink: 0;
 }
 
-.star-table th {
+.nav-btn:hover:not(:disabled) {
+    background: rgba(255, 255, 255, 0.2);
+    transform: scale(1.05);
+}
+
+.nav-btn:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+}
+
+.star-page-container {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.star-counter {
+    font-size: 0.8rem;
     color: var(--text-muted);
+    letter-spacing: 0.1rem;
+    margin-bottom: 1.5rem;
     font-weight: 600;
-    text-transform: uppercase;
-    font-size: 0.75rem;
-    letter-spacing: 0.05rem;
 }
 
-.star-table td:nth-child(3) {
-    font-family: monospace;
-    color: #f472b6;
+.single-star-content {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    width: 100%;
 }
+
+.star-detail-row {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 1rem;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 1rem;
+    border: 1px solid var(--glass-border);
+}
+
+.star-detail-label {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05rem;
+    margin-bottom: 0.5rem;
+}
+
+.star-detail-value {
+    font-size: 1.1rem;
+    color: var(--text-light);
+    font-weight: 500;
+}
+
+.star-detail-value.orb-value {
+    font-family: monospace;
+    font-size: 1.25rem;
+    color: #f472b6;
+}

@@ -319,26 +319,69 @@ document.addEventListener('DOMContentLoaded', () => {
         `;
     };
 
+    window.currentStarIndex = 0;
+    window.currentStarData = [];
+
     window.openStarModal = function(category, title) {
         if (!window.starData || window.starData.length === 0) return;
-        const tbody = document.getElementById('modalBody');
         const modal = document.getElementById('starModal');
         const modalTitle = document.getElementById('modalTitle');
         
-        tbody.innerHTML = '';
-        const filtered = window.starData.filter(sa => sa[category]);
-        if (filtered.length === 0) return;
+        window.currentStarData = window.starData.filter(sa => sa[category]);
+        if (window.currentStarData.length === 0) return;
 
+        window.currentStarIndex = 0;
         modalTitle.innerText = title;
-        filtered.forEach(sa => {
-            const tr = document.createElement('tr');
-            tr.innerHTML = `<td>${sa.planet}</td><td>${sa.star}</td><td>${sa.orb.toFixed(2)}°</td><td>${sa.meaning}</td>`;
-            tbody.appendChild(tr);
-        });
+        window.renderSingleStar();
 
         modal.classList.remove('hidden');
         modal.style.display = 'flex';
         document.body.style.overflow = 'hidden';
+    };
+
+    window.renderSingleStar = function() {
+        const content = document.getElementById('singleStarContent');
+        const counter = document.getElementById('starCounter');
+        const prevBtn = document.getElementById('prevStarBtn');
+        const nextBtn = document.getElementById('nextStarBtn');
+
+        const total = window.currentStarData.length;
+        const currentIndex = window.currentStarIndex;
+        const sa = window.currentStarData[currentIndex];
+
+        counter.innerText = `${currentIndex + 1} / ${total}`;
+
+        content.innerHTML = `
+            <div class="star-detail-row">
+                <div class="star-detail-label">Planet & Star</div>
+                <div class="star-detail-value">${sa.planet} &mdash; ${sa.star}</div>
+            </div>
+            <div class="star-detail-row">
+                <div class="star-detail-label">Orb</div>
+                <div class="star-detail-value orb-value">${sa.orb.toFixed(2)}&deg;</div>
+            </div>
+            <div class="star-detail-row">
+                <div class="star-detail-label">Meaning</div>
+                <div class="star-detail-value" style="font-size: 1rem; text-transform:none;">${sa.meaning}</div>
+            </div>
+        `;
+
+        prevBtn.disabled = currentIndex === 0;
+        nextBtn.disabled = currentIndex === total - 1;
+    };
+
+    window.nextStar = function() {
+        if (window.currentStarIndex < window.currentStarData.length - 1) {
+            window.currentStarIndex++;
+            window.renderSingleStar();
+        }
+    };
+
+    window.prevStar = function() {
+        if (window.currentStarIndex > 0) {
+            window.currentStarIndex--;
+            window.renderSingleStar();
+        }
     };
 
     window.closeStarModal = function() {
