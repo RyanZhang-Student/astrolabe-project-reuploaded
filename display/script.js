@@ -239,6 +239,15 @@ document.addEventListener('DOMContentLoaded', () => {
         'IT': 'ITALY', 'ES': 'SPAIN', 'MX': 'MEXICO', 'VN': 'VIETNAM', 'TH': 'THAILAND'
     };
 
+    const getCountryName = (code) => {
+        try {
+            const regionNames = new Intl.DisplayNames(['en'], {type: 'region'});
+            return regionNames.of(code).toUpperCase();
+        } catch (e) {
+            return countryMap[code] || code;
+        }
+    };
+
     let debounceTimeout = null;
 
     locationInput.addEventListener('input', function() {
@@ -263,7 +272,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 matches.forEach(item => {
                     const div = document.createElement('div');
                     div.className = 'autocomplete-item';
-                    const countryName = countryMap[item.country] || item.country;
+                    const countryName = getCountryName(item.country);
                     div.innerHTML = `<strong>${item.name}</strong> - ${countryName}`;
                     
                     div.addEventListener('click', function(e) {

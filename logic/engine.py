@@ -41,6 +41,7 @@ def lookup_local_city(query):
         city_query = parts[0].strip().upper()
         country_hint = parts[1].strip().upper() if len(parts) > 1 else None
         
+        original_country_hint = country_hint
         # Convert country name to code if possible
         if country_hint and country_hint in country_map:
             country_hint = country_map[country_hint]
@@ -50,10 +51,10 @@ def lookup_local_city(query):
                 # If country hint is provided, it must match
                 if country_hint:
                     if city['country'].upper() == country_hint:
-                        return city['lat'], city['lng'], f"{city['name']} ({city['country']}) [Local]"
+                        return city['lat'], city['lng'], f"{city['name']} ({original_country_hint})"
                 else:
-                    # No hint, return first match
-                    return city['lat'], city['lng'], f"{city['name']} ({city['country']}) [Local]"
+                    # No hint, return first match with code
+                    return city['lat'], city['lng'], f"{city['name']} ({city['country']})"
     except Exception:
         pass
     return None
