@@ -214,7 +214,9 @@ def calculate():
     
     return jsonify({
         'status': 'success',
-        'report_url': f'/results/{filename}'
+        'report_url': f'/results/{filename}',
+        'star_aspects': star_aspects,
+        'star_stats': star_stats
     })
 
 if __name__ == '__main__':

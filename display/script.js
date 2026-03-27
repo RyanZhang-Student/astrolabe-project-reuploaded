@@ -297,6 +297,65 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+    // Star Rendering & Modal Logic
+    window.renderStarStats = function(stats) {
+        const container = document.getElementById('star-conjunction-container');
+        if (!container) return;
+
+        const getStatSpan = (count, label, category, title) => {
+            if (count > 0) {
+                return `<span class="clickable-stat" onclick="window.openStarModal('${category}', '${title}')">${label}: ${count}</span>`;
+            }
+            return `<span>${label}: ${count}</span>`;
+        };
+
+        container.innerHTML = `
+            <div class="stats-bar">
+                ${getStatSpan(stats.royal, '👑 ROYAL STARS', 'is_royal', 'Royal Star Conjunctions')}
+                ${getStatSpan(stats.behenian, '✨ BEHENIAN STARS', 'is_behenian', 'Behenian Star Conjunctions')}
+                ${getStatSpan(stats.practical, '⚔️ PRACTICAL STARS', 'is_practical', 'Practical Star Conjunctions')}
+                ${getStatSpan(stats.robson, '📚 ROBSON STARS', 'is_robson', 'Robson Star Conjunctions')}
+            </div>
+        `;
+    };
+
+    window.openStarModal = function(category, title) {
+        if (!window.starData || window.starData.length === 0) return;
+        const tbody = document.getElementById('modalBody');
+        const modal = document.getElementById('starModal');
+        const modalTitle = document.getElementById('modalTitle');
+        
+        tbody.innerHTML = '';
+        const filtered = window.starData.filter(sa => sa[category]);
+        if (filtered.length === 0) return;
+
+        modalTitle.innerText = title;
+        filtered.forEach(sa => {
+            const tr = document.createElement('tr');
+            tr.innerHTML = `<td>${sa.planet}</td><td>${sa.star}</td><td>${sa.orb.toFixed(2)}°</td><td>${sa.meaning}</td>`;
+            tbody.appendChild(tr);
+        });
+
+        modal.classList.remove('hidden');
+        modal.style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+    };
+
+    window.closeStarModal = function() {
+        const modal = document.getElementById('starModal');
+        modal.classList.add('hidden');
+        modal.style.display = 'none';
+        document.body.style.overflow = 'auto';
+    };
+
+    // Close modal on click outside
+    window.addEventListener('click', (e) => {
+        const modal = document.getElementById('starModal');
+        if (e.target === modal) {
+            window.closeStarModal();
+        }
+    });
+
     // Handle form submission
     form.addEventListener('submit', async (e) => {
         e.preventDefault();
@@ -346,6 +405,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 resultContainer.classList.remove('hidden');
                 reportLink.textContent = `View Report for ${name}`;
                 reportLink.href = `/results/report_${name.toUpperCase()}.html`;
+
+                // Render Star Conjunctions
+                if (result.star_stats) {
+                    window.starData = result.star_aspects || [];
+                    window.renderStarStats(result.star_stats);
+                }
             } else {
                 alert('Error: ' + (result.error || 'Failed to calculate'));
                 btnText.style.opacity = '1';

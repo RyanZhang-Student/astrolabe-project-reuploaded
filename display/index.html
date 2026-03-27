@@ -85,6 +85,7 @@
             <div class="success-message glass">
                 <h3>Success!</h3>
                 <p>Your report has been generated. Click below to view it.</p>
+                <div id="star-conjunction-container"></div>
                 <a id="report-link" href="#" target="_blank" class="view-btn">View Detailed Report</a>
             </div>
         </div>
@@ -126,6 +127,29 @@
             <div class="picker-footer">
                 <button type="button" id="confirm-selection" class="confirm-btn"
                     onclick="window.timePicker.confirm(event)">Confirm Selection</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Star Conjunction Modal -->
+    <div id="starModal" class="modal-overlay hidden">
+        <div class="modal-content glass">
+            <div class="modal-header">
+                <h3 id="modalTitle">Star Conjunctions</h3>
+                <span class="close-btn" onclick="window.closeStarModal()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <table class="star-table">
+                    <thead>
+                        <tr>
+                            <th>Planet</th>
+                            <th>Star</th>
+                            <th>Orb</th>
+                            <th>Meaning</th>
+                        </tr>
+                    </thead>
+                    <tbody id="modalBody"></tbody>
+                </table>
             </div>
         </div>
     </div>

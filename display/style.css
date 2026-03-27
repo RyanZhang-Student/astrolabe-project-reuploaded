@@ -499,3 +499,107 @@ small {
 .confirm-btn:hover {
     transform: scale(1.02);
 }
+
+/* Fixed Star Conjunction & Modal Styles */
+.stats-bar {
+    display: flex;
+    justify-content: space-around;
+    background: rgba(255, 255, 255, 0.05);
+    padding: 1.5rem;
+    border-radius: 1rem;
+    margin: 1.5rem 0;
+    border: 1px solid var(--glass-border);
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.stats-bar span {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--text-muted);
+}
+
+.clickable-stat {
+    text-decoration: underline;
+    cursor: pointer;
+    color: #a78bfa !important;
+    transition: color 0.2s ease;
+}
+
+.clickable-stat:hover {
+    color: #c084fc !important;
+}
+
+#star-conjunction-container {
+    margin-top: 1rem;
+}
+
+/* Star Modal Specifics */
+.modal-content.glass {
+    width: 90%;
+    max-width: 700px;
+    padding: 2.5rem;
+    border-radius: 2rem;
+    position: relative;
+    max-height: 85vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    border-bottom: 1px solid var(--glass-border);
+    padding-bottom: 1rem;
+}
+
+.modal-header h3 {
+    margin: 0;
+    font-size: 1.5rem;
+    background: linear-gradient(to right, #818cf8, #c084fc);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.modal-body {
+    overflow-y: auto;
+    padding-right: 0.5rem;
+}
+
+/* Custom Scrollbar for Modal Body */
+.modal-body::-webkit-scrollbar {
+    width: 6px;
+}
+.modal-body::-webkit-scrollbar-thumb {
+    background: var(--glass-border);
+    border-radius: 10px;
+}
+
+.star-table {
+    width: 100%;
+    border-collapse: collapse;
+    color: var(--text-light);
+    font-size: 0.9rem;
+}
+
+.star-table th, .star-table td {
+    padding: 1rem;
+    text-align: left;
+    border-bottom: 1px solid var(--glass-border);
+}
+
+.star-table th {
+    color: var(--text-muted);
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    letter-spacing: 0.05rem;
+}
+
+.star-table td:nth-child(3) {
+    font-family: monospace;
+    color: #f472b6;
+}
