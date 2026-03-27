@@ -212,6 +212,21 @@ document.addEventListener('DOMContentLoaded', () => {
     const resultContainer = document.getElementById('result-container');
     const reportLink = document.getElementById('report-link');
 
+    // Gender selection logic
+    const genderBoxes = document.querySelectorAll('.gender-box');
+    const genderInput = document.getElementById('gender');
+
+    genderBoxes.forEach(box => {
+        box.addEventListener('click', () => {
+            // Remove selected class from all
+            genderBoxes.forEach(b => b.classList.remove('selected'));
+            // Add selected class to correct one
+            box.classList.add('selected');
+            // Set hidden input value
+            genderInput.value = box.dataset.value;
+        });
+    });
+
     const locationInput = document.getElementById('location');
     const autocompleteList = document.getElementById('autocomplete-list');
 
@@ -275,6 +290,11 @@ document.addEventListener('DOMContentLoaded', () => {
     form.addEventListener('submit', async (e) => {
         e.preventDefault();
 
+        if (!genderInput.value) {
+            alert('Please select a gender.');
+            return;
+        }
+
         // UI Feedback
         btnText.style.opacity = '0';
         loader.style.display = 'block';
@@ -283,6 +303,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Collect Data
         const name = document.getElementById('name').value;
+        const gender = genderInput.value;
         const location = document.getElementById('location').value;
         const dateRaw = document.getElementById('birth-date').value; // YYYY-MM-DD
         const timeRaw = document.getElementById('birth-time').value; // HH:MM
@@ -298,6 +319,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     name: name,
+                    gender: gender,
                     location: location,
                     dob: dobFormatted
                 })

@@ -32,8 +32,22 @@
                     </div>
                     
                     <div class="input-group">
-                        <label for="age">Age (Optional)</label>
-                        <input type="number" id="age" placeholder="25">
+                        <label>Gender (Required)</label>
+                        <div class="gender-options">
+                            <div class="gender-box" data-value="Male">
+                                <span class="gender-icon">👨</span>
+                                <span class="gender-label">Male</span>
+                            </div>
+                            <div class="gender-box" data-value="Female">
+                                <span class="gender-icon">👩</span>
+                                <span class="gender-label">Female</span>
+                            </div>
+                            <div class="gender-box" data-value="LGBTQ">
+                                <span class="gender-icon">🌈</span>
+                                <span class="gender-label">LGBTQ</span>
+                            </div>
+                        </div>
+                        <input type="hidden" id="gender" required>
                     </div>
                 </div>
 
