@@ -20,7 +20,7 @@ except Exception:
 def lookup_local_city(query):
     """
     Search for a city in the local world_cities.json file.
-    Matches against city name (case-insensitive).
+    Matches against city name (case-insensitive) and optionally country.
     """
     try:
         import json
@@ -29,12 +29,31 @@ def lookup_local_city(query):
         with open(data_path, 'r', encoding='utf-8') as f:
             cities = json.load(f)
         
-        # Clean query: e.g., "BEIJING-CN" -> "BEIJING"
-        clean_query = query.split('-')[0].strip().upper()
+        # Mapping for common country names to codes
+        country_map = {
+            'CHINA': 'CN', 'USA': 'US', 'UNITED STATES': 'US', 'UNITED KINGDOM': 'GB', 'UK': 'GB',
+            'CANADA': 'CA', 'AUSTRALIA': 'AU', 'GERMANY': 'DE', 'FRANCE': 'FR', 'JAPAN': 'JP',
+            'INDIA': 'IN', 'BRAZIL': 'BR', 'RUSSIA': 'RU', 'KOREA': 'KR', 'SOUTH KOREA': 'KR',
+            'ITALY': 'IT', 'SPAIN': 'ES', 'MEXICO': 'MX', 'VIETNAM': 'VN', 'THAILAND': 'TH'
+        }
+
+        parts = query.split('-')
+        city_query = parts[0].strip().upper()
+        country_hint = parts[1].strip().upper() if len(parts) > 1 else None
         
+        # Convert country name to code if possible
+        if country_hint and country_hint in country_map:
+            country_hint = country_map[country_hint]
+
         for city in cities:
-            if city['name'].upper() == clean_query:
-                return city['lat'], city['lng'], f"{city['name']} ({city['country']}) [Local]"
+            if city['name'].upper() == city_query:
+                # If country hint is provided, it must match
+                if country_hint:
+                    if city['country'].upper() == country_hint:
+                        return city['lat'], city['lng'], f"{city['name']} ({city['country']}) [Local]"
+                else:
+                    # No hint, return first match
+                    return city['lat'], city['lng'], f"{city['name']} ({city['country']}) [Local]"
     except Exception:
         pass
     return None

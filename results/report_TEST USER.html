@@ -1,0 +1,476 @@
+<!DOCTYPE html><html><head><meta charset="UTF-8">
+    <style>
+        body{font-family:sans-serif;background:#f4f7f6;padding:20px;color:#333}
+        .card{background:white;max-width:1400px;margin:auto;padding:30px;border-radius:15px;box-shadow:0 4px 15px rgba(0,0,0,0.1)}
+        .header{border-bottom:2px solid #333;margin-bottom:20px}
+        .flex{display:flex;gap:30px;flex-wrap:wrap}
+        .chart{flex:1;min-width:400px}
+        svg{width:100%;height:auto;overflow:visible}
+        .tables{flex:2;min-width:500px}
+        table{width:100%;border-collapse:collapse;margin-top:10px;font-size:11px}
+        th,td{border:1px solid #ddd;padding:6px 4px;text-align:center}
+        th{background:#f8f8f8; color:#666}
+        .section-title{font-size:16px;font-weight:bold;margin-top:30px;color:#444;border-left:5px solid #4B0082;padding-left:10px;background:#eee;padding:5px 10px}
+        .stats-bar { display: flex; justify-content: space-around; background: #f8f9fa; padding: 10px; border-radius: 8px; margin-bottom: 10px; border: 1px solid #eee; font-weight: bold; flex-wrap: wrap; }
+        .stats-bar span { font-size: 14px; }
+        .clickable-stat { text-decoration: underline; cursor: pointer; color: #4B0082; }
+        .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.4); }
+        .modal-content { background-color: #fefefe; margin: 10% auto; padding: 20px; border: 1px solid #888; width: 80%; max-width: 600px; border-radius: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
+        .close-btn { color: #aaa; float: right; font-size: 28px; font-weight: bold; cursor: pointer; margin-top: -10px; }
+        .close-btn:hover, .close-btn:focus { color: black; text-decoration: none; cursor: pointer; }
+        #modalTitle { margin-top: 0; color: #4B0082; }
+        .detailed-house { border: 1px solid #ddd; padding: 15px; margin-top: 20px; border-radius: 8px; background: #fff; }
+        .house-header { font-size: 18px; font-weight: bold; color: #4B0082; border-bottom: 2px solid #4B0082; padding-bottom: 5px; margin-bottom: 10px; }
+        .cusp-info { font-size: 14px; font-weight: bold; background: #f0f0f0; padding: 5px 10px; border-radius: 4px; margin-bottom: 15px; }
+        .planet-detail { border-left: 3px solid #666; padding-left: 15px; margin-bottom: 20px; font-size: 13px; line-height: 1.6; }
+        .planet-title { font-size: 15px; font-weight: bold; color: #333; margin-top: 10px; }
+        .score-line { color: #555; }
+        .total-score { font-weight: bold; color: #d32f2f; font-size: 14px; margin-top: 3px; border-top: 1px dashed #ccc; padding-top: 3px; }
+        .aspect-details { font-size: 12px; color: #777; margin-top: 5px; font-style: italic; }
+    </style></head>
+    <body>
+    <div class="card">
+        <div class="header">
+            <h2>TEST USER - Classical Analysis</h2>
+            <p>2000-03-26 12:00 (Asia/Shanghai) | BEIJING (CN) [Local]</p>
+        </div>
+        <div class="section-title">Classical Lord Evaluation</div>
+        <table>
+            <thead><tr><th>House</th><th>Cusp</th><th>Ruler</th><th>Pos H</th><th>Pos Sign</th><th>Deg</th><th>State</th><th>Own Term</th><th>Own Face</th><th>Own Trip</th><th>Combust</th><th>Retro</th><th>Mut. Rec</th><th>Mut. Rej</th><th>Rej By</th><th>Rec By</th><th>Pattern</th></tr></thead>
+            <tbody><tr><td>1</td><td>Cancer</td><td>Moon</td><td>5</td><td>Sagittarius</td><td>15°6'</td><td>Peregrine</td><td>-</td><td>Yes</td><td>-</td><td>-</td><td>-</td><td>Sun⭐ (Hidden)<br>Jupiter⭐⭐⭐ (Hidden)</td><td>-</td><td>Mercury</td><td>Jupiter, Venus</td><td>-</td></tr><tr><td>2</td><td>Leo</td><td>Sun</td><td>9</td><td>Aries</td><td>5°48'</td><td>Exalted</td><td>-</td><td>-</td><td>Yes</td><td>-</td><td>-</td><td>Mars⭐⭐⭐ (Hidden)</td><td>-</td><td>Venus, Saturn</td><td>Mars, Jupiter</td><td>-</td></tr><tr><td>3</td><td>Virgo</td><td>Mercury</td><td>8</td><td>Pisces</td><td>8°10'</td><td>Detriment</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>Venus⭐⭐ (Effective)<br>Jupiter⭐⭐⭐ (Effective)</td><td>-</td><td>Mercury, Mercury</td><td>Jupiter, Venus</td><td>-</td></tr><tr><td>4</td><td>Libra</td><td>Venus</td><td>8</td><td>Pisces</td><td>15°40'</td><td>Exalted</td><td>-</td><td>-</td><td>Yes</td><td>-</td><td>-</td><td>Jupiter⭐⭐⭐ (Effective)</td><td>-</td><td>Mercury, Mercury</td><td>Jupiter</td><td>-</td></tr><tr><td>5</td><td>Scorpio</td><td>Mars</td><td>10</td><td>Taurus</td><td>2°16'</td><td>Detriment</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>Moon⭐⭐ (Hidden)<br>Venus⭐⭐⭐ (Hidden)</td><td>-</td><td>Mars</td><td>Venus, Moon</td><td>-</td></tr><tr><td>6</td><td>Sagittarius</td><td>Jupiter</td><td>10</td><td>Taurus</td><td>7°52'</td><td>Peregrine</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>Moon⭐⭐ (Hidden)<br>Venus⭐⭐⭐ (Effective)</td><td>-</td><td>Mars</td><td>Venus, Moon</td><td>-</td></tr><tr><td>7</td><td>Capricorn</td><td>Saturn</td><td>10</td><td>Taurus</td><td>14°50'</td><td>Peregrine</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>Moon⭐⭐ (Hidden)<br>Venus⭐⭐⭐ (Effective)</td><td>-</td><td>Mars</td><td>Venus, Moon, Jupiter</td><td>-</td></tr><tr><td>8</td><td>Aquarius</td><td>Saturn</td><td>10</td><td>Taurus</td><td>14°50'</td><td>Peregrine</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>Moon⭐⭐ (Hidden)<br>Venus⭐⭐⭐ (Effective)</td><td>-</td><td>Mars</td><td>Venus, Moon, Jupiter</td><td>-</td></tr><tr><td>9</td><td>Pisces</td><td>Jupiter</td><td>10</td><td>Taurus</td><td>7°52'</td><td>Peregrine</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>Moon⭐⭐ (Hidden)<br>Venus⭐⭐⭐ (Effective)</td><td>-</td><td>Mars</td><td>Venus, Moon</td><td>-</td></tr><tr><td>10</td><td>Aries</td><td>Mars</td><td>10</td><td>Taurus</td><td>2°16'</td><td>Detriment</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>Moon⭐⭐ (Hidden)<br>Venus⭐⭐⭐ (Hidden)</td><td>-</td><td>Mars</td><td>Venus, Moon</td><td>-</td></tr><tr><td>11</td><td>Taurus</td><td>Venus</td><td>8</td><td>Pisces</td><td>15°40'</td><td>Exalted</td><td>-</td><td>-</td><td>Yes</td><td>-</td><td>-</td><td>Jupiter⭐⭐⭐ (Effective)</td><td>-</td><td>Mercury, Mercury</td><td>Jupiter</td><td>-</td></tr><tr><td>12</td><td>Gemini</td><td>Mercury</td><td>8</td><td>Pisces</td><td>8°10'</td><td>Detriment</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>Venus⭐⭐ (Effective)<br>Jupiter⭐⭐⭐ (Effective)</td><td>-</td><td>Mercury, Mercury</td><td>Jupiter, Venus</td><td>-</td></tr></tbody>
+        </table>
+        <div class="flex">
+            <div class="chart"><svg viewBox="0 0 800 800"><defs><marker id="arrowhead_brown" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#8B4513" /></marker></defs><marker id="arrowhead_red" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#FF0000" /></marker><circle cx="400" cy="400" r="350" stroke="#333" stroke-width="2" fill="white"/><line x1="489.5600754330281" y1="134.70960649049067" x2="511.9500942912851" y2="68.38700811311332" stroke="#ccc" /><text x="420.0769564849252" y="85.64046726987516" font-size="14" font-weight="bold" text-anchor="middle" dominant-baseline="middle" fill="#555">Ari</text><line x1="344.91610373509826" y1="125.47174212428052" x2="331.1451296688728" y2="56.83967765535067" stroke="#ccc" /><text x="260.20738798155753" y="117.7181804914436" font-size="14" font-weight="bold" text-anchor="middle" dominant-baseline="middle" fill="#555">Tau</text><line x1="215.0318175573086" y1="189.79350275539235" x2="168.78977194663577" y2="137.24187844424046" stroke="#ccc" /><text x="137.79513697636878" y="225.43307928831763" font-size="14" font-weight="bold" text-anchor="middle" dominant-baseline="middle" fill="#555">Gem</text><line x1="134.70960649049061" y1="310.43992456697197" x2="68.38700811311327" y2="288.04990570871496" stroke="#ccc" /><text x="85.64046726987516" y="379.9230435150747" font-size="14" font-weight="bold" text-anchor="middle" dominant-baseline="middle" fill="#555">Can</text><line x1="125.47174212428052" y1="455.0838962649018" x2="56.83967765535067" y2="468.85487033112724" stroke="#ccc" /><text x="117.7181804914436" y="539.7926120184425" font-size="14" font-weight="bold" text-anchor="middle" dominant-baseline="middle" fill="#555">Leo</text><line x1="189.7935027553924" y1="584.9681824426914" x2="137.2418784442405" y2="631.2102280533643" stroke="#ccc" /><text x="225.43307928831766" y="662.2048630236312" font-size="14" font-weight="bold" text-anchor="middle" dominant-baseline="middle" fill="#555">Vir</text><line x1="310.43992456697197" y1="665.2903935095094" x2="288.04990570871496" y2="731.6129918868867" stroke="#ccc" /><text x="379.92304351507494" y="714.3595327301248" font-size="14" font-weight="bold" text-anchor="middle" dominant-baseline="middle" fill="#555">Lib</text><line x1="455.08389626490185" y1="674.5282578757194" x2="468.8548703311273" y2="743.1603223446493" stroke="#ccc" /><text x="539.7926120184425" y="682.2818195085564" font-size="14" font-weight="bold" text-anchor="middle" dominant-baseline="middle" fill="#555">Sco</text><line x1="584.9681824426914" y1="610.2064972446076" x2="631.2102280533643" y2="662.7581215557595" stroke="#ccc" /><text x="662.2048630236312" y="574.5669207116823" font-size="14" font-weight="bold" text-anchor="middle" dominant-baseline="middle" fill="#555">Sag</text><line x1="665.2903935095094" y1="489.5600754330281" x2="731.6129918868867" y2="511.9500942912851" stroke="#ccc" /><text x="714.3595327301248" y="420.0769564849252" font-size="14" font-weight="bold" text-anchor="middle" dominant-baseline="middle" fill="#555">Cap</text><line x1="674.5282578757194" y1="344.9161037350982" x2="743.1603223446493" y2="331.1451296688728" stroke="#ccc" /><text x="682.2818195085564" y="260.20738798155753" font-size="14" font-weight="bold" text-anchor="middle" dominant-baseline="middle" fill="#555">Aqu</text><line x1="610.2064972446076" y1="215.03181755730859" x2="662.7581215557595" y2="168.78977194663574" stroke="#ccc" /><text x="574.5669207116823" y="137.79513697636878" font-size="14" font-weight="bold" text-anchor="middle" dominant-baseline="middle" fill="#555">Pis</text><line x1="50.0" y1="400.00000000000006" x2="38.0" y2="400.00000000000006" stroke="red" stroke-width="2"/><text x="28.118556878708716" y="499.6453323644706" font-size="14" font-weight="bold" text-anchor="middle" dominant-baseline="middle" fill="red">H1</text><line x1="96.89110867544645" y1="575.0" x2="86.49880383003318" y2="581.0" stroke="red" stroke-width="2"/><text x="127.76388924317922" y="672.2361107568208" font-size="14" font-weight="bold" text-anchor="middle" dominant-baseline="middle" fill="red">H2</text><line x1="225.00000000000009" y1="703.1088913245535" x2="219.00000000000009" y2="713.5011961699668" stroke="red" stroke-width="2"/><text x="300.3546676355295" y="771.8814431212913" font-size="14" font-weight="bold" text-anchor="middle" dominant-baseline="middle" fill="red">H3</text><line x1="400.0" y1="750.0" x2="400.0" y2="762.0" stroke="red" stroke-width="2"/><text x="499.6453323644705" y="771.8814431212913" font-size="14" font-weight="bold" text-anchor="middle" dominant-baseline="middle" fill="red">H4</text><line x1="575.0" y1="703.1088913245535" x2="581.0" y2="713.5011961699668" stroke="red" stroke-width="2"/><text x="672.2361107568208" y="672.2361107568208" font-size="14" font-weight="bold" text-anchor="middle" dominant-baseline="middle" fill="red">H5</text><line x1="703.1088913245535" y1="575.0" x2="713.5011961699668" y2="581.0" stroke="red" stroke-width="2"/><text x="771.8814431212913" y="499.6453323644705" font-size="14" font-weight="bold" text-anchor="middle" dominant-baseline="middle" fill="red">H6</text><line x1="750.0" y1="400.0" x2="762.0" y2="400.0" stroke="red" stroke-width="2"/><text x="771.8814431212913" y="300.3546676355295" font-size="14" font-weight="bold" text-anchor="middle" dominant-baseline="middle" fill="red">H7</text><line x1="703.1088913245535" y1="225.00000000000003" x2="713.5011961699668" y2="219.00000000000003" stroke="red" stroke-width="2"/><text x="672.2361107568208" y="127.76388924317916" font-size="14" font-weight="bold" text-anchor="middle" dominant-baseline="middle" fill="red">H8</text><line x1="575.0" y1="96.8911086754465" x2="581.0" y2="86.49880383003324" stroke="red" stroke-width="2"/><text x="499.6453323644705" y="28.118556878708716" font-size="14" font-weight="bold" text-anchor="middle" dominant-baseline="middle" fill="red">H9</text><line x1="400.0" y1="50.0" x2="400.0" y2="38.0" stroke="red" stroke-width="2"/><text x="300.3546676355295" y="28.118556878708716" font-size="14" font-weight="bold" text-anchor="middle" dominant-baseline="middle" fill="red">H10</text><line x1="225.00000000000009" y1="96.89110867544645" x2="219.00000000000009" y2="86.49880383003318" stroke="red" stroke-width="2"/><text x="127.76388924317922" y="127.76388924317916" font-size="14" font-weight="bold" text-anchor="middle" dominant-baseline="middle" fill="red">H11</text><line x1="96.89110867544645" y1="225.00000000000003" x2="86.49880383003318" y2="219.00000000000003" stroke="red" stroke-width="2"/><text x="28.118556878708716" y="300.3546676355294" font-size="14" font-weight="bold" text-anchor="middle" dominant-baseline="middle" fill="red">H12</text><circle cx="400" cy="400" r="280" stroke="#ccc" fill="none"/><circle cx="483.29630214106254" cy="148.43146848299006" r="4" fill="#8B4513"/><text x="492.7260721947677" y="119.95201208483797" font-size="11" font-weight="bold" text-anchor="middle" fill="#8B4513">Mi</text><line x1="289.9860160401063" y1="732.2603246451076" x2="514.7288689867465" y2="53.49994715581647" stroke="#8B4513" stroke-width="1.5" stroke-dasharray="8,4" marker-end="url(#arrowhead_brown)" /><text x="282.1278743286853" y="755.9932049769009" font-size="14" font-weight="bold" text-anchor="middle" dominant-baseline="middle" fill="#8B4513">IC</text><text x="521.0153823558833" y="34.51364289038179" font-size="14" font-weight="bold" text-anchor="middle" dominant-baseline="middle" fill="#8B4513">MC</text><line x1="750.0" y1="400.0" x2="35.0" y2="400.00000000000006" stroke="#FF0000" stroke-width="1.5" stroke-dasharray="8,4" marker-end="url(#arrowhead_red)" opacity="0.8"/><circle cx="135.0" cy="400.00000000000006" r="4" fill="#FF0000"/><text x="105.0" y="400.00000000000006" font-size="11" font-weight="bold" text-anchor="middle" fill="#FF0000">As</text><text x="15.0" y="400.00000000000006" font-size="14" font-weight="bold" text-anchor="middle" dominant-baseline="middle" fill="#FF0000">ASC</text><text x="775.0" y="400.0" font-size="14" font-weight="bold" text-anchor="middle" dominant-baseline="middle" fill="#FF0000">DES</text><line x1="460.0611353550997" y1="136.76500988687621" x2="657.6246093059106" y2="319.19430292376086" stroke="#00BFFF" stroke-width="1" opacity="0.6"/><line x1="460.0611353550997" y1="136.76500988687621" x2="619.0327351833762" y2="557.8754601516303" stroke="#006400" stroke-width="1" opacity="0.6"/><line x1="460.0611353550997" y1="136.76500988687621" x2="135.80917877478151" y2="455.70646264433475" stroke="#006400" stroke-width="1" opacity="0.6"/><line x1="460.0611353550997" y1="136.76500988687621" x2="495.3798157078697" y2="147.40805484827348" stroke="#333" stroke-width="1" opacity="0.6"/><line x1="625.0459931973876" y1="549.1787550082163" x2="575.2836773153069" y2="194.63293237029617" stroke="#FF0000" stroke-width="1" opacity="0.6"/><line x1="625.0459931973876" y1="549.1787550082163" x2="547.0035625816101" y2="173.52714823115193" stroke="#FF0000" stroke-width="1" opacity="0.6"/><line x1="625.0459931973876" y1="549.1787550082163" x2="632.0238726275013" y2="261.9242145380407" stroke="#00BFFF" stroke-width="1" opacity="0.6"/><line x1="625.0459931973876" y1="549.1787550082163" x2="619.0327351833762" y2="557.8754601516303" stroke="#333" stroke-width="1" opacity="0.6"/><line x1="575.2836773153069" y1="194.63293237029617" x2="547.0035625816101" y2="173.52714823115193" stroke="#333" stroke-width="1" opacity="0.6"/><line x1="575.2836773153069" y1="194.63293237029617" x2="336.38655889859416" y2="137.6008191490721" stroke="#00BFFF" stroke-width="1" opacity="0.6"/><line x1="575.2836773153069" y1="194.63293237029617" x2="311.11237313503983" y2="145.05100551224837" stroke="#00BFFF" stroke-width="1" opacity="0.6"/><line x1="575.2836773153069" y1="194.63293237029617" x2="619.0327351833762" y2="557.8754601516303" stroke="#FF0000" stroke-width="1" opacity="0.6"/><line x1="547.0035625816101" y1="173.52714823115193" x2="280.820950776654" y2="157.72669518451013" stroke="#00BFFF" stroke-width="1" opacity="0.6"/><line x1="547.0035625816101" y1="173.52714823115193" x2="619.0327351833762" y2="557.8754601516303" stroke="#FF0000" stroke-width="1" opacity="0.6"/><line x1="336.38655889859416" y1="137.6008191490721" x2="311.11237313503983" y2="145.05100551224837" stroke="#333" stroke-width="1" opacity="0.6"/><line x1="336.38655889859416" y1="137.6008191490721" x2="657.6246093059106" y2="319.19430292376086" stroke="#FF0000" stroke-width="1" opacity="0.6"/><line x1="336.38655889859416" y1="137.6008191490721" x2="135.80917877478151" y2="455.70646264433475" stroke="#FF0000" stroke-width="1" opacity="0.6"/><line x1="311.11237313503983" y1="145.05100551224837" x2="280.820950776654" y2="157.72669518451013" stroke="#333" stroke-width="1" opacity="0.6"/><line x1="311.11237313503983" y1="145.05100551224837" x2="657.6246093059106" y2="319.19430292376086" stroke="#FF0000" stroke-width="1" opacity="0.6"/><line x1="311.11237313503983" y1="145.05100551224837" x2="135.80917877478151" y2="455.70646264433475" stroke="#FF0000" stroke-width="1" opacity="0.6"/><line x1="280.820950776654" y1="157.72669518451013" x2="632.0238726275013" y2="261.9242145380407" stroke="#FF0000" stroke-width="1" opacity="0.6"/><line x1="657.6246093059106" y1="319.19430292376086" x2="135.80917877478151" y2="455.70646264433475" stroke="#00008B" stroke-width="1" opacity="0.6"/><line x1="135.80917877478151" y1="455.70646264433475" x2="495.3798157078697" y2="147.40805484827348" stroke="#006400" stroke-width="1" opacity="0.6"/><circle cx="458.948892107783" cy="141.6397319260081" r="4" fill="#FFD700"/><text x="465.622351591683" y="112.39139969121658" font-size="11" font-weight="bold" text-anchor="middle" fill="#FFD700">Su</text><circle cx="620.8784748048433" cy="546.4161854710271" r="4" fill="#708090"/><text x="645.8835851601086" y="562.9916026941622" font-size="11" font-weight="bold" text-anchor="middle" fill="#708090">Mo</text><circle cx="572.0376832909494" cy="198.4360262152907" r="4" fill="#2E8B57"/><text x="591.5136474370947" y="175.6174631453236" font-size="11" font-weight="bold" text-anchor="middle" fill="#2E8B57">Me</text><circle cx="544.2812743856543" cy="177.72108993057503" r="4" fill="#FF69B4"/><text x="560.6150035613889" y="152.55743973403636" font-size="11" font-weight="bold" text-anchor="middle" fill="#FF69B4">Ve</text><circle cx="337.56458558565726" cy="142.46006323890407" r="4" fill="#FF4500"/><text x="330.4964254632788" y="113.3045986999121" font-size="11" font-weight="bold" text-anchor="middle" fill="#FF4500">Ma</text><circle cx="312.75844029920574" cy="149.77228318794747" r="4" fill="#DAA520"/><text x="302.8820373142102" y="121.44461713375284" font-size="11" font-weight="bold" text-anchor="middle" fill="#DAA520">Ju</text><circle cx="283.02797020671596" cy="162.21323786627846" r="4" fill="#4B0082"/><text x="269.7858536263442" y="135.2939817756685" font-size="11" font-weight="bold" text-anchor="middle" fill="#4B0082">Sa</text><circle cx="627.7271342455106" cy="264.48117352807697" r="4" fill="#40E0D0"/><text x="653.5075645374552" y="249.13941958785927" font-size="11" font-weight="bold" text-anchor="middle" fill="#40E0D0">Ur</text><circle cx="652.853783207653" cy="320.690704721469" r="4" fill="#0000FF"/><text x="681.4787397971986" y="311.71229393522015" font-size="11" font-weight="bold" text-anchor="middle" fill="#0000FF">Ne</text><circle cx="614.976573420721" cy="554.9518405191927" r="4" fill="#800000"/><text x="639.3135439966518" y="572.4935583138183" font-size="11" font-weight="bold" text-anchor="middle" fill="#800000">Pl</text><circle cx="140.70160139006333" cy="454.67486148425445" r="4" fill="#555"/><text x="111.34706569837243" y="460.8644684447361" font-size="11" font-weight="bold" text-anchor="middle" fill="#555">No</text><circle cx="493.6135228243906" cy="152.08568346219434" r="4" fill="#FF8C00"/><text x="504.21128012526503" y="124.01991177866915" font-size="11" font-weight="bold" text-anchor="middle" fill="#FF8C00">Fo</text></svg></div>
+            <div class="tables">
+                <div class="section-title">Modern Placements</div>
+                <table><thead><tr><th>Planet</th><th>Sign</th><th>Deg</th><th>House</th></tr></thead><tbody><tr><td>Sun</td><td>Aries</td><td>5°</td><td>9</td></tr><tr><td>Moon</td><td>Sagittarius</td><td>15°</td><td>5</td></tr><tr><td>Mercury</td><td>Pisces</td><td>8°</td><td>8</td></tr><tr><td>Venus</td><td>Pisces</td><td>15°</td><td>8</td></tr><tr><td>Mars</td><td>Taurus</td><td>2°</td><td>10</td></tr><tr><td>Jupiter</td><td>Taurus</td><td>7°</td><td>10</td></tr><tr><td>Saturn</td><td>Taurus</td><td>14°</td><td>10</td></tr><tr><td>Uranus</td><td>Aquarius</td><td>19°</td><td>8</td></tr><tr><td>Neptune</td><td>Aquarius</td><td>6°</td><td>7</td></tr><tr><td>Pluto</td><td>Sagittarius</td><td>12°</td><td>5</td></tr><tr><td>Node</td><td>Leo</td><td>0°</td><td>1</td></tr><tr><td>Midheaven</td><td>Aries</td><td>0°</td><td>9</td></tr><tr><td>Asc</td><td>Cancer</td><td>18°</td><td>1</td></tr><tr><td>Fortune</td><td>Pisces</td><td>27°</td><td>9</td></tr></tbody></table>
+            </div>
+        </div>
+        <div class="section-title">Fixed Star Conjunction</div>
+    <div class="stats-bar">
+        <span>👑 ROYAL STARS: 0</span>
+        <span>✨ BEHENIAN STARS: 0</span>
+        <span class="clickable-stat" onclick="openStarModal('is_practical', 'Practical Star Conjunctions')">⚔️ PRACTICAL STARS: 3</span>
+        <span class="clickable-stat" onclick="openStarModal('is_robson', 'Robson Star Conjunctions')">📚 ROBSON STARS: 13</span>
+    </div>
+    
+        <div class="section-title">Major Aspects</div>
+        <table><thead><tr><th>P1</th><th>P2</th><th>Type</th><th>Orb</th></tr></thead><tbody><tr><td>Sun</td><td>Neptune</td><td style='color:#00BFFF; font-weight:bold'>Sextile</td><td style='font-weight:bold; color:#B22222'>0.27° (95.5%)</td></tr><tr><td>Sun</td><td>Pluto</td><td style='color:#006400; font-weight:bold'>Trine</td><td style='font-weight:bold'>7.07° (11.6%)</td></tr><tr><td>Sun</td><td>Node</td><td style='color:#006400; font-weight:bold'>Trine</td><td style='font-weight:bold; color:#B406BD'>5.24° (34.5%)</td></tr><tr><td>Sun</td><td>Fortune</td><td style='color:#333; font-weight:bold'>Conjunction</td><td style='font-weight:bold'>7.83° (21.7%)</td></tr><tr><td>Moon</td><td>Mercury</td><td style='color:#FF0000; font-weight:bold'>Square</td><td style='font-weight:bold'>6.94° (13.2%)</td></tr><tr><td>Moon</td><td>Venus</td><td style='color:#FF0000; font-weight:bold'>Square</td><td style='font-weight:bold; color:#B22222'>0.55° (93.1%)</td></tr><tr><td>Moon</td><td>Uranus</td><td style='color:#00BFFF; font-weight:bold'>Sextile</td><td style='font-weight:bold'>4.3° (28.4%)</td></tr><tr><td>Moon</td><td>Pluto</td><td style='color:#333; font-weight:bold'>Conjunction</td><td style='font-weight:bold; color:#FF8C00'>2.24° (77.6%)</td></tr><tr><td>Moon</td><td>House 2 cusp head</td><td style='color:#006400; font-weight:bold'>Trine</td><td style='font-weight:bold; color:#B406BD'>3.54° (55.8%)</td></tr><tr><td>Moon</td><td>House 3 cusp head</td><td style='color:#FF0000; font-weight:bold'>Square</td><td style='font-weight:bold; color:#B406BD'>3.54° (55.8%)</td></tr><tr><td>Moon</td><td>House 4 cusp head</td><td style='color:#00BFFF; font-weight:bold'>Sextile</td><td style='font-weight:bold; color:#B406BD'>3.54° (41.0%)</td></tr><tr><td>Moon</td><td>House 6 cusp head</td><td style='color:#333; font-weight:bold'>Conjunction</td><td style='font-weight:bold; color:#FF8C00'>3.54° (64.6%)</td></tr><tr><td>Moon</td><td>House 8 cusp head</td><td style='color:#00BFFF; font-weight:bold'>Sextile</td><td style='font-weight:bold; color:#B406BD'>3.54° (41.0%)</td></tr><tr><td>Moon</td><td>House 9 cusp head</td><td style='color:#FF0000; font-weight:bold'>Square</td><td style='font-weight:bold; color:#B406BD'>3.54° (55.8%)</td></tr><tr><td>Moon</td><td>House 10 cusp head</td><td style='color:#006400; font-weight:bold'>Trine</td><td style='font-weight:bold; color:#B406BD'>3.54° (55.8%)</td></tr><tr><td>Moon</td><td>House 12 cusp head</td><td style='color:#00008B; font-weight:bold'>Opposition</td><td style='font-weight:bold; color:#FF8C00'>3.54° (64.6%)</td></tr><tr><td>Mercury</td><td>Venus</td><td style='color:#333; font-weight:bold'>Conjunction</td><td style='font-weight:bold'>7.49° (25.1%)</td></tr><tr><td>Mercury</td><td>Mars</td><td style='color:#00BFFF; font-weight:bold'>Sextile</td><td style='font-weight:bold'>5.89° (1.8%)</td></tr><tr><td>Mercury</td><td>Jupiter</td><td style='color:#00BFFF; font-weight:bold'>Sextile</td><td style='font-weight:bold; color:#B22222'>0.3° (95.0%)</td></tr><tr><td>Mercury</td><td>Pluto</td><td style='color:#FF0000; font-weight:bold'>Square</td><td style='font-weight:bold; color:#B406BD'>4.7° (41.3%)</td></tr><tr><td>Venus</td><td>Saturn</td><td style='color:#00BFFF; font-weight:bold'>Sextile</td><td style='font-weight:bold; color:#FF8C00'>0.82° (86.4%)</td></tr><tr><td>Venus</td><td>Pluto</td><td style='color:#FF0000; font-weight:bold'>Square</td><td style='font-weight:bold; color:#FF8C00'>2.8° (65.1%)</td></tr><tr><td>Venus</td><td>Asc</td><td style='color:#006400; font-weight:bold'>Trine</td><td style='font-weight:bold; color:#FF8C00'>2.99° (62.7%)</td></tr><tr><td>Venus</td><td>House 1 cusp head</td><td style='color:#006400; font-weight:bold'>Trine</td><td style='font-weight:bold; color:#FF8C00'>2.99° (62.7%)</td></tr><tr><td>Venus</td><td>House 3 cusp head</td><td style='color:#00008B; font-weight:bold'>Opposition</td><td style='font-weight:bold; color:#FF8C00'>2.99° (70.1%)</td></tr><tr><td>Venus</td><td>House 5 cusp head</td><td style='color:#006400; font-weight:bold'>Trine</td><td style='font-weight:bold; color:#FF8C00'>2.99° (62.7%)</td></tr><tr><td>Venus</td><td>House 6 cusp head</td><td style='color:#FF0000; font-weight:bold'>Square</td><td style='font-weight:bold; color:#FF8C00'>2.99° (62.7%)</td></tr><tr><td>Venus</td><td>House 7 cusp head</td><td style='color:#00BFFF; font-weight:bold'>Sextile</td><td style='font-weight:bold; color:#B406BD'>2.99° (50.2%)</td></tr><tr><td>Venus</td><td>House 9 cusp head</td><td style='color:#333; font-weight:bold'>Conjunction</td><td style='font-weight:bold; color:#FF8C00'>2.99° (70.1%)</td></tr><tr><td>Venus</td><td>House 11 cusp head</td><td style='color:#00BFFF; font-weight:bold'>Sextile</td><td style='font-weight:bold; color:#B406BD'>2.99° (50.2%)</td></tr><tr><td>Venus</td><td>House 12 cusp head</td><td style='color:#FF0000; font-weight:bold'>Square</td><td style='font-weight:bold; color:#FF8C00'>2.99° (62.7%)</td></tr><tr><td>Mars</td><td>Jupiter</td><td style='color:#333; font-weight:bold'>Conjunction</td><td style='font-weight:bold; color:#B406BD'>5.59° (44.1%)</td></tr><tr><td>Mars</td><td>Neptune</td><td style='color:#FF0000; font-weight:bold'>Square</td><td style='font-weight:bold; color:#B406BD'>3.79° (52.7%)</td></tr><tr><td>Mars</td><td>Node</td><td style='color:#FF0000; font-weight:bold'>Square</td><td style='font-weight:bold; color:#FF8C00'>1.72° (78.5%)</td></tr><tr><td>Jupiter</td><td>Saturn</td><td style='color:#333; font-weight:bold'>Conjunction</td><td style='font-weight:bold; color:#B406BD'>6.97° (30.3%)</td></tr><tr><td>Jupiter</td><td>Neptune</td><td style='color:#FF0000; font-weight:bold'>Square</td><td style='font-weight:bold; color:#FF8C00'>1.81° (77.4%)</td></tr><tr><td>Jupiter</td><td>Node</td><td style='color:#FF0000; font-weight:bold'>Square</td><td style='font-weight:bold'>7.31° (8.6%)</td></tr><tr><td>Saturn</td><td>Uranus</td><td style='color:#FF0000; font-weight:bold'>Square</td><td style='font-weight:bold; color:#B406BD'>4.56° (43.0%)</td></tr><tr><td>Saturn</td><td>Asc</td><td style='color:#00BFFF; font-weight:bold'>Sextile</td><td style='font-weight:bold; color:#B406BD'>3.81° (36.6%)</td></tr><tr><td>Saturn</td><td>House 1 cusp head</td><td style='color:#00BFFF; font-weight:bold'>Sextile</td><td style='font-weight:bold; color:#B406BD'>3.81° (36.6%)</td></tr><tr><td>Saturn</td><td>House 2 cusp head</td><td style='color:#FF0000; font-weight:bold'>Square</td><td style='font-weight:bold; color:#B406BD'>3.81° (52.4%)</td></tr><tr><td>Saturn</td><td>House 3 cusp head</td><td style='color:#006400; font-weight:bold'>Trine</td><td style='font-weight:bold; color:#B406BD'>3.81° (52.4%)</td></tr><tr><td>Saturn</td><td>House 5 cusp head</td><td style='color:#00008B; font-weight:bold'>Opposition</td><td style='font-weight:bold; color:#FF8C00'>3.81° (61.9%)</td></tr><tr><td>Saturn</td><td>House 7 cusp head</td><td style='color:#006400; font-weight:bold'>Trine</td><td style='font-weight:bold; color:#B406BD'>3.81° (52.4%)</td></tr><tr><td>Saturn</td><td>House 8 cusp head</td><td style='color:#FF0000; font-weight:bold'>Square</td><td style='font-weight:bold; color:#B406BD'>3.81° (52.4%)</td></tr><tr><td>Saturn</td><td>House 9 cusp head</td><td style='color:#00BFFF; font-weight:bold'>Sextile</td><td style='font-weight:bold; color:#B406BD'>3.81° (36.6%)</td></tr><tr><td>Saturn</td><td>House 11 cusp head</td><td style='color:#333; font-weight:bold'>Conjunction</td><td style='font-weight:bold; color:#FF8C00'>3.81° (61.9%)</td></tr><tr><td>Uranus</td><td>House 2 cusp head</td><td style='color:#00008B; font-weight:bold'>Opposition</td><td style='font-weight:bold; color:#B22222'>0.76° (92.4%)</td></tr><tr><td>Uranus</td><td>House 4 cusp head</td><td style='color:#006400; font-weight:bold'>Trine</td><td style='font-weight:bold; color:#B22222'>0.76° (90.5%)</td></tr><tr><td>Uranus</td><td>House 5 cusp head</td><td style='color:#FF0000; font-weight:bold'>Square</td><td style='font-weight:bold; color:#B22222'>0.76° (90.5%)</td></tr><tr><td>Uranus</td><td>House 6 cusp head</td><td style='color:#00BFFF; font-weight:bold'>Sextile</td><td style='font-weight:bold; color:#FF8C00'>0.76° (87.4%)</td></tr><tr><td>Uranus</td><td>House 8 cusp head</td><td style='color:#333; font-weight:bold'>Conjunction</td><td style='font-weight:bold; color:#B22222'>0.76° (92.4%)</td></tr><tr><td>Uranus</td><td>House 10 cusp head</td><td style='color:#00BFFF; font-weight:bold'>Sextile</td><td style='font-weight:bold; color:#FF8C00'>0.76° (87.4%)</td></tr><tr><td>Uranus</td><td>House 11 cusp head</td><td style='color:#FF0000; font-weight:bold'>Square</td><td style='font-weight:bold; color:#B22222'>0.76° (90.5%)</td></tr><tr><td>Uranus</td><td>House 12 cusp head</td><td style='color:#006400; font-weight:bold'>Trine</td><td style='font-weight:bold; color:#B22222'>0.76° (90.5%)</td></tr><tr><td>Neptune</td><td>Node</td><td style='color:#00008B; font-weight:bold'>Opposition</td><td style='font-weight:bold; color:#B406BD'>5.51° (44.9%)</td></tr><tr><td>Pluto</td><td>House 2 cusp head</td><td style='color:#006400; font-weight:bold'>Trine</td><td style='font-weight:bold'>5.78° (27.7%)</td></tr><tr><td>Pluto</td><td>House 3 cusp head</td><td style='color:#FF0000; font-weight:bold'>Square</td><td style='font-weight:bold'>5.78° (27.7%)</td></tr><tr><td>Pluto</td><td>House 4 cusp head</td><td style='color:#00BFFF; font-weight:bold'>Sextile</td><td style='font-weight:bold'>5.78° (3.6%)</td></tr><tr><td>Pluto</td><td>House 6 cusp head</td><td style='color:#333; font-weight:bold'>Conjunction</td><td style='font-weight:bold; color:#B406BD'>5.78° (42.2%)</td></tr><tr><td>Pluto</td><td>House 8 cusp head</td><td style='color:#00BFFF; font-weight:bold'>Sextile</td><td style='font-weight:bold'>5.78° (3.6%)</td></tr><tr><td>Pluto</td><td>House 9 cusp head</td><td style='color:#FF0000; font-weight:bold'>Square</td><td style='font-weight:bold'>5.78° (27.7%)</td></tr><tr><td>Pluto</td><td>House 10 cusp head</td><td style='color:#006400; font-weight:bold'>Trine</td><td style='font-weight:bold'>5.78° (27.7%)</td></tr><tr><td>Pluto</td><td>House 12 cusp head</td><td style='color:#00008B; font-weight:bold'>Opposition</td><td style='font-weight:bold; color:#B406BD'>5.78° (42.2%)</td></tr><tr><td>Node</td><td>Fortune</td><td style='color:#006400; font-weight:bold'>Trine</td><td style='font-weight:bold; color:#FF8C00'>2.59° (67.6%)</td></tr><tr><td>Asc</td><td>House 1 cusp head</td><td style='color:#333; font-weight:bold'>Conjunction</td><td style='font-weight:bold; color:#B22222'>0.0° (100.0%)</td></tr><tr><td>Asc</td><td>House 3 cusp head</td><td style='color:#00BFFF; font-weight:bold'>Sextile</td><td style='font-weight:bold; color:#B22222'>0.0° (100.0%)</td></tr><tr><td>Asc</td><td>House 4 cusp head</td><td style='color:#FF0000; font-weight:bold'>Square</td><td style='font-weight:bold; color:#B22222'>0.0° (100.0%)</td></tr><tr><td>Asc</td><td>House 5 cusp head</td><td style='color:#006400; font-weight:bold'>Trine</td><td style='font-weight:bold; color:#B22222'>0.0° (100.0%)</td></tr><tr><td>Asc</td><td>House 7 cusp head</td><td style='color:#00008B; font-weight:bold'>Opposition</td><td style='font-weight:bold; color:#B22222'>0.0° (100.0%)</td></tr><tr><td>Asc</td><td>House 9 cusp head</td><td style='color:#006400; font-weight:bold'>Trine</td><td style='font-weight:bold; color:#B22222'>0.0° (100.0%)</td></tr><tr><td>Asc</td><td>House 10 cusp head</td><td style='color:#FF0000; font-weight:bold'>Square</td><td style='font-weight:bold; color:#B22222'>0.0° (100.0%)</td></tr><tr><td>Asc</td><td>House 11 cusp head</td><td style='color:#00BFFF; font-weight:bold'>Sextile</td><td style='font-weight:bold; color:#B22222'>0.0° (100.0%)</td></tr><tr><td>Fortune</td><td>House 3 cusp head</td><td style='color:#00008B; font-weight:bold'>Opposition</td><td style='font-weight:bold'>9.31° (6.9%)</td></tr><tr><td>Fortune</td><td>House 9 cusp head</td><td style='color:#333; font-weight:bold'>Conjunction</td><td style='font-weight:bold'>9.31° (6.9%)</td></tr></tbody></table>
+        <div class="section-title">Detailed Calculation & House Analysis</div>
+        <details class="detailed-house">
+            <summary class="house-header" style="cursor: pointer; outline: none;">
+                House 1 <span style="font-size:14px; color:#888; font-weight:normal; margin-left:10px;">▼ Click to Expand/Collapse</span>
+            </summary>
+            <div class="cusp-info">
+                Cusp: Cancer | House Lord: Moon (Lord of H1) placed in House 5
+            </div>
+        
+            <div class="planet-detail ruler-focus">
+                <div class="planet-title">House Lord: Moon (Lord of H1 Cusp)</div>
+                <div>Planet: Moon(Lord of H1 Cusp)</div>
+                <div>House: House 5 | Sign: Sagittarius | Degree: 15°6'</div>
+                <div class="score-line">Essential: State: Per | Term: No | Face: Yes | Trip: No | Essential Score: +1</div>
+                <div class="score-line">Accidental: House: +3 | Combust: No | Retro: No | Via Combusta: No | Accidental Score: +3</div>
+                <div class="score-line">Diplomacy: Mut. Rec: Jupiter | Mut. Rej: None | Rej. By: None | Rec. By: Mars, Saturn | Diplomacy Score: +4.8</div>
+                <div class="score-line total-score">Total Score: +8.8 | Pattern: None(+0.0) | Importance/Score: +8.8</div>
+                <div class="aspect-details">
+                    <div>Aspect 1: Target: Mercury | Target House: 8 | Aspect: Square(90°) | Orb: 6.94° (13.2%)</div><div>Aspect 2: Target: Venus | Target House: 8 | Aspect: Square(90°) | Orb: 0.55° (93.1%)</div><div>Aspect 3: Target: Uranus | Target House: 8 | Aspect: Sextile(60°) | Orb: 4.3° (28.4%)</div><div>Aspect 4: Target: Pluto | Target House: 5 | Aspect: Conjunction(0°) | Orb: 2.24° (77.6%)</div><div>Aspect 5: Target: House 2 cusp head | Target House: 2 | Aspect: Trine(120°) | Orb: 3.54° (55.8%)</div><div>Aspect 6: Target: House 3 cusp head | Target House: 3 | Aspect: Square(90°) | Orb: 3.54° (55.8%)</div><div>Aspect 7: Target: House 4 cusp head | Target House: 4 | Aspect: Sextile(60°) | Orb: 3.54° (41.0%)</div><div>Aspect 8: Target: House 6 cusp head | Target House: 6 | Aspect: Conjunction(0°) | Orb: 3.54° (64.6%)</div>
+                </div>
+            </div>
+            
+            <div class="planet-detail">
+                <div class="planet-title">Planet in House: Node</div>
+                <div>Planet: Node</div>
+                <div>House: House 1 | Sign: Leo | Degree: 0°33'</div>
+                <div class="score-line">Essential: State: Per | Term: No | Face: No | Trip: No | Essential Score: +0</div>
+                <div class="score-line">Accidental: House: +5 | Combust: No | Retro: Yes | Via Combusta: No | Accidental Score: +0</div>
+                <div class="score-line">Diplomacy: Mut. Rec: None | Mut. Rej: None | Rej. By: None | Rec. By: None | Diplomacy Score: +0</div>
+                <div class="score-line total-score">Total Score: +0 | Pattern: None(+0.0) | Importance/Score: +0</div>
+                <div class="aspect-details">
+                    <div>Aspect 1: Target: Sun | Target House: 9 | Aspect: Trine(120°) | Orb: 5.24° (34.5%)</div><div>Aspect 2: Target: Mars | Target House: 10 | Aspect: Square(90°) | Orb: 1.72° (78.5%)</div><div>Aspect 3: Target: Jupiter | Target House: 10 | Aspect: Square(90°) | Orb: 7.31° (8.6%)</div><div>Aspect 4: Target: Neptune | Target House: 7 | Aspect: Opposition(180°) | Orb: 5.51° (44.9%)</div><div>Aspect 5: Target: Midheaven | Target House: 9 | Aspect: Trine(120°) | Orb: 0.23° (97.2%)</div><div>Aspect 6: Target: Fortune | Target House: 9 | Aspect: Trine(120°) | Orb: 2.59° (67.6%)</div>
+                </div>
+            </div>
+            </details>
+        <details class="detailed-house">
+            <summary class="house-header" style="cursor: pointer; outline: none;">
+                House 2 <span style="font-size:14px; color:#888; font-weight:normal; margin-left:10px;">▼ Click to Expand/Collapse</span>
+            </summary>
+            <div class="cusp-info">
+                Cusp: Leo | House Lord: Sun (Lord of H2) placed in House 9
+            </div>
+        
+            <div class="planet-detail ruler-focus">
+                <div class="planet-title">House Lord: Sun (Lord of H2 Cusp)</div>
+                <div>Planet: Sun(Lord of H2 Cusp)</div>
+                <div>House: House 9 | Sign: Aries | Degree: 5°48'</div>
+                <div class="score-line">Essential: State: Exalt | Term: No | Face: No | Trip: Yes | Essential Score: +7</div>
+                <div class="score-line">Accidental: House: +2 | Combust: No | Retro: No | Via Combusta: No | Accidental Score: +2</div>
+                <div class="score-line">Diplomacy: Mut. Rec: None | Mut. Rej: None | Rej. By: None | Rec. By: None | Diplomacy Score: +0</div>
+                <div class="score-line total-score">Total Score: +9 | Pattern: None(+0.0) | Importance/Score: +9</div>
+                <div class="aspect-details">
+                    <div>Aspect 1: Target: Neptune | Target House: 7 | Aspect: Sextile(60°) | Orb: 0.27° (95.5%)</div><div>Aspect 2: Target: Pluto | Target House: 5 | Aspect: Trine(120°) | Orb: 7.07° (11.6%)</div><div>Aspect 3: Target: Node | Target House: 1 | Aspect: Trine(120°) | Orb: 5.24° (34.5%)</div><div>Aspect 4: Target: Midheaven | Target House: 9 | Aspect: Conjunction(0°) | Orb: 5.47° (45.3%)</div><div>Aspect 5: Target: Fortune | Target House: 9 | Aspect: Conjunction(0°) | Orb: 7.83° (21.7%)</div>
+                </div>
+            </div>
+            </details>
+        <details class="detailed-house">
+            <summary class="house-header" style="cursor: pointer; outline: none;">
+                House 3 <span style="font-size:14px; color:#888; font-weight:normal; margin-left:10px;">▼ Click to Expand/Collapse</span>
+            </summary>
+            <div class="cusp-info">
+                Cusp: Virgo | House Lord: Mercury (Lord of H3) placed in House 8
+            </div>
+        
+            <div class="planet-detail ruler-focus">
+                <div class="planet-title">House Lord: Mercury (Lord of H3 Cusp)</div>
+                <div>Planet: Mercury(Lord of H3 Cusp)</div>
+                <div>House: House 8 | Sign: Pisces | Degree: 8°10'</div>
+                <div class="score-line">Essential: State: Det | Term: No | Face: No | Trip: No | Essential Score: -9</div>
+                <div class="score-line">Accidental: House: -5 | Combust: No | Retro: No | Via Combusta: No | Accidental Score: -5</div>
+                <div class="score-line">Diplomacy: Mut. Rec: None | Mut. Rej: None | Rej. By: Moon(S), Venus(C) | Rec. By: None | Diplomacy Score: -0.8</div>
+                <div class="score-line total-score">Total Score: -14.8 | Pattern: None(+0.0) | Importance/Score: -14.8</div>
+                <div class="aspect-details">
+                    <div>Aspect 1: Target: Moon | Target House: 5 | Aspect: Square(90°) | Orb: 6.94° (13.2%)</div><div>Aspect 2: Target: Venus | Target House: 8 | Aspect: Conjunction(0°) | Orb: 7.49° (25.1%)</div><div>Aspect 3: Target: Mars | Target House: 10 | Aspect: Sextile(60°) | Orb: 5.89° (1.8%)</div><div>Aspect 4: Target: Jupiter | Target House: 10 | Aspect: Sextile(60°) | Orb: 0.3° (95.0%)</div><div>Aspect 5: Target: Pluto | Target House: 5 | Aspect: Square(90°) | Orb: 4.7° (41.3%)</div>
+                </div>
+            </div>
+            </details>
+        <details class="detailed-house">
+            <summary class="house-header" style="cursor: pointer; outline: none;">
+                House 4 <span style="font-size:14px; color:#888; font-weight:normal; margin-left:10px;">▼ Click to Expand/Collapse</span>
+            </summary>
+            <div class="cusp-info">
+                Cusp: Libra | House Lord: Venus (Lord of H4) placed in House 8
+            </div>
+        
+            <div class="planet-detail ruler-focus">
+                <div class="planet-title">House Lord: Venus (Lord of H4 Cusp)</div>
+                <div>Planet: Venus(Lord of H4 Cusp)</div>
+                <div>House: House 8 | Sign: Pisces | Degree: 15°40'</div>
+                <div class="score-line">Essential: State: Exalt | Term: No | Face: No | Trip: Yes | Essential Score: +7</div>
+                <div class="score-line">Accidental: House: -5 | Combust: No | Retro: No | Via Combusta: No | Accidental Score: -5</div>
+                <div class="score-line">Diplomacy: Mut. Rec: Jupiter | Mut. Rej: None | Rej. By: None | Rec. By: Mercury, Mars, Saturn | Diplomacy Score: +5.2</div>
+                <div class="score-line total-score">Total Score: +7.2 | Pattern: None(+0.0) | Importance/Score: +7.2</div>
+                <div class="aspect-details">
+                    <div>Aspect 1: Target: Moon | Target House: 5 | Aspect: Square(90°) | Orb: 0.55° (93.1%)</div><div>Aspect 2: Target: Mercury | Target House: 8 | Aspect: Conjunction(0°) | Orb: 7.49° (25.1%)</div><div>Aspect 3: Target: Saturn | Target House: 10 | Aspect: Sextile(60°) | Orb: 0.82° (86.4%)</div><div>Aspect 4: Target: Pluto | Target House: 5 | Aspect: Square(90°) | Orb: 2.8° (65.1%)</div><div>Aspect 5: Target: Asc | Target House: 1 | Aspect: Trine(120°) | Orb: 2.99° (62.7%)</div><div>Aspect 6: Target: House 1 cusp head | Target House: 1 | Aspect: Trine(120°) | Orb: 2.99° (62.7%)</div><div>Aspect 7: Target: House 3 cusp head | Target House: 3 | Aspect: Opposition(180°) | Orb: 2.99° (70.1%)</div><div>Aspect 8: Target: House 5 cusp head | Target House: 5 | Aspect: Trine(120°) | Orb: 2.99° (62.7%)</div>
+                </div>
+            </div>
+            </details>
+        <details class="detailed-house">
+            <summary class="house-header" style="cursor: pointer; outline: none;">
+                House 5 <span style="font-size:14px; color:#888; font-weight:normal; margin-left:10px;">▼ Click to Expand/Collapse</span>
+            </summary>
+            <div class="cusp-info">
+                Cusp: Scorpio | House Lord: Mars (Lord of H5) placed in House 10
+            </div>
+        
+            <div class="planet-detail ruler-focus">
+                <div class="planet-title">House Lord: Mars (Lord of H5 Cusp)</div>
+                <div>Planet: Mars(Lord of H5 Cusp)</div>
+                <div>House: House 10 | Sign: Taurus | Degree: 2°16'</div>
+                <div class="score-line">Essential: State: Det | Term: No | Face: No | Trip: No | Essential Score: -5</div>
+                <div class="score-line">Accidental: House: +5 | Combust: No | Retro: No | Via Combusta: No | Accidental Score: +5</div>
+                <div class="score-line">Diplomacy: Mut. Rec: None | Mut. Rej: None | Rej. By: Jupiter(C) | Rec. By: Sun | Diplomacy Score: +0</div>
+                <div class="score-line total-score">Total Score: +0 | Pattern: None(+0.0) | Importance/Score: +0</div>
+                <div class="aspect-details">
+                    <div>Aspect 1: Target: Mercury | Target House: 8 | Aspect: Sextile(60°) | Orb: 5.89° (1.8%)</div><div>Aspect 2: Target: Jupiter | Target House: 10 | Aspect: Conjunction(0°) | Orb: 5.59° (44.1%)</div><div>Aspect 3: Target: Neptune | Target House: 7 | Aspect: Square(90°) | Orb: 3.79° (52.7%)</div><div>Aspect 4: Target: Node | Target House: 1 | Aspect: Square(90°) | Orb: 1.72° (78.5%)</div>
+                </div>
+            </div>
+            
+            <div class="planet-detail">
+                <div class="planet-title">Planet in House: Moon</div>
+                <div>Planet: Moon</div>
+                <div>House: House 5 | Sign: Sagittarius | Degree: 15°6'</div>
+                <div class="score-line">Essential: State: Per | Term: No | Face: Yes | Trip: No | Essential Score: +1</div>
+                <div class="score-line">Accidental: House: +3 | Combust: No | Retro: No | Via Combusta: No | Accidental Score: +3</div>
+                <div class="score-line">Diplomacy: Mut. Rec: Jupiter | Mut. Rej: None | Rej. By: None | Rec. By: Mars, Saturn | Diplomacy Score: +4.8</div>
+                <div class="score-line total-score">Total Score: +8.8 | Pattern: None(+0.0) | Importance/Score: +8.8</div>
+                <div class="aspect-details">
+                    <div>Aspect 1: Target: Mercury | Target House: 8 | Aspect: Square(90°) | Orb: 6.94° (13.2%)</div><div>Aspect 2: Target: Venus | Target House: 8 | Aspect: Square(90°) | Orb: 0.55° (93.1%)</div><div>Aspect 3: Target: Uranus | Target House: 8 | Aspect: Sextile(60°) | Orb: 4.3° (28.4%)</div><div>Aspect 4: Target: Pluto | Target House: 5 | Aspect: Conjunction(0°) | Orb: 2.24° (77.6%)</div><div>Aspect 5: Target: House 2 cusp head | Target House: 2 | Aspect: Trine(120°) | Orb: 3.54° (55.8%)</div><div>Aspect 6: Target: House 3 cusp head | Target House: 3 | Aspect: Square(90°) | Orb: 3.54° (55.8%)</div><div>Aspect 7: Target: House 4 cusp head | Target House: 4 | Aspect: Sextile(60°) | Orb: 3.54° (41.0%)</div><div>Aspect 8: Target: House 6 cusp head | Target House: 6 | Aspect: Conjunction(0°) | Orb: 3.54° (64.6%)</div>
+                </div>
+            </div>
+            
+            <div class="planet-detail">
+                <div class="planet-title">Planet in House: Pluto</div>
+                <div>Planet: Pluto</div>
+                <div>House: House 5 | Sign: Sagittarius | Degree: 12°52'</div>
+                <div class="score-line">Essential: State: Per | Term: No | Face: No | Trip: No | Essential Score: +0</div>
+                <div class="score-line">Accidental: House: +3 | Combust: No | Retro: Yes | Via Combusta: No | Accidental Score: -2</div>
+                <div class="score-line">Diplomacy: Mut. Rec: None | Mut. Rej: None | Rej. By: None | Rec. By: None | Diplomacy Score: +0</div>
+                <div class="score-line total-score">Total Score: -2 | Pattern: None(+0.0) | Importance/Score: -2</div>
+                <div class="aspect-details">
+                    <div>Aspect 1: Target: Sun | Target House: 9 | Aspect: Trine(120°) | Orb: 7.07° (11.6%)</div><div>Aspect 2: Target: Moon | Target House: 5 | Aspect: Conjunction(0°) | Orb: 2.24° (77.6%)</div><div>Aspect 3: Target: Mercury | Target House: 8 | Aspect: Square(90°) | Orb: 4.7° (41.3%)</div><div>Aspect 4: Target: Venus | Target House: 8 | Aspect: Square(90°) | Orb: 2.8° (65.1%)</div><div>Aspect 5: Target: House 2 cusp head | Target House: 2 | Aspect: Trine(120°) | Orb: 5.78° (27.7%)</div><div>Aspect 6: Target: House 3 cusp head | Target House: 3 | Aspect: Square(90°) | Orb: 5.78° (27.7%)</div><div>Aspect 7: Target: House 4 cusp head | Target House: 4 | Aspect: Sextile(60°) | Orb: 5.78° (3.6%)</div><div>Aspect 8: Target: House 6 cusp head | Target House: 6 | Aspect: Conjunction(0°) | Orb: 5.78° (42.2%)</div>
+                </div>
+            </div>
+            </details>
+        <details class="detailed-house">
+            <summary class="house-header" style="cursor: pointer; outline: none;">
+                House 6 <span style="font-size:14px; color:#888; font-weight:normal; margin-left:10px;">▼ Click to Expand/Collapse</span>
+            </summary>
+            <div class="cusp-info">
+                Cusp: Sagittarius | House Lord: Jupiter (Lord of H6) placed in House 10
+            </div>
+        
+            <div class="planet-detail ruler-focus">
+                <div class="planet-title">House Lord: Jupiter (Lord of H6 Cusp)</div>
+                <div>Planet: Jupiter(Lord of H6 Cusp)</div>
+                <div>House: House 10 | Sign: Taurus | Degree: 7°52'</div>
+                <div class="score-line">Essential: State: Per | Term: No | Face: No | Trip: No | Essential Score: +0</div>
+                <div class="score-line">Accidental: House: +5 | Combust: No | Retro: No | Via Combusta: No | Accidental Score: +5</div>
+                <div class="score-line">Diplomacy: Mut. Rec: Moon, Venus | Mut. Rej: None | Rej. By: None | Rec. By: Mercury | Diplomacy Score: +8.4</div>
+                <div class="score-line total-score">Total Score: +13.4 | Pattern: None(+0.0) | Importance/Score: +13.4</div>
+                <div class="aspect-details">
+                    <div>Aspect 1: Target: Mercury | Target House: 8 | Aspect: Sextile(60°) | Orb: 0.3° (95.0%)</div><div>Aspect 2: Target: Mars | Target House: 10 | Aspect: Conjunction(0°) | Orb: 5.59° (44.1%)</div><div>Aspect 3: Target: Saturn | Target House: 10 | Aspect: Conjunction(0°) | Orb: 6.97° (30.3%)</div><div>Aspect 4: Target: Neptune | Target House: 7 | Aspect: Square(90°) | Orb: 1.81° (77.4%)</div><div>Aspect 5: Target: Node | Target House: 1 | Aspect: Square(90°) | Orb: 7.31° (8.6%)</div>
+                </div>
+            </div>
+            </details>
+        <details class="detailed-house">
+            <summary class="house-header" style="cursor: pointer; outline: none;">
+                House 7 <span style="font-size:14px; color:#888; font-weight:normal; margin-left:10px;">▼ Click to Expand/Collapse</span>
+            </summary>
+            <div class="cusp-info">
+                Cusp: Capricorn | House Lord: Saturn (Lord of H7) placed in House 10
+            </div>
+        
+            <div class="planet-detail ruler-focus">
+                <div class="planet-title">House Lord: Saturn (Lord of H7 Cusp)</div>
+                <div>Planet: Saturn(Lord of H7 Cusp)</div>
+                <div>House: House 10 | Sign: Taurus | Degree: 14°50'</div>
+                <div class="score-line">Essential: State: Per | Term: No | Face: No | Trip: No | Essential Score: +0</div>
+                <div class="score-line">Accidental: House: +5 | Combust: No | Retro: No | Via Combusta: No | Accidental Score: +5</div>
+                <div class="score-line">Diplomacy: Mut. Rec: None | Mut. Rej: None | Rej. By: None | Rec. By: None | Diplomacy Score: +0</div>
+                <div class="score-line total-score">Total Score: +5 | Pattern: None(+0.0) | Importance/Score: +5</div>
+                <div class="aspect-details">
+                    <div>Aspect 1: Target: Venus | Target House: 8 | Aspect: Sextile(60°) | Orb: 0.82° (86.4%)</div><div>Aspect 2: Target: Jupiter | Target House: 10 | Aspect: Conjunction(0°) | Orb: 6.97° (30.3%)</div><div>Aspect 3: Target: Uranus | Target House: 8 | Aspect: Square(90°) | Orb: 4.56° (43.0%)</div><div>Aspect 4: Target: Asc | Target House: 1 | Aspect: Sextile(60°) | Orb: 3.81° (36.6%)</div><div>Aspect 5: Target: House 1 cusp head | Target House: 1 | Aspect: Sextile(60°) | Orb: 3.81° (36.6%)</div><div>Aspect 6: Target: House 2 cusp head | Target House: 2 | Aspect: Square(90°) | Orb: 3.81° (52.4%)</div><div>Aspect 7: Target: House 3 cusp head | Target House: 3 | Aspect: Trine(120°) | Orb: 3.81° (52.4%)</div><div>Aspect 8: Target: House 5 cusp head | Target House: 5 | Aspect: Opposition(180°) | Orb: 3.81° (61.9%)</div>
+                </div>
+            </div>
+            
+            <div class="planet-detail">
+                <div class="planet-title">Planet in House: Neptune</div>
+                <div>Planet: Neptune</div>
+                <div>House: House 7 | Sign: Aquarius | Degree: 6°4'</div>
+                <div class="score-line">Essential: State: Per | Term: No | Face: No | Trip: No | Essential Score: +0</div>
+                <div class="score-line">Accidental: House: +5 | Combust: No | Retro: No | Via Combusta: No | Accidental Score: +5</div>
+                <div class="score-line">Diplomacy: Mut. Rec: None | Mut. Rej: None | Rej. By: None | Rec. By: None | Diplomacy Score: +0</div>
+                <div class="score-line total-score">Total Score: +5 | Pattern: None(+0.0) | Importance/Score: +5</div>
+                <div class="aspect-details">
+                    <div>Aspect 1: Target: Sun | Target House: 9 | Aspect: Sextile(60°) | Orb: 0.27° (95.5%)</div><div>Aspect 2: Target: Mars | Target House: 10 | Aspect: Square(90°) | Orb: 3.79° (52.7%)</div><div>Aspect 3: Target: Jupiter | Target House: 10 | Aspect: Square(90°) | Orb: 1.81° (77.4%)</div><div>Aspect 4: Target: Node | Target House: 1 | Aspect: Opposition(180°) | Orb: 5.51° (44.9%)</div><div>Aspect 5: Target: Midheaven | Target House: 9 | Aspect: Sextile(60°) | Orb: 5.73° (4.4%)</div>
+                </div>
+            </div>
+            </details>
+        <details class="detailed-house">
+            <summary class="house-header" style="cursor: pointer; outline: none;">
+                House 8 <span style="font-size:14px; color:#888; font-weight:normal; margin-left:10px;">▼ Click to Expand/Collapse</span>
+            </summary>
+            <div class="cusp-info">
+                Cusp: Aquarius | House Lord: Saturn (Lord of H8) placed in House 10
+            </div>
+        
+            <div class="planet-detail ruler-focus">
+                <div class="planet-title">House Lord: Saturn (Lord of H8 Cusp)</div>
+                <div>Planet: Saturn(Lord of H8 Cusp)</div>
+                <div>House: House 10 | Sign: Taurus | Degree: 14°50'</div>
+                <div class="score-line">Essential: State: Per | Term: No | Face: No | Trip: No | Essential Score: +0</div>
+                <div class="score-line">Accidental: House: +5 | Combust: No | Retro: No | Via Combusta: No | Accidental Score: +5</div>
+                <div class="score-line">Diplomacy: Mut. Rec: None | Mut. Rej: None | Rej. By: None | Rec. By: None | Diplomacy Score: +0</div>
+                <div class="score-line total-score">Total Score: +5 | Pattern: None(+0.0) | Importance/Score: +5</div>
+                <div class="aspect-details">
+                    <div>Aspect 1: Target: Venus | Target House: 8 | Aspect: Sextile(60°) | Orb: 0.82° (86.4%)</div><div>Aspect 2: Target: Jupiter | Target House: 10 | Aspect: Conjunction(0°) | Orb: 6.97° (30.3%)</div><div>Aspect 3: Target: Uranus | Target House: 8 | Aspect: Square(90°) | Orb: 4.56° (43.0%)</div><div>Aspect 4: Target: Asc | Target House: 1 | Aspect: Sextile(60°) | Orb: 3.81° (36.6%)</div><div>Aspect 5: Target: House 1 cusp head | Target House: 1 | Aspect: Sextile(60°) | Orb: 3.81° (36.6%)</div><div>Aspect 6: Target: House 2 cusp head | Target House: 2 | Aspect: Square(90°) | Orb: 3.81° (52.4%)</div><div>Aspect 7: Target: House 3 cusp head | Target House: 3 | Aspect: Trine(120°) | Orb: 3.81° (52.4%)</div><div>Aspect 8: Target: House 5 cusp head | Target House: 5 | Aspect: Opposition(180°) | Orb: 3.81° (61.9%)</div>
+                </div>
+            </div>
+            
+            <div class="planet-detail">
+                <div class="planet-title">Planet in House: Mercury</div>
+                <div>Planet: Mercury</div>
+                <div>House: House 8 | Sign: Pisces | Degree: 8°10'</div>
+                <div class="score-line">Essential: State: Det | Term: No | Face: No | Trip: No | Essential Score: -9</div>
+                <div class="score-line">Accidental: House: -5 | Combust: No | Retro: No | Via Combusta: No | Accidental Score: -5</div>
+                <div class="score-line">Diplomacy: Mut. Rec: None | Mut. Rej: None | Rej. By: Moon(S), Venus(C) | Rec. By: None | Diplomacy Score: -0.8</div>
+                <div class="score-line total-score">Total Score: -14.8 | Pattern: None(+0.0) | Importance/Score: -14.8</div>
+                <div class="aspect-details">
+                    <div>Aspect 1: Target: Moon | Target House: 5 | Aspect: Square(90°) | Orb: 6.94° (13.2%)</div><div>Aspect 2: Target: Venus | Target House: 8 | Aspect: Conjunction(0°) | Orb: 7.49° (25.1%)</div><div>Aspect 3: Target: Mars | Target House: 10 | Aspect: Sextile(60°) | Orb: 5.89° (1.8%)</div><div>Aspect 4: Target: Jupiter | Target House: 10 | Aspect: Sextile(60°) | Orb: 0.3° (95.0%)</div><div>Aspect 5: Target: Pluto | Target House: 5 | Aspect: Square(90°) | Orb: 4.7° (41.3%)</div>
+                </div>
+            </div>
+            
+            <div class="planet-detail">
+                <div class="planet-title">Planet in House: Venus</div>
+                <div>Planet: Venus</div>
+                <div>House: House 8 | Sign: Pisces | Degree: 15°40'</div>
+                <div class="score-line">Essential: State: Exalt | Term: No | Face: No | Trip: Yes | Essential Score: +7</div>
+                <div class="score-line">Accidental: House: -5 | Combust: No | Retro: No | Via Combusta: No | Accidental Score: -5</div>
+                <div class="score-line">Diplomacy: Mut. Rec: Jupiter | Mut. Rej: None | Rej. By: None | Rec. By: Mercury, Mars, Saturn | Diplomacy Score: +5.2</div>
+                <div class="score-line total-score">Total Score: +7.2 | Pattern: None(+0.0) | Importance/Score: +7.2</div>
+                <div class="aspect-details">
+                    <div>Aspect 1: Target: Moon | Target House: 5 | Aspect: Square(90°) | Orb: 0.55° (93.1%)</div><div>Aspect 2: Target: Mercury | Target House: 8 | Aspect: Conjunction(0°) | Orb: 7.49° (25.1%)</div><div>Aspect 3: Target: Saturn | Target House: 10 | Aspect: Sextile(60°) | Orb: 0.82° (86.4%)</div><div>Aspect 4: Target: Pluto | Target House: 5 | Aspect: Square(90°) | Orb: 2.8° (65.1%)</div><div>Aspect 5: Target: Asc | Target House: 1 | Aspect: Trine(120°) | Orb: 2.99° (62.7%)</div><div>Aspect 6: Target: House 1 cusp head | Target House: 1 | Aspect: Trine(120°) | Orb: 2.99° (62.7%)</div><div>Aspect 7: Target: House 3 cusp head | Target House: 3 | Aspect: Opposition(180°) | Orb: 2.99° (70.1%)</div><div>Aspect 8: Target: House 5 cusp head | Target House: 5 | Aspect: Trine(120°) | Orb: 2.99° (62.7%)</div>
+                </div>
+            </div>
+            
+            <div class="planet-detail">
+                <div class="planet-title">Planet in House: Uranus</div>
+                <div>Planet: Uranus</div>
+                <div>House: House 8 | Sign: Aquarius | Degree: 19°24'</div>
+                <div class="score-line">Essential: State: Per | Term: No | Face: No | Trip: No | Essential Score: +0</div>
+                <div class="score-line">Accidental: House: -5 | Combust: No | Retro: No | Via Combusta: No | Accidental Score: -5</div>
+                <div class="score-line">Diplomacy: Mut. Rec: None | Mut. Rej: None | Rej. By: None | Rec. By: None | Diplomacy Score: +0</div>
+                <div class="score-line total-score">Total Score: -5 | Pattern: None(+0.0) | Importance/Score: -5</div>
+                <div class="aspect-details">
+                    <div>Aspect 1: Target: Moon | Target House: 5 | Aspect: Sextile(60°) | Orb: 4.3° (28.4%)</div><div>Aspect 2: Target: Saturn | Target House: 10 | Aspect: Square(90°) | Orb: 4.56° (43.0%)</div><div>Aspect 3: Target: House 2 cusp head | Target House: 2 | Aspect: Opposition(180°) | Orb: 0.76° (92.4%)</div><div>Aspect 4: Target: House 4 cusp head | Target House: 4 | Aspect: Trine(120°) | Orb: 0.76° (90.5%)</div><div>Aspect 5: Target: House 5 cusp head | Target House: 5 | Aspect: Square(90°) | Orb: 0.76° (90.5%)</div><div>Aspect 6: Target: House 6 cusp head | Target House: 6 | Aspect: Sextile(60°) | Orb: 0.76° (87.4%)</div><div>Aspect 7: Target: House 8 cusp head | Target House: 8 | Aspect: Conjunction(0°) | Orb: 0.76° (92.4%)</div><div>Aspect 8: Target: House 10 cusp head | Target House: 10 | Aspect: Sextile(60°) | Orb: 0.76° (87.4%)</div>
+                </div>
+            </div>
+            </details>
+        <details class="detailed-house">
+            <summary class="house-header" style="cursor: pointer; outline: none;">
+                House 9 <span style="font-size:14px; color:#888; font-weight:normal; margin-left:10px;">▼ Click to Expand/Collapse</span>
+            </summary>
+            <div class="cusp-info">
+                Cusp: Pisces | House Lord: Jupiter (Lord of H9) placed in House 10
+            </div>
+        
+            <div class="planet-detail ruler-focus">
+                <div class="planet-title">House Lord: Jupiter (Lord of H9 Cusp)</div>
+                <div>Planet: Jupiter(Lord of H9 Cusp)</div>
+                <div>House: House 10 | Sign: Taurus | Degree: 7°52'</div>
+                <div class="score-line">Essential: State: Per | Term: No | Face: No | Trip: No | Essential Score: +0</div>
+                <div class="score-line">Accidental: House: +5 | Combust: No | Retro: No | Via Combusta: No | Accidental Score: +5</div>
+                <div class="score-line">Diplomacy: Mut. Rec: Moon, Venus | Mut. Rej: None | Rej. By: None | Rec. By: Mercury | Diplomacy Score: +8.4</div>
+                <div class="score-line total-score">Total Score: +13.4 | Pattern: None(+0.0) | Importance/Score: +13.4</div>
+                <div class="aspect-details">
+                    <div>Aspect 1: Target: Mercury | Target House: 8 | Aspect: Sextile(60°) | Orb: 0.3° (95.0%)</div><div>Aspect 2: Target: Mars | Target House: 10 | Aspect: Conjunction(0°) | Orb: 5.59° (44.1%)</div><div>Aspect 3: Target: Saturn | Target House: 10 | Aspect: Conjunction(0°) | Orb: 6.97° (30.3%)</div><div>Aspect 4: Target: Neptune | Target House: 7 | Aspect: Square(90°) | Orb: 1.81° (77.4%)</div><div>Aspect 5: Target: Node | Target House: 1 | Aspect: Square(90°) | Orb: 7.31° (8.6%)</div>
+                </div>
+            </div>
+            
+            <div class="planet-detail">
+                <div class="planet-title">Planet in House: Sun</div>
+                <div>Planet: Sun</div>
+                <div>House: House 9 | Sign: Aries | Degree: 5°48'</div>
+                <div class="score-line">Essential: State: Exalt | Term: No | Face: No | Trip: Yes | Essential Score: +7</div>
+                <div class="score-line">Accidental: House: +2 | Combust: No | Retro: No | Via Combusta: No | Accidental Score: +2</div>
+                <div class="score-line">Diplomacy: Mut. Rec: None | Mut. Rej: None | Rej. By: None | Rec. By: None | Diplomacy Score: +0</div>
+                <div class="score-line total-score">Total Score: +9 | Pattern: None(+0.0) | Importance/Score: +9</div>
+                <div class="aspect-details">
+                    <div>Aspect 1: Target: Neptune | Target House: 7 | Aspect: Sextile(60°) | Orb: 0.27° (95.5%)</div><div>Aspect 2: Target: Pluto | Target House: 5 | Aspect: Trine(120°) | Orb: 7.07° (11.6%)</div><div>Aspect 3: Target: Node | Target House: 1 | Aspect: Trine(120°) | Orb: 5.24° (34.5%)</div><div>Aspect 4: Target: Midheaven | Target House: 9 | Aspect: Conjunction(0°) | Orb: 5.47° (45.3%)</div><div>Aspect 5: Target: Fortune | Target House: 9 | Aspect: Conjunction(0°) | Orb: 7.83° (21.7%)</div>
+                </div>
+            </div>
+            
+            <div class="planet-detail">
+                <div class="planet-title">Planet in House: Fortune</div>
+                <div>Planet: Fortune</div>
+                <div>House: House 9 | Sign: Pisces | Degree: 27°58'</div>
+                <div class="score-line">Essential: State: Per | Term: No | Face: No | Trip: No | Essential Score: +0</div>
+                <div class="score-line">Accidental: House: +2 | Combust: Yes | Retro: No | Via Combusta: No | Accidental Score: -3</div>
+                <div class="score-line">Diplomacy: Mut. Rec: None | Mut. Rej: None | Rej. By: None | Rec. By: None | Diplomacy Score: +0</div>
+                <div class="score-line total-score">Total Score: -3 | Pattern: None(+0.0) | Importance/Score: -3</div>
+                <div class="aspect-details">
+                    <div>Aspect 1: Target: Sun | Target House: 9 | Aspect: Conjunction(0°) | Orb: 7.83° (21.7%)</div><div>Aspect 2: Target: Node | Target House: 1 | Aspect: Trine(120°) | Orb: 2.59° (67.6%)</div><div>Aspect 3: Target: Midheaven | Target House: 9 | Aspect: Conjunction(0°) | Orb: 2.37° (76.3%)</div><div>Aspect 4: Target: House 3 cusp head | Target House: 3 | Aspect: Opposition(180°) | Orb: 9.31° (6.9%)</div><div>Aspect 5: Target: House 9 cusp head | Target House: 9 | Aspect: Conjunction(0°) | Orb: 9.31° (6.9%)</div>
+                </div>
+            </div>
+            </details>
+        <details class="detailed-house">
+            <summary class="house-header" style="cursor: pointer; outline: none;">
+                House 10 <span style="font-size:14px; color:#888; font-weight:normal; margin-left:10px;">▼ Click to Expand/Collapse</span>
+            </summary>
+            <div class="cusp-info">
+                Cusp: Aries | House Lord: Mars (Lord of H10) placed in House 10
+            </div>
+        
+            <div class="planet-detail ruler-focus">
+                <div class="planet-title">House Lord: Mars (Lord of H10 Cusp)</div>
+                <div>Planet: Mars(Lord of H10 Cusp)</div>
+                <div>House: House 10 | Sign: Taurus | Degree: 2°16'</div>
+                <div class="score-line">Essential: State: Det | Term: No | Face: No | Trip: No | Essential Score: -5</div>
+                <div class="score-line">Accidental: House: +5 | Combust: No | Retro: No | Via Combusta: No | Accidental Score: +5</div>
+                <div class="score-line">Diplomacy: Mut. Rec: None | Mut. Rej: None | Rej. By: Jupiter(C) | Rec. By: Sun | Diplomacy Score: +0</div>
+                <div class="score-line total-score">Total Score: +0 | Pattern: None(+0.0) | Importance/Score: +0</div>
+                <div class="aspect-details">
+                    <div>Aspect 1: Target: Mercury | Target House: 8 | Aspect: Sextile(60°) | Orb: 5.89° (1.8%)</div><div>Aspect 2: Target: Jupiter | Target House: 10 | Aspect: Conjunction(0°) | Orb: 5.59° (44.1%)</div><div>Aspect 3: Target: Neptune | Target House: 7 | Aspect: Square(90°) | Orb: 3.79° (52.7%)</div><div>Aspect 4: Target: Node | Target House: 1 | Aspect: Square(90°) | Orb: 1.72° (78.5%)</div>
+                </div>
+            </div>
+            
+            <div class="planet-detail">
+                <div class="planet-title">Planet in House: Jupiter</div>
+                <div>Planet: Jupiter</div>
+                <div>House: House 10 | Sign: Taurus | Degree: 7°52'</div>
+                <div class="score-line">Essential: State: Per | Term: No | Face: No | Trip: No | Essential Score: +0</div>
+                <div class="score-line">Accidental: House: +5 | Combust: No | Retro: No | Via Combusta: No | Accidental Score: +5</div>
+                <div class="score-line">Diplomacy: Mut. Rec: Moon, Venus | Mut. Rej: None | Rej. By: None | Rec. By: Mercury | Diplomacy Score: +8.4</div>
+                <div class="score-line total-score">Total Score: +13.4 | Pattern: None(+0.0) | Importance/Score: +13.4</div>
+                <div class="aspect-details">
+                    <div>Aspect 1: Target: Mercury | Target House: 8 | Aspect: Sextile(60°) | Orb: 0.3° (95.0%)</div><div>Aspect 2: Target: Mars | Target House: 10 | Aspect: Conjunction(0°) | Orb: 5.59° (44.1%)</div><div>Aspect 3: Target: Saturn | Target House: 10 | Aspect: Conjunction(0°) | Orb: 6.97° (30.3%)</div><div>Aspect 4: Target: Neptune | Target House: 7 | Aspect: Square(90°) | Orb: 1.81° (77.4%)</div><div>Aspect 5: Target: Node | Target House: 1 | Aspect: Square(90°) | Orb: 7.31° (8.6%)</div>
+                </div>
+            </div>
+            
+            <div class="planet-detail">
+                <div class="planet-title">Planet in House: Saturn</div>
+                <div>Planet: Saturn</div>
+                <div>House: House 10 | Sign: Taurus | Degree: 14°50'</div>
+                <div class="score-line">Essential: State: Per | Term: No | Face: No | Trip: No | Essential Score: +0</div>
+                <div class="score-line">Accidental: House: +5 | Combust: No | Retro: No | Via Combusta: No | Accidental Score: +5</div>
+                <div class="score-line">Diplomacy: Mut. Rec: None | Mut. Rej: None | Rej. By: None | Rec. By: None | Diplomacy Score: +0</div>
+                <div class="score-line total-score">Total Score: +5 | Pattern: None(+0.0) | Importance/Score: +5</div>
+                <div class="aspect-details">
+                    <div>Aspect 1: Target: Venus | Target House: 8 | Aspect: Sextile(60°) | Orb: 0.82° (86.4%)</div><div>Aspect 2: Target: Jupiter | Target House: 10 | Aspect: Conjunction(0°) | Orb: 6.97° (30.3%)</div><div>Aspect 3: Target: Uranus | Target House: 8 | Aspect: Square(90°) | Orb: 4.56° (43.0%)</div><div>Aspect 4: Target: Asc | Target House: 1 | Aspect: Sextile(60°) | Orb: 3.81° (36.6%)</div><div>Aspect 5: Target: House 1 cusp head | Target House: 1 | Aspect: Sextile(60°) | Orb: 3.81° (36.6%)</div><div>Aspect 6: Target: House 2 cusp head | Target House: 2 | Aspect: Square(90°) | Orb: 3.81° (52.4%)</div><div>Aspect 7: Target: House 3 cusp head | Target House: 3 | Aspect: Trine(120°) | Orb: 3.81° (52.4%)</div><div>Aspect 8: Target: House 5 cusp head | Target House: 5 | Aspect: Opposition(180°) | Orb: 3.81° (61.9%)</div>
+                </div>
+            </div>
+            </details>
+        <details class="detailed-house">
+            <summary class="house-header" style="cursor: pointer; outline: none;">
+                House 11 <span style="font-size:14px; color:#888; font-weight:normal; margin-left:10px;">▼ Click to Expand/Collapse</span>
+            </summary>
+            <div class="cusp-info">
+                Cusp: Taurus | House Lord: Venus (Lord of H11) placed in House 8
+            </div>
+        
+            <div class="planet-detail ruler-focus">
+                <div class="planet-title">House Lord: Venus (Lord of H11 Cusp)</div>
+                <div>Planet: Venus(Lord of H11 Cusp)</div>
+                <div>House: House 8 | Sign: Pisces | Degree: 15°40'</div>
+                <div class="score-line">Essential: State: Exalt | Term: No | Face: No | Trip: Yes | Essential Score: +7</div>
+                <div class="score-line">Accidental: House: -5 | Combust: No | Retro: No | Via Combusta: No | Accidental Score: -5</div>
+                <div class="score-line">Diplomacy: Mut. Rec: Jupiter | Mut. Rej: None | Rej. By: None | Rec. By: Mercury, Mars, Saturn | Diplomacy Score: +5.2</div>
+                <div class="score-line total-score">Total Score: +7.2 | Pattern: None(+0.0) | Importance/Score: +7.2</div>
+                <div class="aspect-details">
+                    <div>Aspect 1: Target: Moon | Target House: 5 | Aspect: Square(90°) | Orb: 0.55° (93.1%)</div><div>Aspect 2: Target: Mercury | Target House: 8 | Aspect: Conjunction(0°) | Orb: 7.49° (25.1%)</div><div>Aspect 3: Target: Saturn | Target House: 10 | Aspect: Sextile(60°) | Orb: 0.82° (86.4%)</div><div>Aspect 4: Target: Pluto | Target House: 5 | Aspect: Square(90°) | Orb: 2.8° (65.1%)</div><div>Aspect 5: Target: Asc | Target House: 1 | Aspect: Trine(120°) | Orb: 2.99° (62.7%)</div><div>Aspect 6: Target: House 1 cusp head | Target House: 1 | Aspect: Trine(120°) | Orb: 2.99° (62.7%)</div><div>Aspect 7: Target: House 3 cusp head | Target House: 3 | Aspect: Opposition(180°) | Orb: 2.99° (70.1%)</div><div>Aspect 8: Target: House 5 cusp head | Target House: 5 | Aspect: Trine(120°) | Orb: 2.99° (62.7%)</div>
+                </div>
+            </div>
+            </details>
+        <details class="detailed-house">
+            <summary class="house-header" style="cursor: pointer; outline: none;">
+                House 12 <span style="font-size:14px; color:#888; font-weight:normal; margin-left:10px;">▼ Click to Expand/Collapse</span>
+            </summary>
+            <div class="cusp-info">
+                Cusp: Gemini | House Lord: Mercury (Lord of H12) placed in House 8
+            </div>
+        
+            <div class="planet-detail ruler-focus">
+                <div class="planet-title">House Lord: Mercury (Lord of H12 Cusp)</div>
+                <div>Planet: Mercury(Lord of H12 Cusp)</div>
+                <div>House: House 8 | Sign: Pisces | Degree: 8°10'</div>
+                <div class="score-line">Essential: State: Det | Term: No | Face: No | Trip: No | Essential Score: -9</div>
+                <div class="score-line">Accidental: House: -5 | Combust: No | Retro: No | Via Combusta: No | Accidental Score: -5</div>
+                <div class="score-line">Diplomacy: Mut. Rec: None | Mut. Rej: None | Rej. By: Moon(S), Venus(C) | Rec. By: None | Diplomacy Score: -0.8</div>
+                <div class="score-line total-score">Total Score: -14.8 | Pattern: None(+0.0) | Importance/Score: -14.8</div>
+                <div class="aspect-details">
+                    <div>Aspect 1: Target: Moon | Target House: 5 | Aspect: Square(90°) | Orb: 6.94° (13.2%)</div><div>Aspect 2: Target: Venus | Target House: 8 | Aspect: Conjunction(0°) | Orb: 7.49° (25.1%)</div><div>Aspect 3: Target: Mars | Target House: 10 | Aspect: Sextile(60°) | Orb: 5.89° (1.8%)</div><div>Aspect 4: Target: Jupiter | Target House: 10 | Aspect: Sextile(60°) | Orb: 0.3° (95.0%)</div><div>Aspect 5: Target: Pluto | Target House: 5 | Aspect: Square(90°) | Orb: 4.7° (41.3%)</div>
+                </div>
+            </div>
+            </details>
+    </div>
+    <div id="starModal" class="modal"><div class="modal-content"><span class="close-btn" onclick="closeStarModal()">&times;</span><h3 id="modalTitle">Star Conjunctions</h3><table class="star-table"><thead><tr><th>Planet</th><th>Star</th><th>Orb</th><th>Meaning</th></tr></thead><tbody id="modalBody"></tbody></table></div></div>
+    <script>
+        window.starData = [{"planet": "Mercury", "star": "Skat", "orb": 0.6951443235696502, "meaning": "Good fortune, lasting happiness, and helpfulness from others.", "is_royal": false, "is_behenian": false, "is_practical": false, "is_robson": true}, {"planet": "Venus", "star": "Achernar", "orb": 0.36537684936735104, "meaning": "High office in religion or government, philosophical success, and sudden benefits.", "is_royal": false, "is_behenian": false, "is_practical": false, "is_robson": true}, {"planet": "Jupiter", "star": "Hamal", "orb": 0.21927546203498594, "meaning": "Headstrong, independent, and aggressive.", "is_royal": false, "is_behenian": false, "is_practical": true, "is_robson": false}, {"planet": "Jupiter", "star": "Schedir", "orb": 0.09993581329295864, "meaning": "Female dignity, intuition, and power.", "is_royal": false, "is_behenian": false, "is_practical": false, "is_robson": true}, {"planet": "Saturn", "star": "Almach", "orb": 0.6304309882961121, "meaning": "Success in arts and social status.", "is_royal": false, "is_behenian": false, "is_practical": false, "is_robson": true}, {"planet": "Saturn", "star": "Menkar", "orb": 0.535320531835282, "meaning": "Turbulence, illness, and loss of fortune.", "is_royal": false, "is_behenian": false, "is_practical": true, "is_robson": false}, {"planet": "Pluto", "star": "Rastaban", "orb": 0.8953050592546958, "meaning": "Impulsiveness, honor through risk, and potential for accidents.", "is_royal": false, "is_behenian": false, "is_practical": false, "is_robson": true}, {"planet": "Midheaven", "star": "Kerb", "orb": 0.7133124083615594, "meaning": "Danger of being jilted; wildness.", "is_royal": false, "is_behenian": false, "is_practical": false, "is_robson": true}, {"planet": "Midheaven", "star": "Scheat", "orb": 0.9684076778396502, "meaning": "Extremely high intellect, literary or poetic talent, but associated with sudden tragedy or floods.", "is_royal": false, "is_behenian": false, "is_practical": true, "is_robson": false}, {"planet": "House 2 cusp head", "star": "Giansar", "orb": 0.46318214847303807, "meaning": "Analytical mind, craftiness, and protection.", "is_royal": false, "is_behenian": false, "is_practical": false, "is_robson": true}, {"planet": "House 2 cusp head", "star": "Merak", "orb": 0.7848908482042702, "meaning": "Prudence, caution, and love of command.", "is_royal": false, "is_behenian": false, "is_practical": false, "is_robson": true}, {"planet": "House 4 cusp head", "star": "Seginus", "orb": 0.9809165543169343, "meaning": "Mental brilliance, success through patience, but potential for loss through friends.", "is_royal": false, "is_behenian": false, "is_practical": false, "is_robson": true}, {"planet": "House 4 cusp head", "star": "Mufrid", "orb": 0.688204864818232, "meaning": "Benevolence, interest in occult/philosophy, and prosperity.", "is_royal": false, "is_behenian": false, "is_practical": false, "is_robson": true}, {"planet": "House 5 cusp head", "star": "Zuben Alschemali", "orb": 0.7198013655224145, "meaning": "Good fortune, high ambition, and social success (The 'North Scale').", "is_royal": false, "is_behenian": false, "is_practical": false, "is_robson": true}, {"planet": "House 6 cusp head", "star": "Sabik", "orb": 0.697889427005407, "meaning": "Wastefulness, potential for moral struggle, but great intellectual brilliance.", "is_royal": false, "is_behenian": false, "is_practical": false, "is_robson": true}, {"planet": "House 7 cusp head", "star": "Sheliak", "orb": 0.22821858582517507, "meaning": "Artistic expression, musical talent, but potential for scandal.", "is_royal": false, "is_behenian": false, "is_practical": false, "is_robson": true}];
+        function openStarModal(category, title) {
+            if (!window.starData || window.starData.length === 0) return;
+            const tbody = document.getElementById('modalBody');
+            tbody.innerHTML = '';
+            const filtered = window.starData.filter(function(sa) { return sa[category]; });
+            if (filtered.length === 0) return;
+            document.getElementById('modalTitle').innerText = title;
+            filtered.forEach(function(sa) {
+                const tr = document.createElement('tr');
+                tr.innerHTML = '<td>' + sa.planet + '</td><td>' + sa.star + '</td><td>' + sa.orb.toFixed(2) + '°</td><td>' + sa.meaning + '</td>';
+                tbody.appendChild(tr);
+            });
+            document.getElementById('starModal').style.display = 'block';
+        }
+        function closeStarModal() { document.getElementById('starModal').style.display = 'none'; }
+        window.onclick = function(event) { let modal = document.getElementById('starModal'); if (event.target == modal) modal.style.display = "none"; }
+    </script>
+    </body></html>
