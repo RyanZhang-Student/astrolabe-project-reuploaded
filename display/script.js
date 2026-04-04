@@ -336,16 +336,55 @@ document.addEventListener('DOMContentLoaded', () => {
         const modal = document.getElementById('starModal');
         const modalTitle = document.getElementById('modalTitle');
         
-        window.currentStarData = window.starData.filter(sa => sa[category]);
-        if (window.currentStarData.length === 0) return;
-
-        window.currentStarIndex = 0;
-        modalTitle.innerText = title;
-        window.renderSingleStar();
+        modalTitle.innerText = "All Star Conjunctions";
+        window.currentStarData = window.starData; // Show all
+        
+        window.renderStarList();
+        window.backToStarList(); // Ensure we start at list view
 
         modal.classList.remove('hidden');
         modal.style.display = 'flex';
         document.body.style.overflow = 'hidden';
+    };
+
+    window.renderStarList = function() {
+        const listContainer = document.getElementById('starListView');
+        listContainer.innerHTML = '';
+
+        window.starData.forEach((sa, index) => {
+            const item = document.createElement('div');
+            item.className = 'star-list-item';
+            item.onclick = () => window.showStarDetail(index);
+
+            let tagsHtml = '';
+            if (sa.is_royal) tagsHtml += '<span class="star-tag tag-royal">Royal</span>';
+            if (sa.is_behenian) tagsHtml += '<span class="star-tag tag-behenian">Behenian</span>';
+            if (sa.is_practical) tagsHtml += '<span class="star-tag tag-practical">Practical</span>';
+            if (sa.is_robson) tagsHtml += '<span class="star-tag tag-robson">Robson</span>';
+
+            item.innerHTML = `
+                <div class="star-info-main">
+                    <div class="star-name-line">${sa.planet} & ${sa.star}</div>
+                    <div class="star-orb-line">Orb: ${sa.orb.toFixed(2)}&deg;</div>
+                </div>
+                <div class="star-tags-container">
+                    ${tagsHtml}
+                </div>
+            `;
+            listContainer.appendChild(item);
+        });
+    };
+
+    window.showStarDetail = function(index) {
+        window.currentStarIndex = index;
+        document.getElementById('starListView').classList.add('hidden');
+        document.getElementById('starDetailView').classList.remove('hidden');
+        window.renderSingleStar();
+    };
+
+    window.backToStarList = function() {
+        document.getElementById('starListView').classList.remove('hidden');
+        document.getElementById('starDetailView').classList.add('hidden');
     };
 
     window.renderSingleStar = function() {
@@ -354,9 +393,9 @@ document.addEventListener('DOMContentLoaded', () => {
         const prevBtn = document.getElementById('prevStarBtn');
         const nextBtn = document.getElementById('nextStarBtn');
 
-        const total = window.currentStarData.length;
+        const total = window.starData.length;
         const currentIndex = window.currentStarIndex;
-        const sa = window.currentStarData[currentIndex];
+        const sa = window.starData[currentIndex];
 
         counter.innerText = `${currentIndex + 1} / ${total}`;
 
@@ -371,7 +410,7 @@ document.addEventListener('DOMContentLoaded', () => {
             </div>
             <div class="star-detail-row">
                 <div class="star-detail-label">Meaning</div>
-                <div class="star-detail-value" style="font-size: 1rem; text-transform:none;">${sa.meaning}</div>
+                <div class="star-detail-value" style="font-size: 1rem; text-transform:none; line-height:1.6; text-align:left; padding: 0 1rem;">${sa.meaning}</div>
             </div>
         `;
 
@@ -380,7 +419,7 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     window.nextStar = function() {
-        if (window.currentStarIndex < window.currentStarData.length - 1) {
+        if (window.currentStarIndex < window.starData.length - 1) {
             window.currentStarIndex++;
             window.renderSingleStar();
         }

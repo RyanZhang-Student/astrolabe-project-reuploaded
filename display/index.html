@@ -145,15 +145,23 @@
                 <h3 id="modalTitle">Star Conjunctions</h3>
                 <span class="close-btn" onclick="window.closeStarModal()">&times;</span>
             </div>
-            <div class="modal-body star-pagination-body">
-                <button id="prevStarBtn" class="nav-btn" onclick="window.prevStar()">&#9664;</button>
-                <div class="star-page-container">
-                    <div class="star-counter" id="starCounter">1 / 1</div>
-                    <div id="singleStarContent" class="single-star-content">
-                        <!-- Dynamic Content -->
-                    </div>
+            <div class="modal-body">
+                <div id="starListView" class="star-list-view">
+                    <!-- Dynamic List Content -->
                 </div>
-                <button id="nextStarBtn" class="nav-btn" onclick="window.nextStar()">&#9654;</button>
+                <div id="starDetailView" class="star-pagination-body hidden">
+                    <button id="prevStarBtn" class="nav-btn" onclick="window.prevStar()">&#9664;</button>
+                    <div class="star-page-container">
+                        <div class="star-nav-header">
+                            <span class="back-to-list" onclick="window.backToStarList()">&#8592; Back to List</span>
+                            <div class="star-counter" id="starCounter">1 / 1</div>
+                        </div>
+                        <div id="singleStarContent" class="single-star-content">
+                            <!-- Dynamic Content -->
+                        </div>
+                    </div>
+                    <button id="nextStarBtn" class="nav-btn" onclick="window.nextStar()">&#9654;</button>
+                </div>
             </div>
         </div>
     </div>
