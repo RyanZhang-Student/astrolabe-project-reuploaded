@@ -53,6 +53,9 @@ window.timePicker = {
             config.el.addEventListener('scroll', () => this.handleScroll(key));
         }
 
+        // Initial check for day range
+        this.checkDayRange();
+
         console.log('TimePicker: Ready.');
         this.hide(); // Ensure hidden on start
     },
@@ -98,6 +101,10 @@ window.timePicker = {
         if (this.scrollTimeout) clearTimeout(this.scrollTimeout);
         this.scrollTimeout = setTimeout(() => {
             this.updateSelection(config.el);
+            // If year or month changes, update day range
+            if (key === 'year' || key === 'month') {
+                this.checkDayRange();
+            }
         }, 50);
     },
 
@@ -164,6 +171,24 @@ window.timePicker = {
         return 31;
     },
 
+    checkDayRange() {
+        const year = this.getSelectedValue('year');
+        const month = this.getSelectedValue('month');
+        const maxDay = this.getMaxDay(month, year);
+        const dayConfig = this.columns.day;
+
+        if (dayConfig.range[1] !== maxDay) {
+            console.log(`TimePicker: Updating day range to 1-${maxDay}`);
+            const currentDay = this.getSelectedValue('day');
+            dayConfig.range[1] = maxDay;
+            dayConfig.current = Math.min(currentDay, maxDay);
+            
+            // Re-populate the day column. populateColumn has its own 100ms timeout
+            // to set the scrollTop based on dayConfig.current.
+            this.populateColumn('day', dayConfig);
+        }
+    },
+
     confirm(e) {
         if (e) { e.preventDefault(); e.stopPropagation(); }
         console.log('TimePicker: Confirming selection');
@@ -173,24 +198,8 @@ window.timePicker = {
         const hour = this.getSelectedValue('hour').toString().padStart(2, '0');
         const minute = this.getSelectedValue('minute').toString().padStart(2, '0');
 
-        const maxDay = this.getMaxDay(month, year);
-
-        if (day > maxDay) {
-            const monthNames = ['', 'January', 'February', 'March', 'April', 'May', 'June',
-                                'July', 'August', 'September', 'October', 'November', 'December'];
-            let reason = '';
-            if (month === 2) {
-                if (this.isLeapYear(year)) {
-                    reason = `${year} is a leap year, so February has at most 29 days.`;
-                } else {
-                    reason = `${year} is not a leap year, so February has at most 28 days.`;
-                }
-            } else {
-                reason = `${monthNames[month]} only has ${maxDay} days — day ${day} does not exist.`;
-            }
-            alert(`Invalid date: ${reason}\nPlease adjust your selection.`);
-            return; // Do not close the modal
-        }
+        // Validation is now handled dynamically in the scroll picker,
+        // so we don't need additional checks here.
 
         const monthStr = month.toString().padStart(2, '0');
         const dayStr = day.toString().padStart(2, '0');
