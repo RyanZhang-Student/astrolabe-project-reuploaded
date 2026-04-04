@@ -569,67 +569,74 @@ small {
     padding: 0 0.5rem;
 }
 
-/* Star List View */
-.star-list-view {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    padding: 1rem 0;
-}
-
-.star-list-item {
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid var(--glass-border);
-    border-radius: 1rem;
-    padding: 1rem 1.5rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    cursor: pointer;
-    transition: all 0.2s ease;
-}
-
-.star-list-item:hover {
-    background: rgba(255, 255, 255, 0.1);
-    transform: translateX(5px);
-    border-color: var(--primary);
-}
-
-.star-info-main {
-    display: flex;
-    flex-direction: column;
-    gap: 0.25rem;
-}
-
-.star-name-line {
-    font-size: 1.1rem;
-    font-weight: 700;
+/* Star Table View */
+.styled-star-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 1rem;
+    font-size: 0.95rem;
     color: var(--text-light);
 }
 
-.star-orb-line {
-    font-size: 0.85rem;
+.styled-star-table th {
+    padding: 1rem 0.5rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    color: var(--text-light);
+    font-weight: 600;
+}
+
+.styled-star-table td {
+    padding: 1rem 0.5rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.styled-star-table tr {
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.styled-star-table tr:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+.planet-col {
+    width: 15%;
+    font-weight: 600;
+}
+
+.star-col {
+    width: 25%;
+    font-weight: 700;
+}
+
+.orb-col {
+    width: 15%;
+    font-family: monospace;
     color: var(--text-muted);
 }
 
-.star-tags-container {
-    display: flex;
-    gap: 0.5rem;
-    flex-wrap: wrap;
+.meaning-col {
+    width: 45%;
+    font-size: 0.85rem;
+    line-height: 1.4;
+    color: var(--text-muted);
 }
 
-.star-tag {
-    font-size: 0.65rem;
-    padding: 0.2rem 0.5rem;
-    border-radius: 2rem;
-    font-weight: 800;
-    text-transform: uppercase;
+.royal-star-text {
+    color: #ffd700; /* Gold/Yellow */
 }
 
-.tag-royal { background: rgba(245, 158, 11, 0.2); color: #f59e0b; border: 1px solid #f59e0b; }
-.tag-behenian { background: rgba(139, 92, 246, 0.2); color: #a78bfa; border: 1px solid #a78bfa; }
-.tag-practical { background: rgba(239, 68, 68, 0.2); color: #ef4444; border: 1px solid #ef4444; }
-.tag-robson { background: rgba(16, 185, 129, 0.2); color: #10b981; border: 1px solid #10b981; }
+.behenian-star-text {
+    color: #5E9CFF; /* Light Blue */
+}
+
+.practical-star-text {
+    color: #ff6b6b; /* Soft Red */
+}
+
+.robson-star-text {
+    color: var(--text-light);
+}
 
 /* Star Detail View */
 .star-pagination-body {

@@ -6,17 +6,17 @@ function createStars() {
     for (let i = 0; i < starCount; i++) {
         const star = document.createElement('div');
         star.className = 'star';
-        
+
         const size = Math.random() * 3 + 'px';
         star.style.width = size;
         star.style.height = size;
-        
+
         star.style.left = Math.random() * 100 + '%';
         star.style.top = Math.random() * 100 + '%';
-        
+
         star.style.setProperty('--duration', (Math.random() * 3 + 2) + 's');
         star.style.animationDelay = Math.random() * 5 + 's';
-        
+
         starsContainer.appendChild(star);
     }
 }
@@ -65,7 +65,7 @@ window.timePicker = {
         const count = end - start + 1;
         const repetitions = config.isInfinite ? 10 : 1;
         let html = '';
-        
+
         for (let r = 0; r < repetitions; r++) {
             for (let i = start; i <= end; i++) {
                 const val = i.toString().padStart(2, '0');
@@ -182,7 +182,7 @@ window.timePicker = {
             const currentDay = this.getSelectedValue('day');
             dayConfig.range[1] = maxDay;
             dayConfig.current = Math.min(currentDay, maxDay);
-            
+
             // Re-populate the day column. populateColumn has its own 100ms timeout
             // to set the scrollTop based on dayConfig.current.
             this.populateColumn('day', dayConfig);
@@ -250,7 +250,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const getCountryName = (code) => {
         try {
-            const regionNames = new Intl.DisplayNames(['en'], {type: 'region'});
+            const regionNames = new Intl.DisplayNames(['en'], { type: 'region' });
             return regionNames.of(code).toUpperCase();
         } catch (e) {
             return countryMap[code] || code;
@@ -259,7 +259,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let debounceTimeout = null;
 
-    locationInput.addEventListener('input', function() {
+    locationInput.addEventListener('input', function () {
         const val = this.value;
         if (!val) {
             autocompleteList.classList.add('hidden');
@@ -283,15 +283,15 @@ document.addEventListener('DOMContentLoaded', () => {
                     div.className = 'autocomplete-item';
                     const countryName = getCountryName(item.country);
                     div.innerHTML = `<strong>${item.name}</strong> - ${countryName}`;
-                    
-                    div.addEventListener('click', function(e) {
+
+                    div.addEventListener('click', function (e) {
                         locationInput.value = `${item.name}-${countryName}`;
                         autocompleteList.classList.add('hidden');
                     });
-                    
+
                     autocompleteList.appendChild(div);
                 });
-                
+
                 autocompleteList.classList.remove('hidden');
             } catch (err) {
                 console.error("Autocomplete fetch error: ", err);
@@ -307,7 +307,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // Star Rendering & Modal Logic
-    window.renderStarStats = function(stats) {
+    window.renderStarStats = function (stats) {
         const container = document.getElementById('star-conjunction-container');
         if (!container) return;
 
@@ -331,14 +331,14 @@ document.addEventListener('DOMContentLoaded', () => {
     window.currentStarIndex = 0;
     window.currentStarData = [];
 
-    window.openStarModal = function(category, title) {
+    window.openStarModal = function (category, title) {
         if (!window.starData || window.starData.length === 0) return;
         const modal = document.getElementById('starModal');
         const modalTitle = document.getElementById('modalTitle');
-        
+
         modalTitle.innerText = "All Star Conjunctions";
         window.currentStarData = window.starData; // Show all
-        
+
         window.renderStarList();
         window.backToStarList(); // Ensure we start at list view
 
@@ -347,47 +347,77 @@ document.addEventListener('DOMContentLoaded', () => {
         document.body.style.overflow = 'hidden';
     };
 
-    window.renderStarList = function() {
+    window.renderStarList = function () {
         const listContainer = document.getElementById('starListView');
         listContainer.innerHTML = '';
 
+        let tableHtml = `
+            <table class="styled-star-table">
+                <thead>
+                    <tr>
+                        <th style="text-align:left;">Star / Cusp head</th>
+                        <th style="text-align:left;">Fixed star</th>
+                        <th style="text-align:left;">Orb(°)</th>
+                        <th style="text-align:left;">Meaning</th>
+                    </tr>
+                </thead>
+                <tbody>
+        `;
+
         window.starData.forEach((sa, index) => {
-            const item = document.createElement('div');
-            item.className = 'star-list-item';
-            item.onclick = () => window.showStarDetail(index);
+            let starNameClass = "";
+            let prefix = "";
+            let orbText = sa.orb.toFixed(2) + "&deg;";
 
-            let tagsHtml = '';
-            if (sa.is_royal) tagsHtml += '<span class="star-tag tag-royal">Royal</span>';
-            if (sa.is_behenian) tagsHtml += '<span class="star-tag tag-behenian">Behenian</span>';
-            if (sa.is_practical) tagsHtml += '<span class="star-tag tag-practical">Practical</span>';
-            if (sa.is_robson) tagsHtml += '<span class="star-tag tag-robson">Robson</span>';
+            if (sa.is_royal) {
+                starNameClass = "royal-star-text";
+                prefix = "[王星] ";
+            } else if (sa.is_behenian) {
+                starNameClass = "behenian-star-text";
+                prefix = "[Behenian] ";
+            } else if (sa.is_practical) {
+                starNameClass = "practical-star-text";
+                prefix = "[实战] ";
+            } else if (sa.is_robson) {
+                starNameClass = "robson-star-text";
+            }
 
-            item.innerHTML = `
-                <div class="star-info-main">
-                    <div class="star-name-line">${sa.planet} & ${sa.star}</div>
-                    <div class="star-orb-line">Orb: ${sa.orb.toFixed(2)}&deg;</div>
-                </div>
-                <div class="star-tags-container">
-                    ${tagsHtml}
-                </div>
+            let meaningText = sa.meaning;
+            if (!meaningText.startsWith("[")) {
+                meaningText = prefix + meaningText;
+            }
+
+            tableHtml += `
+                <tr onclick="window.showStarDetail(${index})">
+                    <td class="planet-col">${sa.planet}</td>
+                    <td class="star-col ${starNameClass}">${sa.star}</td>
+                    <td class="orb-col">${orbText}</td>
+                    <td class="meaning-col">${meaningText}</td>
+                </tr>
             `;
-            listContainer.appendChild(item);
         });
+
+        tableHtml += `
+                </tbody>
+            </table>
+        `;
+
+        listContainer.innerHTML = tableHtml;
     };
 
-    window.showStarDetail = function(index) {
+    window.showStarDetail = function (index) {
         window.currentStarIndex = index;
         document.getElementById('starListView').classList.add('hidden');
         document.getElementById('starDetailView').classList.remove('hidden');
         window.renderSingleStar();
     };
 
-    window.backToStarList = function() {
+    window.backToStarList = function () {
         document.getElementById('starListView').classList.remove('hidden');
         document.getElementById('starDetailView').classList.add('hidden');
     };
 
-    window.renderSingleStar = function() {
+    window.renderSingleStar = function () {
         const content = document.getElementById('singleStarContent');
         const counter = document.getElementById('starCounter');
         const prevBtn = document.getElementById('prevStarBtn');
@@ -418,21 +448,21 @@ document.addEventListener('DOMContentLoaded', () => {
         nextBtn.disabled = currentIndex === total - 1;
     };
 
-    window.nextStar = function() {
+    window.nextStar = function () {
         if (window.currentStarIndex < window.starData.length - 1) {
             window.currentStarIndex++;
             window.renderSingleStar();
         }
     };
 
-    window.prevStar = function() {
+    window.prevStar = function () {
         if (window.currentStarIndex > 0) {
             window.currentStarIndex--;
             window.renderSingleStar();
         }
     };
 
-    window.closeStarModal = function() {
+    window.closeStarModal = function () {
         const modal = document.getElementById('starModal');
         modal.classList.add('hidden');
         modal.style.display = 'none';
@@ -500,18 +530,18 @@ document.addEventListener('DOMContentLoaded', () => {
                 // Render Chart Photo via Canvas to ensure it is a raster image, not decipherable HTML/SVG
                 if (result.chart_svg_base64) {
                     const img = new Image();
-                    img.onload = function() {
+                    img.onload = function () {
                         const canvas = document.createElement('canvas');
                         canvas.width = 800; // SVG viewBox is 800x800
                         canvas.height = 800;
                         const ctx = canvas.getContext('2d');
-                        
+
                         // Draw a solid background so it isn't transparent (assuming light theme chart)
                         ctx.fillStyle = '#ffffff';
                         ctx.fillRect(0, 0, canvas.width, canvas.height);
-                        
+
                         ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-                        
+
                         const ptrUrl = canvas.toDataURL('image/png');
                         const chartImg = document.getElementById('natal-chart-img');
                         chartImg.src = ptrUrl;
