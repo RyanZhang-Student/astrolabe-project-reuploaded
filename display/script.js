@@ -214,6 +214,12 @@ document.addEventListener('DOMContentLoaded', () => {
     createStars();
     window.timePicker.init();
 
+    window.starMythosData = null;
+    fetch('star_mythos.json')
+        .then(response => response.json())
+        .then(data => { window.starMythosData = data; })
+        .catch(err => console.error("Failed to load star mythos:", err));
+
     const form = document.getElementById('astrolabe-form');
     const submitBtn = document.getElementById('submit-btn');
     const btnText = submitBtn.querySelector('.btn-text');
@@ -429,7 +435,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         counter.innerText = `${currentIndex + 1} / ${total}`;
 
-        content.innerHTML = `
+        let detailHtml = `
             <div class="star-detail-row">
                 <div class="star-detail-label">Planet & Star</div>
                 <div class="star-detail-value">${sa.planet} &mdash; ${sa.star}</div>
@@ -443,6 +449,50 @@ document.addEventListener('DOMContentLoaded', () => {
                 <div class="star-detail-value" style="font-size: 1rem; text-transform:none; line-height:1.6; text-align:left; padding: 0 1rem;">${sa.meaning}</div>
             </div>
         `;
+
+        if (window.starMythosData) {
+            let mythosObj = null;
+            for (const key of Object.keys(window.starMythosData)) {
+                if (key.includes(sa.star)) {
+                    mythosObj = window.starMythosData[key];
+                    break;
+                }
+            }
+
+            if (mythosObj) {
+                const addSection = (title, contentText) => {
+                    if (!contentText) return '';
+                    let formatted = contentText.replace(/\n/g, '<br/>');
+                    return `
+                        <div style="text-align: left; padding: 1.5rem 0 0 0; width:100%;">
+                            <h4 style="color: #ffd700; margin-bottom: 0.75rem; font-size: 1.1rem; text-align:left;">${title}</h4>
+                            <div style="color: var(--text-light); line-height: 1.6; font-size: 0.95rem;">${formatted}</div>
+                        </div>
+                    `;
+                };
+
+                // Add Deep Analysis styling container
+                let mythosHtml = `<div style="margin-top: 1.5rem; padding-top: 0.5rem; border-top: 1px solid rgba(255, 255, 255, 0.1);">`;
+                
+                if (mythosObj.astrological_meaning && mythosObj.astrological_meaning.en) {
+                    mythosHtml += addSection('Astrological Meaning', mythosObj.astrological_meaning.en);
+                }
+                if (mythosObj.deity && mythosObj.deity.en) {
+                    mythosHtml += addSection('Representative Deity', mythosObj.deity.en);
+                }
+                if (mythosObj.origin && mythosObj.origin.en) {
+                    mythosHtml += addSection('Origin', mythosObj.origin.en);
+                }
+                if (mythosObj.myth && mythosObj.myth.en) {
+                    mythosHtml += addSection('Mythology', mythosObj.myth.en);
+                }
+                
+                mythosHtml += `</div>`;
+                detailHtml += mythosHtml;
+            }
+        }
+
+        content.innerHTML = detailHtml;
 
         prevBtn.disabled = currentIndex === 0;
         nextBtn.disabled = currentIndex === total - 1;
