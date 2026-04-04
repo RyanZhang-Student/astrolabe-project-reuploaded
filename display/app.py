@@ -95,6 +95,12 @@ def calculate():
     star_raw_data = get_star_longitudes(ts, t)
     star_aspects, star_stats = calculate_star_conjunctions_and_stats(planets, star_raw_data, orb=1.0)
     
+    if star_aspects:
+        star_aspects.sort(key=lambda x: (
+            1 if x.get('is_royal') else (2 if x.get('is_behenian') else (3 if x.get('is_practical') else 4)),
+            x.get('orb', 999)
+        ))
+
     # Helper functions for HTML generation (extracted from main.py)
     def get_orb_style(s):
         color = ""
