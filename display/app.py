@@ -14,6 +14,8 @@ if not os.path.exists(RESULTS_DIR):
     os.makedirs(RESULTS_DIR)
 
 sys.path.append(LOGIC_DIR)
+AI_ANALYSIS_DIR = os.path.join(BASE_DIR, 'ai_analysis')
+sys.path.append(AI_ANALYSIS_DIR)
 
 from engine import get_astronomical_data
 from utils import is_day_chart, get_zodiac_sign, determine_house, SIGNS, CLASSICAL_RULERS, EXALTATIONS, DETRIMENTS, FALLS, get_dignities_at_position, get_debilities_at_position, get_advanced_reception, calculate_mutual_reception_rejection, get_aspects
@@ -22,6 +24,7 @@ from star_calc import calculate_star_conjunctions_and_stats
 from scoring import calculate_essential_score, calculate_accidental_score, calculate_diplomacy, get_aspects_for_planet
 from draw_chart import create_pro_svg
 import main as astrolabe_main
+import analyzer as ai_analyzer
 
 app = Flask(__name__, static_folder='.', static_url_path='', template_folder='.')
 
@@ -226,7 +229,23 @@ def calculate():
         'report_url': f'/results/{filename}',
         'star_aspects': star_aspects,
         'star_stats': star_stats,
-        'chart_svg_base64': svg_base64
+        'chart_svg_base64': svg_base64,
+        'user_name': user_name
+    })
+
+@app.route('/api/ai_analysis', methods=['POST'])
+def api_ai_analysis():
+    data = request.json
+    user_name = data.get('user_name')
+    house_number = data.get('house_number')
+    
+    if not user_name or not house_number:
+        return jsonify({'error': 'Missing parameters'}), 400
+        
+    analysis_text = ai_analyzer.get_house_analysis(user_name, house_number)
+    return jsonify({
+        'status': 'success',
+        'analysis': analysis_text
     })
 
 if __name__ == '__main__':
