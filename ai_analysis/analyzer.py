@@ -44,14 +44,14 @@ def get_house_analysis(user_name: str, house_number: int) -> str:
     - Mention any Fixed Stars conjuncted to points in this house if applicable.
     - Write the analysis in the language of the user's interface (Chinese preferably, or English if preferred, given the "Analyze" button might be implied in Chinese based on instructions). Please output the response in Chinese as requested by user context ("一到十二的方块... 分析键").
     - Format output in beautiful Markdown with headers and bullet points.
-    
+    - respond in english
     HTML DATA:
     ======================================
     {html_content[:30000]} # Trim to fit in standard contexts just in case, though Gemini handles large contexts easily.
     """
 
     try:
-        model = genai.GenerativeModel('gemini-1.5-flash')
+        model = genai.GenerativeModel('gemini-2.5-flash')
         response = model.generate_content(prompt)
         return response.text
     except Exception as e:
