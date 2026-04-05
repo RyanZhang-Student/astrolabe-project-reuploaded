@@ -1,0 +1,6 @@
+# 在 .gitignore 中加入以下内容
+.env
+__pycache__/
+*.pyc
+.DS_Store
+results/*.html
