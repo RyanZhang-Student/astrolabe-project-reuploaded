@@ -17,9 +17,26 @@
     <div class="stars-container" id="stars"></div>
 
     <main class="container">
-        <header class="header">
-            <h1 class="glow-text">ASTROLABE</h1>
-            <p class="subtitle">Celestial Insights • Mathematical Precision</p>
+        <header class="header" style="display: flex; justify-content: space-between; align-items: center;">
+            <div>
+                <h1 class="glow-text">ASTROLABE</h1>
+                <p class="subtitle">Celestial Insights • Mathematical Precision</p>
+            </div>
+            <div class="user-auth" style="text-align: right;">
+                {% if user %}
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        {% if user.picture %}
+                            <img src="{{ user.picture }}" alt="Avatar" style="width: 32px; height: 32px; border-radius: 50%;">
+                        {% endif %}
+                        <div style="display: flex; flex-direction: column;">
+                            <span style="font-weight: bold; font-size: 14px;">{{ user.name }}</span>
+                            <a href="/logout" style="font-size: 12px; color: #4B0082; text-decoration: none;">Logout</a>
+                        </div>
+                    </div>
+                {% else %}
+                    <a href="/login" class="submit-btn" style="text-decoration: none; display: inline-block; padding: 10px 20px; font-size: 14px;">Sign in with Google</a>
+                {% endif %}
+            </div>
         </header>
 
         <section class="form-card glass">

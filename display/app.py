@@ -3,7 +3,10 @@ import sys
 import json
 import base64
 import datetime
-from flask import Flask, render_template, request, jsonify, send_from_directory
+from flask import Flask, render_template, request, jsonify, send_from_directory, session
+from dotenv import load_dotenv
+
+load_dotenv()
 
 # Add project root to sys.path
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -13,6 +16,7 @@ RESULTS_DIR = os.path.join(BASE_DIR, 'results')
 if not os.path.exists(RESULTS_DIR):
     os.makedirs(RESULTS_DIR)
 
+sys.path.append(BASE_DIR)
 sys.path.append(LOGIC_DIR)
 AI_ANALYSIS_DIR = os.path.join(BASE_DIR, 'ai_analysis')
 sys.path.append(AI_ANALYSIS_DIR)
@@ -25,8 +29,12 @@ from scoring import calculate_essential_score, calculate_accidental_score, calcu
 from draw_chart import create_pro_svg
 import main as astrolabe_main
 import analyzer as ai_analyzer
+from account.auth import auth_bp, init_oauth
 
 app = Flask(__name__, static_folder='.', static_url_path='', template_folder='.')
+app.secret_key = os.getenv('SECRET_KEY', 'default_secret')
+init_oauth(app)
+app.register_blueprint(auth_bp)
 
 # Load cities once for autocomplete
 CITIES_DATA = []
@@ -39,7 +47,7 @@ except Exception as e:
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    return render_template('index.html', user=session.get('user'))
 
 @app.route('/api/cities')
 def api_cities():
