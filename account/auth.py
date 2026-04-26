@@ -36,7 +36,26 @@ def authorize():
             session['user'] = user
     except Exception as e:
         print(f"OAuth Authentication Error: {e}")
-    return redirect('/')
+    return redirect(url_for('auth.login_success'))
+
+@auth_bp.route('/login-success')
+def login_success():
+    return """
+    <html>
+        <head><title>Login Successful</title></head>
+        <body>
+            <script>
+                if (window.opener) {
+                    window.opener.location.reload();
+                    window.close();
+                } else {
+                    window.location.href = '/';
+                }
+            </script>
+            <p>Login successful! Closing window...</p>
+        </body>
+    </html>
+    """
 
 @auth_bp.route('/logout')
 def logout():

@@ -723,4 +723,16 @@ document.addEventListener('DOMContentLoaded', () => {
         aiModal.style.display = 'none';
         document.body.style.overflow = 'auto';
     };
+
+    // Login Popup Logic
+    const loginBtn = document.getElementById('login-btn');
+    if (loginBtn) {
+        loginBtn.addEventListener('click', () => {
+            const width = 500;
+            const height = 650;
+            const left = (window.innerWidth - width) / 2 + window.screenX;
+            const top = (window.innerHeight - height) / 2 + window.screenY;
+            window.open('/login', 'google_login', `width=${width},height=${height},top=${top},left=${left}`);
+        });
+    }
 });
