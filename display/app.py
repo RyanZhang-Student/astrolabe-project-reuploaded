@@ -33,6 +33,9 @@ from account.auth import auth_bp, init_oauth
 
 app = Flask(__name__, static_folder='.', static_url_path='', template_folder='.')
 app.secret_key = os.getenv('SECRET_KEY', 'default_secret')
+app.config['SESSION_COOKIE_SAMESITE'] = 'Lax'
+app.config['SESSION_COOKIE_SECURE'] = False
+
 init_oauth(app)
 app.register_blueprint(auth_bp)
 
