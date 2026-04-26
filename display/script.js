@@ -735,4 +735,34 @@ document.addEventListener('DOMContentLoaded', () => {
             window.open('/login', 'google_login', `width=${width},height=${height},top=${top},left=${left}`);
         });
     }
+
+    // Profile Popup Logic
+    const userBtn = document.getElementById('user-btn');
+    const profilePopup = document.getElementById('profile-popup');
+    const profileOverlay = document.getElementById('profile-overlay');
+
+    if (userBtn && profilePopup && profileOverlay) {
+        const toggleProfile = (show) => {
+            if (show) {
+                profilePopup.classList.remove('hidden');
+                profileOverlay.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            } else {
+                profilePopup.classList.add('hidden');
+                profileOverlay.classList.remove('active');
+                document.body.style.overflow = 'auto';
+            }
+        };
+
+        userBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const isHidden = profilePopup.classList.contains('hidden');
+            toggleProfile(isHidden);
+        });
+
+        profileOverlay.addEventListener('click', () => toggleProfile(false));
+        
+        // Prevent clicks inside popup from closing it
+        profilePopup.addEventListener('click', (e) => e.stopPropagation());
+    }
 });

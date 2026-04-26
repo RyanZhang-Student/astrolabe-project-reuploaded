@@ -15,8 +15,10 @@
 
 <body>
     <div class="stars-container" id="stars"></div>
+    <div id="profile-overlay" class="profile-overlay"></div>
 
     <main class="container">
+
         <header class="header" style="display: flex; justify-content: space-between; align-items: center;">
             <div>
                 <h1 class="glow-text">ASTROLABE</h1>
@@ -24,13 +26,10 @@
             </div>
             <div class="user-auth">
                 {% if user %}
-                    <div class="user-profile-circle authenticated" id="user-btn" title="{{ user.name }} (Click to logout)">
+                    <div class="user-profile-circle authenticated" id="user-btn" title="{{ user.name }}">
                         <img src="{{ user.picture }}" alt="{{ user.name }}" class="profile-img">
-                        <a href="/logout" class="logout-overlay">
-                            <span>Logout</span>
-                        </a>
                     </div>
-                {% else %}
+{% else %}
                     <button class="user-profile-circle" id="login-btn" title="Sign in with Google">
                         <svg viewBox="0 0 24 24" fill="currentColor">
                             <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
@@ -226,6 +225,26 @@
             </div>
         </div>
     </div>
+
+    <!-- Profile Popup -->
+    {% if user %}
+    <div id="profile-popup" class="profile-popup glass hidden">
+        <div class="profile-content">
+            <div class="profile-header">
+                <div class="profile-avatar-large">
+                    <img src="{{ user.picture }}" alt="{{ user.name }}">
+                </div>
+                <h3 class="profile-name">{{ user.name }}</h3>
+                <p class="profile-email">{{ user.email }}</p>
+            </div>
+            <div class="profile-menu">
+                <a href="/logout" class="profile-menu-item logout-item">
+                    <span>退出登录</span>
+                </a>
+            </div>
+        </div>
+    </div>
+    {% endif %}
 
     <script src="script.js"></script>
 </body>
