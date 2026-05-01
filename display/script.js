@@ -746,11 +746,9 @@ document.addEventListener('DOMContentLoaded', () => {
             if (show) {
                 profilePopup.classList.remove('hidden');
                 profileOverlay.classList.add('active');
-                document.body.style.overflow = 'hidden';
             } else {
                 profilePopup.classList.add('hidden');
                 profileOverlay.classList.remove('active');
-                document.body.style.overflow = 'auto';
             }
         };
 
