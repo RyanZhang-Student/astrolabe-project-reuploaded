@@ -48,9 +48,15 @@ try:
 except Exception as e:
     print(f"Warning: Could not load world_cities.json: {e}")
 
+from flask import make_response
+
 @app.route('/')
 def index():
-    return render_template('index.html', user=session.get('user'))
+    response = make_response(render_template('index.html', user=session.get('user')))
+    response.headers['Cache-Control'] = 'no-cache, no-store, must-revalidate'
+    response.headers['Pragma'] = 'no-cache'
+    response.headers['Expires'] = '0'
+    return response
 
 @app.route('/api/cities')
 def api_cities():

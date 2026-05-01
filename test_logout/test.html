@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Logout Button Test</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            background-color: #0f172a;
+            color: #f8fafc;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+        .profile-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5); /* Semi-transparent to see it */
+            z-index: 1000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+        .profile-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        .container {
+            max-width: 600px;
+            width: 90%;
+            padding: 2rem 0;
+            z-index: 1;
+            background: #1e293b; /* So we can see the container */
+            border-radius: 1rem;
+            position: relative; /* Container establishing stacking context */
+        }
+        .user-auth {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            position: relative;
+            padding: 1rem;
+        }
+        .user-profile-circle {
+            width: 3.5rem;
+            height: 3.5rem;
+            border-radius: 50%;
+            background: #6d28d9;
+            cursor: pointer;
+            z-index: 2; /* Keep it above overlay if possible? No, it's inside container */
+        }
+        .profile-popup {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            margin-top: 10px;
+            z-index: 1001;
+            width: 320px;
+            background: #1e293b;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 2rem;
+            opacity: 0;
+            pointer-events: none;
+        }
+        .profile-popup:not(.hidden) {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        .profile-menu {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            margin-top: 1rem;
+        }
+        .logout-item {
+            width: 100%;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            color: white;
+            padding: 1.5rem;
+            font-size: 1.1rem;
+            text-align: center;
+        }
+        .logout-item:hover {
+            background: rgba(255, 255, 255, 0.05);
+            color: #ef4444;
+        }
+        #log {
+            margin-top: 2rem;
+            padding: 1rem;
+            background: #000;
+            font-family: monospace;
+            white-space: pre-wrap;
+            height: 200px;
+            overflow-y: auto;
+            border-radius: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+    <div id="profile-overlay" class="profile-overlay"></div>
+    <div class="container">
+        <div class="user-auth">
+            <div class="user-profile-circle" id="user-btn">Click Me</div>
+            <div id="profile-popup" class="profile-popup hidden">
+                <div style="padding: 2rem; text-align: center;">Popup Content</div>
+                <div class="profile-menu">
+                    <form id="logout-form" action="/logout" method="GET" style="margin: 0;">
+                        <button type="submit" class="logout-item" id="logout-btn">
+                            <span>Logout</span>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div id="log">Click logs will appear here...</div>
+    </div>
+
+    <script>
+        const logEl = document.getElementById('log');
+        function log(msg) {
+            logEl.innerHTML += `\n${new Date().toISOString().split('T')[1].slice(0, -1)} - ${msg}`;
+            logEl.scrollTop = logEl.scrollHeight;
+        }
+
+        const userBtn = document.getElementById('user-btn');
+        const profilePopup = document.getElementById('profile-popup');
+        const profileOverlay = document.getElementById('profile-overlay');
+
+        const toggleProfile = (show) => {
+            log(`toggleProfile(${show}) called`);
+            if (show) {
+                profilePopup.classList.remove('hidden');
+                profileOverlay.classList.add('active');
+            } else {
+                profilePopup.classList.add('hidden');
+                profileOverlay.classList.remove('active');
+            }
+        };
+
+        userBtn.addEventListener('click', (e) => {
+            log('userBtn clicked');
+            e.stopPropagation();
+            const isHidden = profilePopup.classList.contains('hidden');
+            toggleProfile(isHidden);
+        });
+
+        profileOverlay.addEventListener('click', () => {
+            log('profileOverlay clicked');
+            toggleProfile(false);
+        });
+
+        profilePopup.addEventListener('click', (e) => {
+            log(`profilePopup clicked. target: ${e.target.tagName}, id: ${e.target.id}, class: ${e.target.className}`);
+            if (e.target.closest('a, button')) {
+                log('profilePopup click matched a/button. Allowing bubble.');
+                return;
+            }
+            log('profilePopup click blocked by stopPropagation');
+            e.stopPropagation();
+        });
+
+        document.getElementById('logout-btn').addEventListener('click', (e) => {
+            log('logout-btn click event fired!');
+            e.preventDefault(); // Prevent actual form submission so we can see the log
+            log('Form submission prevented for logging. In the real app, this would submit to /logout.');
+        });
+
+        // Global click listener to see what's actually being hit
+        document.addEventListener('click', (e) => {
+            log(`document received click from: ${e.target.tagName} (id: ${e.target.id}, class: ${e.target.className})`);
+        });
+    </script>
+</body>
+</html>

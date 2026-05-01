@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Astrolabe - Premium Astrology Analysis</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css?v=3">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
@@ -39,9 +39,11 @@
                                 <p class="profile-email">{{ user.email }}</p>
                             </div>
                             <div class="profile-menu">
-                                <a href="/logout" class="profile-menu-item logout-item">
-                                    <span>Logout</span>
-                                </a>
+                                <form action="/logout" method="GET" style="margin: 0;">
+                                    <button type="submit" class="profile-menu-item logout-item" style="width: 100%; border: none; background: transparent; cursor: pointer; font-family: inherit;">
+                                        <span>Logout</span>
+                                    </button>
+                                </form>
                             </div>
                         </div>
                     </div>
@@ -244,7 +246,7 @@
 
     <!-- Profile Popup Moved to Header -->
 
-    <script src="script.js"></script>
+    <script src="script.js?v=3"></script>
 </body>
 
 </html>

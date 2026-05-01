@@ -84,7 +84,15 @@ def authorize():
         </html>
         """, 400
 
+from flask import Blueprint, url_for, session, redirect, request, make_response
+
 @auth_bp.route('/logout')
 def logout():
-    session.pop('user', None)
-    return redirect('/')
+    session.clear()
+    session.modified = True
+    response = make_response(redirect('/'))
+    response.delete_cookie('session')
+    response.headers['Cache-Control'] = 'no-cache, no-store, must-revalidate'
+    response.headers['Pragma'] = 'no-cache'
+    response.headers['Expires'] = '0'
+    return response

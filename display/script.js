@@ -231,6 +231,51 @@ document.addEventListener('DOMContentLoaded', () => {
     const genderBoxes = document.querySelectorAll('.gender-box');
     const genderInput = document.getElementById('gender');
 
+    const saveFormState = (autoSubmit = false) => {
+        const state = {
+            name: document.getElementById('name').value,
+            gender: genderInput.value,
+            location: document.getElementById('location').value,
+            date: document.getElementById('birth-date').value,
+            time: document.getElementById('birth-time').value,
+            autoSubmit: autoSubmit
+        };
+        sessionStorage.setItem('astrolabeFormState', JSON.stringify(state));
+    };
+
+    const restoreFormState = () => {
+        const saved = sessionStorage.getItem('astrolabeFormState');
+        if (saved) {
+            try {
+                const state = JSON.parse(saved);
+                if (state.name) document.getElementById('name').value = state.name;
+                if (state.gender) {
+                    genderInput.value = state.gender;
+                    genderBoxes.forEach(b => {
+                        if (b.dataset.value === state.gender) {
+                            b.classList.add('selected');
+                            b.parentElement.classList.add('gender-selected');
+                        }
+                    });
+                }
+                if (state.location) document.getElementById('location').value = state.location;
+                if (state.date) document.getElementById('birth-date').value = state.date;
+                if (state.time) document.getElementById('birth-time').value = state.time;
+
+                if (state.autoSubmit && !document.getElementById('login-btn')) {
+                    state.autoSubmit = false;
+                    sessionStorage.setItem('astrolabeFormState', JSON.stringify(state));
+                    setTimeout(() => {
+                        const submitBtn = document.getElementById('submit-btn');
+                        if (submitBtn) submitBtn.click();
+                    }, 500);
+                }
+            } catch (e) {
+                console.error("Error restoring form state", e);
+            }
+        }
+    };
+
     genderBoxes.forEach(box => {
         box.addEventListener('click', () => {
             // Remove selected class from all
@@ -241,11 +286,15 @@ document.addEventListener('DOMContentLoaded', () => {
             genderInput.value = box.dataset.value;
             // Add class to container to enable post-selection hover styles
             box.parentElement.classList.add('gender-selected');
+            saveFormState(false);
         });
     });
 
     const locationInput = document.getElementById('location');
     const autocompleteList = document.getElementById('autocomplete-list');
+
+    // Restore state on load
+    restoreFormState();
 
     const countryMap = {
         'CN': 'CHINA', 'US': 'UNITED STATES', 'GB': 'UNITED KINGDOM',
@@ -535,6 +584,15 @@ document.addEventListener('DOMContentLoaded', () => {
     form.addEventListener('submit', async (e) => {
         e.preventDefault();
 
+        // Check if user is logged in
+        const loginBtn = document.getElementById('login-btn');
+        if (loginBtn) {
+            // Save state so it can automatically submit after login refresh
+            saveFormState(true);
+            loginBtn.click();
+            return; // Stop execution, wait for login popup
+        }
+
         if (!genderInput.value) {
             alert('Please select a gender.');
             return;
@@ -728,6 +786,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const loginBtn = document.getElementById('login-btn');
     if (loginBtn) {
         loginBtn.addEventListener('click', () => {
+            saveFormState(false);
             const width = 500;
             const height = 650;
             const left = (window.innerWidth - width) / 2 + window.screenX;
@@ -760,7 +819,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
         profileOverlay.addEventListener('click', () => toggleProfile(false));
         
-        // Prevent clicks inside popup from closing it
-        profilePopup.addEventListener('click', (e) => e.stopPropagation());
+        // Prevent clicks inside popup from closing it, but allow links and buttons to work
+        profilePopup.addEventListener('click', (e) => {
+            if (e.target.closest('a, button')) return;
+            e.stopPropagation();
+        });
     }
 });
