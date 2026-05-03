@@ -3,6 +3,7 @@ import sys
 import json
 import base64
 import datetime
+import shutil
 from flask import Flask, render_template, request, jsonify, send_from_directory, session
 from dotenv import load_dotenv
 
@@ -236,7 +237,15 @@ def calculate():
     </script>
     </body></html>"""
     
-    user_folder = os.path.join(RESULTS_DIR, user_name)
+    user_info_dict = session.get('user')
+    user_email = user_info_dict.get('email') if user_info_dict else 'guest'
+    
+    email_folder = os.path.join(RESULTS_DIR, user_email)
+    if os.path.exists(email_folder):
+        shutil.rmtree(email_folder)
+    os.makedirs(email_folder)
+    
+    user_folder = os.path.join(email_folder, user_name)
     if not os.path.exists(user_folder):
         os.makedirs(user_folder)
         
@@ -313,7 +322,7 @@ def calculate():
 
     return jsonify({
         'status': 'success',
-        'report_url': f'/results/{user_name}/{filename}',
+        'report_url': f'/results/{user_email}/{user_name}/{filename}',
         'star_aspects': star_aspects,
         'star_stats': star_stats,
         'chart_svg_base64': svg_base64,
@@ -329,7 +338,8 @@ def api_ai_analysis():
     if not user_name or not house_number:
         return jsonify({'error': 'Missing parameters'}), 400
         
-    analysis_text = ai_analyzer.get_house_analysis(user_name, house_number)
+    user_email = session.get('user', {}).get('email') if session.get('user') else 'guest'
+    analysis_text = ai_analyzer.get_house_analysis(user_email, user_name, house_number)
     return jsonify({
         'status': 'success',
         'analysis': analysis_text

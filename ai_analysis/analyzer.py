@@ -14,7 +14,7 @@ def load_env():
                     key, val = line.split('=', 1)
                     os.environ[key.strip()] = val.strip().strip("'\"")
 
-def get_house_analysis(user_name: str, house_number: int) -> str:
+def get_house_analysis(user_email: str, user_name: str, house_number: int) -> str:
     load_env()
     api_key = os.environ.get('GEMINI_API_KEY')
     if not api_key:
@@ -25,7 +25,7 @@ def get_house_analysis(user_name: str, house_number: int) -> str:
     
     # In order to read the chart result html
     base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-    report_path = os.path.join(base_dir, 'results', f'report_{user_name.upper()}.html')
+    report_path = os.path.join(base_dir, 'results', user_email, user_name, f'report_{user_name.upper()}.html')
     
     html_content = ""
     if os.path.exists(report_path):

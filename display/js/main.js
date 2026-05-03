@@ -1,4 +1,4 @@
-﻿document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', () => {
     createStars();
     window.timePicker.init();
     const form = document.getElementById('astrolabe-form');
@@ -199,7 +199,7 @@
 
                 resultContainer.classList.remove('hidden');
                 reportLink.textContent = `View Report for ${name}`;
-                reportLink.href = `/results/report_${name.toUpperCase()}.html`;
+                reportLink.href = result.report_url || `/results/report_${name.toUpperCase()}.html`;
 
                 // Render Chart Photo via Canvas to ensure it is a raster image, not decipherable HTML/SVG
                 if (result.chart_svg_base64) {
