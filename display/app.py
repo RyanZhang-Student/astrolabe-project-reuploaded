@@ -241,6 +241,34 @@ def calculate():
     with open(filepath, "w", encoding="utf-8") as f:
         f.write(html_template)
     
+    # Record user information and their Astrolabe input if they are logged in via Google
+    user_info = session.get('user')
+    if user_info:
+        log_entry = {
+            'timestamp': datetime.datetime.now().isoformat(),
+            'google_account': user_info,
+            'astrolabe_input': {
+                'name': user_name,
+                'gender': gender,
+                'dob': dob_input,
+                'location': location_input
+            }
+        }
+        log_file_path = os.path.join(BASE_DIR, 'account', 'log.json')
+        try:
+            logs = []
+            if os.path.exists(log_file_path):
+                with open(log_file_path, 'r', encoding='utf-8') as log_f:
+                    try:
+                        logs = json.load(log_f)
+                    except json.JSONDecodeError:
+                        logs = []
+            logs.append(log_entry)
+            with open(log_file_path, 'w', encoding='utf-8') as log_f:
+                json.dump(logs, log_f, ensure_ascii=False, indent=4)
+        except Exception as e:
+            print(f"Error writing to log.json: {e}", flush=True)
+
     return jsonify({
         'status': 'success',
         'report_url': f'/results/{filename}',
