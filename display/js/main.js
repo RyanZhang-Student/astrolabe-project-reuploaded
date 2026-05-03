@@ -1,0 +1,252 @@
+﻿document.addEventListener('DOMContentLoaded', () => {
+    createStars();
+    window.timePicker.init();
+    const form = document.getElementById('astrolabe-form');
+    const submitBtn = document.getElementById('submit-btn');
+    const btnText = submitBtn.querySelector('.btn-text');
+    const loader = document.getElementById('loader');
+    const resultContainer = document.getElementById('result-container');
+    const reportLink = document.getElementById('report-link');
+
+    // Gender selection logic
+    const genderBoxes = document.querySelectorAll('.gender-box');
+    const genderInput = document.getElementById('gender');
+
+    window.saveFormState = (autoSubmit = false) => {
+        const state = {
+            name: document.getElementById('name').value,
+            gender: genderInput.value,
+            location: document.getElementById('location').value,
+            date: document.getElementById('birth-date').value,
+            time: document.getElementById('birth-time').value,
+            autoSubmit: autoSubmit
+        };
+        sessionStorage.setItem('astrolabeFormState', JSON.stringify(state));
+    };
+
+    const restoreFormState = () => {
+        const saved = sessionStorage.getItem('astrolabeFormState');
+        if (saved) {
+            try {
+                const state = JSON.parse(saved);
+                if (state.name) document.getElementById('name').value = state.name;
+                if (state.gender) {
+                    genderInput.value = state.gender;
+                    genderBoxes.forEach(b => {
+                        if (b.dataset.value === state.gender) {
+                            b.classList.add('selected');
+                            b.parentElement.classList.add('gender-selected');
+                        }
+                    });
+                }
+                if (state.location) document.getElementById('location').value = state.location;
+                if (state.date) document.getElementById('birth-date').value = state.date;
+                if (state.time) document.getElementById('birth-time').value = state.time;
+
+                if (state.autoSubmit && !document.getElementById('login-btn')) {
+                    state.autoSubmit = false;
+                    sessionStorage.setItem('astrolabeFormState', JSON.stringify(state));
+                    setTimeout(() => {
+                        const submitBtn = document.getElementById('submit-btn');
+                        if (submitBtn) submitBtn.click();
+                    }, 500);
+                }
+            } catch (e) {
+                console.error("Error restoring form state", e);
+            }
+        }
+    };
+
+    genderBoxes.forEach(box => {
+        box.addEventListener('click', () => {
+            // Remove selected class from all
+            genderBoxes.forEach(b => b.classList.remove('selected'));
+            // Add selected class to correct one
+            box.classList.add('selected');
+            // Set hidden input value
+            genderInput.value = box.dataset.value;
+            // Add class to container to enable post-selection hover styles
+            box.parentElement.classList.add('gender-selected');
+            window.saveFormState(false);
+        });
+    });
+
+    const locationInput = document.getElementById('location');
+    const autocompleteList = document.getElementById('autocomplete-list');
+
+    // Restore state on load
+    restoreFormState();
+
+    const countryMap = {
+        'CN': 'CHINA', 'US': 'UNITED STATES', 'GB': 'UNITED KINGDOM',
+        'CA': 'CANADA', 'AU': 'AUSTRALIA', 'DE': 'GERMANY', 'FR': 'FRANCE', 'JP': 'JAPAN',
+        'IN': 'INDIA', 'BR': 'BRAZIL', 'RU': 'RUSSIA', 'KR': 'SOUTH KOREA',
+        'IT': 'ITALY', 'ES': 'SPAIN', 'MX': 'MEXICO', 'VN': 'VIETNAM', 'TH': 'THAILAND'
+    };
+
+    const getCountryName = (code) => {
+        try {
+            const regionNames = new Intl.DisplayNames(['en'], { type: 'region' });
+            return regionNames.of(code).toUpperCase();
+        } catch (e) {
+            return countryMap[code] || code;
+        }
+    };
+
+    let debounceTimeout = null;
+
+    locationInput.addEventListener('input', function () {
+        const val = this.value;
+        if (!val) {
+            autocompleteList.classList.add('hidden');
+            return;
+        }
+
+        clearTimeout(debounceTimeout);
+        debounceTimeout = setTimeout(async () => {
+            try {
+                const response = await fetch(`/api/cities?q=${encodeURIComponent(val)}`);
+                const matches = await response.json();
+
+                if (!matches || matches.length === 0) {
+                    autocompleteList.classList.add('hidden');
+                    return;
+                }
+
+                autocompleteList.innerHTML = '';
+                matches.forEach(item => {
+                    const div = document.createElement('div');
+                    div.className = 'autocomplete-item';
+                    const countryName = getCountryName(item.country);
+                    div.innerHTML = `<strong>${item.name}</strong> - ${countryName}`;
+
+                    div.addEventListener('click', function (e) {
+                        locationInput.value = `${item.name}-${countryName}`;
+                        autocompleteList.classList.add('hidden');
+                    });
+
+                    autocompleteList.appendChild(div);
+                });
+
+                autocompleteList.classList.remove('hidden');
+            } catch (err) {
+                console.error("Autocomplete fetch error: ", err);
+            }
+        }, 300);
+    });
+
+    // Close dropdown on click outside
+    document.addEventListener('click', function (e) {
+        if (e.target !== locationInput) {
+            autocompleteList.classList.add('hidden');
+        }
+    });
+
+    // Handle form submission
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        // Check if user is logged in
+        const loginBtn = document.getElementById('login-btn');
+        if (loginBtn) {
+            // Save state so it can automatically submit after login refresh
+            window.saveFormState(true);
+            loginBtn.click();
+            return; // Stop execution, wait for login popup
+        }
+
+        if (!genderInput.value) {
+            alert('Please select a gender.');
+            return;
+        }
+
+        // UI Feedback
+        btnText.style.opacity = '0';
+        loader.style.display = 'block';
+        submitBtn.disabled = true;
+        resultContainer.classList.add('hidden');
+
+        // Collect Data
+        const name = document.getElementById('name').value;
+        const gender = genderInput.value;
+        const location = document.getElementById('location').value;
+        const dateRaw = document.getElementById('birth-date').value; // YYYY-MM-DD
+        const timeRaw = document.getElementById('birth-time').value; // HH:MM
+
+        // Format to YYYY-MMDD-HHMM
+        const [year, month, day] = dateRaw.split('-');
+        const [hour, minute] = timeRaw.split(':');
+        const dobFormatted = `${year}-${month}${day}-${hour}${minute}`;
+
+        try {
+            const response = await fetch('/calculate', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    name: name,
+                    gender: gender,
+                    location: location,
+                    dob: dobFormatted
+                })
+            });
+
+            const result = await response.json();
+
+            if (response.ok) {
+                btnText.style.opacity = '1';
+                loader.style.display = 'none';
+                submitBtn.disabled = false;
+
+                resultContainer.classList.remove('hidden');
+                reportLink.textContent = `View Report for ${name}`;
+                reportLink.href = `/results/report_${name.toUpperCase()}.html`;
+
+                // Render Chart Photo via Canvas to ensure it is a raster image, not decipherable HTML/SVG
+                if (result.chart_svg_base64) {
+                    const img = new Image();
+                    img.onload = function () {
+                        const canvas = document.createElement('canvas');
+                        canvas.width = 800; // SVG viewBox is 800x800
+                        canvas.height = 800;
+                        const ctx = canvas.getContext('2d');
+
+                        // Draw a solid background so it isn't transparent (assuming light theme chart)
+                        ctx.fillStyle = '#ffffff';
+                        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+                        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+                        const ptrUrl = canvas.toDataURL('image/png');
+                        const chartImg = document.getElementById('natal-chart-img');
+                        chartImg.src = ptrUrl;
+                        document.getElementById('chart-image-container').classList.remove('hidden');
+                    };
+                    img.src = 'data:image/svg+xml;base64,' + result.chart_svg_base64;
+                }
+
+                // Render Star Conjunctions
+                if (result.star_stats) {
+                    window.starData = result.star_aspects || [];
+                    window.renderStarStats(result.star_stats);
+                }
+
+                // Show AI Analysis section and store current user
+                window.currentAnalysisUserName = result.user_name || name;
+                document.getElementById('ai-analysis-container').classList.remove('hidden');
+
+            } else {
+                alert('Error: ' + (result.error || 'Failed to calculate'));
+                btnText.style.opacity = '1';
+                loader.style.display = 'none';
+                submitBtn.disabled = false;
+            }
+        } catch (error) {
+            console.error('Fetch error:', error);
+            alert('An error occurred during calculation.');
+            btnText.style.opacity = '1';
+            loader.style.display = 'none';
+            submitBtn.disabled = false;
+        }
+    });
+
+});
