@@ -249,6 +249,28 @@
         </div>
     </div>
 
+    <!-- Registration Prompt Modal -->
+    <div id="reg-modal" class="modal-overlay hidden" style="z-index: 10000;">
+        <div class="modal-content glass" style="max-width: 400px; text-align: center; padding: 2.5rem 2rem; border-radius: 1.5rem;">
+            <div style="font-size: 3rem; margin-bottom: 1rem;">✨</div>
+            <h3 style="margin-bottom: 1rem; color: #fff; font-family: 'Outfit', sans-serif;">Unlock Your Destiny</h3>
+            <p style="color: rgba(255, 255, 255, 0.8); margin-bottom: 2rem; font-size: 0.95rem; line-height: 1.5;">
+                To reveal your personalized astrological insights and save your chart, please sign in with your account.
+            </p>
+            <button id="modal-login-btn" class="submit-btn" style="width: 100%; margin-bottom: 1rem;">
+                <span class="btn-text" style="display: flex; align-items: center; justify-content: center; gap: 0.5rem;">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                    </svg>
+                    Sign in to Continue
+                </span>
+            </button>
+            <button id="modal-close-btn" style="background: transparent; border: none; color: rgba(255,255,255,0.5); cursor: pointer; font-size: 0.85rem; text-decoration: underline;">
+                Maybe Later
+            </button>
+        </div>
+    </div>
+
     <!-- Profile Popup Moved to Header -->
 
     <script src="js/background.js"></script>

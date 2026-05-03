@@ -149,10 +149,13 @@ document.addEventListener('DOMContentLoaded', () => {
         // Check if user is logged in
         const loginBtn = document.getElementById('login-btn');
         if (loginBtn) {
-            // Save state so it can automatically submit after login refresh
+            // Show registration modal instead of direct login trigger
             window.saveFormState(true);
-            loginBtn.click();
-            return; // Stop execution, wait for login popup
+            const regModal = document.getElementById('reg-modal');
+            if (regModal) {
+                regModal.classList.remove('hidden');
+            }
+            return; // Stop execution, wait for user action
         }
 
         if (!genderInput.value) {
@@ -249,4 +252,27 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+    // Registration Modal event listeners
+    const modalLoginBtn = document.getElementById('modal-login-btn');
+    const modalCloseBtn = document.getElementById('modal-close-btn');
+    const regModal = document.getElementById('reg-modal');
+
+    if (modalLoginBtn && modalCloseBtn && regModal) {
+        modalCloseBtn.addEventListener('click', () => {
+            regModal.classList.add('hidden');
+        });
+
+        modalLoginBtn.addEventListener('click', () => {
+            const loginBtn = document.getElementById('login-btn');
+            if (loginBtn) {
+                loginBtn.click();
+            }
+        });
+        
+        regModal.addEventListener('click', (e) => {
+            if (e.target === regModal) {
+                regModal.classList.add('hidden');
+            }
+        });
+    }
 });
