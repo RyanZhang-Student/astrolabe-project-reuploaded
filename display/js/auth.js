@@ -1,4 +1,4 @@
-﻿document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', () => {
     // Login Popup Logic
     const loginBtn = document.getElementById('login-btn');
     if (loginBtn) {
@@ -42,5 +42,4 @@
             e.stopPropagation();
         });
     }
-});
 });
