@@ -236,10 +236,39 @@ def calculate():
     </script>
     </body></html>"""
     
+    user_folder = os.path.join(RESULTS_DIR, user_name)
+    if not os.path.exists(user_folder):
+        os.makedirs(user_folder)
+        
     filename = f"report_{user_name}.html"
-    filepath = os.path.join(RESULTS_DIR, filename)
+    filepath = os.path.join(user_folder, filename)
     with open(filepath, "w", encoding="utf-8") as f:
         f.write(html_template)
+        
+    import re
+    house_blocks = re.findall(r'<details class="detailed-house">.*?</details>', detailed_html, re.DOTALL)
+    
+    base_css = """
+    <style>
+        body{font-family:sans-serif;background:#f4f7f6;padding:20px;color:#333}
+        .detailed-house { border: 1px solid #ddd; padding: 15px; margin-top: 20px; border-radius: 8px; background: #fff; }
+        .house-header { font-size: 18px; font-weight: bold; color: #4B0082; border-bottom: 2px solid #4B0082; padding-bottom: 5px; margin-bottom: 10px; }
+        .cusp-info { font-size: 14px; font-weight: bold; background: #f0f0f0; padding: 5px 10px; border-radius: 4px; margin-bottom: 15px; }
+        .planet-detail { border-left: 3px solid #666; padding-left: 15px; margin-bottom: 20px; font-size: 13px; line-height: 1.6; }
+        .planet-title { font-size: 15px; font-weight: bold; color: #333; margin-top: 10px; }
+        .score-line { color: #555; }
+        .total-score { font-weight: bold; color: #d32f2f; font-size: 14px; margin-top: 3px; border-top: 1px dashed #ccc; padding-top: 3px; }
+        .aspect-details { font-size: 12px; color: #777; margin-top: 5px; font-style: italic; }
+    </style>
+    """
+
+    for i, block in enumerate(house_blocks, 1):
+        block_open = block.replace('<details class="detailed-house">', '<details class="detailed-house" open>')
+        house_html = f"<!DOCTYPE html>\n<html>\n<head>\n<meta charset='UTF-8'>\n{base_css}\n</head>\n<body>\n{block_open}\n</body>\n</html>"
+        house_filename = f"{user_name}_HOUSE {i}.html"
+        house_filepath = os.path.join(user_folder, house_filename)
+        with open(house_filepath, "w", encoding="utf-8") as f:
+            f.write(house_html)
     
     # Record user information and their Astrolabe input if they are logged in via Google
     user_info = session.get('user')
@@ -271,7 +300,7 @@ def calculate():
 
     return jsonify({
         'status': 'success',
-        'report_url': f'/results/{filename}',
+        'report_url': f'/results/{user_name}/{filename}',
         'star_aspects': star_aspects,
         'star_stats': star_stats,
         'chart_svg_base64': svg_base64,

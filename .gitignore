@@ -3,5 +3,5 @@
 __pycache__/
 *.pyc
 .DS_Store
-results/*.html
+results/
 account/log.json
