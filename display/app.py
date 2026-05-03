@@ -292,7 +292,20 @@ def calculate():
                         logs = json.load(log_f)
                     except json.JSONDecodeError:
                         logs = []
-            logs.append(log_entry)
+            
+            user_email = user_info.get('email')
+            existing_index = -1
+            if user_email:
+                for i, log in enumerate(logs):
+                    if log.get('google_account', {}).get('email') == user_email:
+                        existing_index = i
+                        break
+            
+            if existing_index >= 0:
+                logs[existing_index] = log_entry
+            else:
+                logs.append(log_entry)
+
             with open(log_file_path, 'w', encoding='utf-8') as log_f:
                 json.dump(logs, log_f, ensure_ascii=False, indent=4)
         except Exception as e:
