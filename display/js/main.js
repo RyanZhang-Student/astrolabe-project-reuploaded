@@ -71,6 +71,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (saved) {
             try {
                 const state = JSON.parse(saved);
+                window.lastSubmittedState = JSON.parse(saved); // Store the actual submitted state for comparison
                 if (state.name) document.getElementById('name').value = state.name;
                 if (state.gender) {
                     genderInput.value = state.gender;
@@ -216,6 +217,33 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
+        let isChanged = true;
+        if (window.lastSubmittedState) {
+            const savedState = window.lastSubmittedState;
+            const currentName = document.getElementById('name').value;
+            const currentGender = genderInput.value;
+            const currentLocation = document.getElementById('location').value;
+            const currentDate = document.getElementById('birth-date').value;
+            const currentTime = document.getElementById('birth-time').value;
+            
+            if (savedState.name === currentName &&
+                savedState.gender === currentGender &&
+                savedState.location === currentLocation &&
+                savedState.date === currentDate &&
+                savedState.time === currentTime) {
+                isChanged = false;
+            }
+        }
+
+        if (e.isTrusted && window.lastSubmittedState && isChanged && !window.skipConfirmModal) {
+            const confirmModal = document.getElementById('update-confirm-modal');
+            if (confirmModal) {
+                confirmModal.classList.remove('hidden');
+                return; // Stop here, wait for confirmation
+            }
+        }
+        window.skipConfirmModal = false;
+
         // UI Feedback
         btnText.style.opacity = '0';
         loader.style.display = 'block';
@@ -263,6 +291,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 };
                 showSummaryPill(currentState);
                 localStorage.setItem('astrolabeFormState', JSON.stringify(currentState));
+                window.lastSubmittedState = JSON.parse(JSON.stringify(currentState));
 
                 resultContainer.classList.remove('hidden');
                 reportLink.textContent = `View Report for ${name}`;
@@ -336,6 +365,37 @@ document.addEventListener('DOMContentLoaded', () => {
         regModal.addEventListener('click', (e) => {
             if (e.target === regModal) {
                 regModal.classList.add('hidden');
+            }
+        });
+    }
+
+    // Confirm Update Modal event listeners
+    const confirmUpdateModal = document.getElementById('update-confirm-modal');
+    const confirmUpdateYes = document.getElementById('confirm-update-yes');
+    const confirmUpdateNo = document.getElementById('confirm-update-no');
+
+    if (confirmUpdateModal && confirmUpdateYes && confirmUpdateNo) {
+        confirmUpdateYes.addEventListener('click', () => {
+            confirmUpdateModal.classList.add('hidden');
+            window.skipConfirmModal = true;
+            const submitBtn = document.getElementById('submit-btn');
+            if (submitBtn) submitBtn.click();
+        });
+        
+        const closeConfirmModal = () => {
+            confirmUpdateModal.classList.add('hidden');
+            if (window.lastSubmittedState) {
+                showSummaryPill(window.lastSubmittedState);
+                const resultContainer = document.getElementById('result-container');
+                if (resultContainer) resultContainer.classList.remove('hidden');
+            }
+        };
+
+        confirmUpdateNo.addEventListener('click', closeConfirmModal);
+        
+        confirmUpdateModal.addEventListener('click', (e) => {
+            if (e.target === confirmUpdateModal) {
+                closeConfirmModal();
             }
         });
     }
