@@ -12,6 +12,34 @@ document.addEventListener('DOMContentLoaded', () => {
     const genderBoxes = document.querySelectorAll('.gender-box');
     const genderInput = document.getElementById('gender');
 
+    const formSection = document.getElementById('form-section');
+    const summaryPillContainer = document.getElementById('summary-pill-container');
+    const summaryPillText = document.getElementById('summary-pill-text');
+    const summaryPill = document.getElementById('summary-pill');
+
+    const showSummaryPill = (state) => {
+        const name = state.name || 'User';
+        let displayTime = '';
+        if (state.date && state.time) {
+             displayTime = `${state.date} ${state.time}:00`;
+        }
+        if (summaryPillText) {
+            summaryPillText.textContent = `${name}: ${displayTime}`;
+        }
+        if (formSection && summaryPillContainer) {
+            formSection.classList.add('hidden');
+            summaryPillContainer.classList.remove('hidden');
+        }
+    };
+
+    if (summaryPill) {
+        summaryPill.addEventListener('click', () => {
+            summaryPillContainer.classList.add('hidden');
+            if (formSection) formSection.classList.remove('hidden');
+            if (resultContainer) resultContainer.classList.add('hidden');
+        });
+    }
+
     window.saveFormState = (autoSubmit = false) => {
         const state = {
             name: document.getElementById('name').value,
@@ -21,11 +49,11 @@ document.addEventListener('DOMContentLoaded', () => {
             time: document.getElementById('birth-time').value,
             autoSubmit: autoSubmit
         };
-        sessionStorage.setItem('astrolabeFormState', JSON.stringify(state));
+        localStorage.setItem('astrolabeFormState', JSON.stringify(state));
     };
 
     const restoreFormState = () => {
-        const saved = sessionStorage.getItem('astrolabeFormState');
+        const saved = localStorage.getItem('astrolabeFormState');
         if (saved) {
             try {
                 const state = JSON.parse(saved);
@@ -43,13 +71,24 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (state.date) document.getElementById('birth-date').value = state.date;
                 if (state.time) document.getElementById('birth-time').value = state.time;
 
-                if (state.autoSubmit && !document.getElementById('login-btn')) {
+                const isLoggedIn = document.getElementById('login-btn') === null;
+                const isFullyPopulated = state.name && state.date && state.time;
+
+                if (state.autoSubmit && isLoggedIn) {
                     state.autoSubmit = false;
-                    sessionStorage.setItem('astrolabeFormState', JSON.stringify(state));
+                    localStorage.setItem('astrolabeFormState', JSON.stringify(state));
                     setTimeout(() => {
                         const submitBtn = document.getElementById('submit-btn');
                         if (submitBtn) submitBtn.click();
                     }, 500);
+                } else if (isFullyPopulated) {
+                    showSummaryPill(state);
+                    if (isLoggedIn) {
+                        setTimeout(() => {
+                            const submitBtn = document.getElementById('submit-btn');
+                            if (submitBtn) submitBtn.click();
+                        }, 500);
+                    }
                 }
             } catch (e) {
                 console.error("Error restoring form state", e);
@@ -199,6 +238,17 @@ document.addEventListener('DOMContentLoaded', () => {
                 btnText.style.opacity = '1';
                 loader.style.display = 'none';
                 submitBtn.disabled = false;
+
+                const currentState = {
+                    name: document.getElementById('name').value,
+                    gender: genderInput.value,
+                    location: document.getElementById('location').value,
+                    date: document.getElementById('birth-date').value,
+                    time: document.getElementById('birth-time').value,
+                    autoSubmit: false
+                };
+                showSummaryPill(currentState);
+                localStorage.setItem('astrolabeFormState', JSON.stringify(currentState));
 
                 resultContainer.classList.remove('hidden');
                 reportLink.textContent = `View Report for ${name}`;

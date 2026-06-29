@@ -62,7 +62,27 @@
             </div>
         </header>
 
-        <section class="form-card glass">
+        <div id="summary-pill-container" class="hidden" style="text-align: center; margin-bottom: 2rem; margin-top: 1rem;">
+            <button id="summary-pill" class="glass" style="
+                background: rgba(30, 30, 40, 0.8);
+                border: 1px solid rgba(255, 255, 255, 0.1);
+                border-radius: 2rem;
+                padding: 0.8rem 1.5rem;
+                color: #fff;
+                font-size: 1.1rem;
+                font-family: 'Inter', sans-serif;
+                cursor: pointer;
+                transition: all 0.3s ease;
+                display: inline-flex;
+                align-items: center;
+                gap: 0.5rem;
+                box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            ">
+                <span id="summary-pill-text"></span>
+            </button>
+        </div>
+
+        <section class="form-card glass" id="form-section">
             <div class="form-header">
                 <h2>Get my Astrolabe</h2>
             </div>
