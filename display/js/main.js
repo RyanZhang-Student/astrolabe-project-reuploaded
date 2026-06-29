@@ -21,7 +21,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const name = state.name || 'User';
         let displayTime = '';
         if (state.date && state.time) {
-             displayTime = `${state.date} ${state.time}:00`;
+            displayTime = `${state.date} ${state.time}:00`;
         }
         if (summaryPillText) {
             summaryPillText.textContent = `${name}: ${displayTime}`;
@@ -37,6 +37,20 @@ document.addEventListener('DOMContentLoaded', () => {
             summaryPillContainer.classList.add('hidden');
             if (formSection) formSection.classList.remove('hidden');
             if (resultContainer) resultContainer.classList.add('hidden');
+        });
+    }
+
+    const menuEditInfoBtn = document.getElementById('menu-edit-info-btn');
+    if (menuEditInfoBtn) {
+        menuEditInfoBtn.addEventListener('click', () => {
+            if (summaryPillContainer) summaryPillContainer.classList.add('hidden');
+            if (formSection) formSection.classList.remove('hidden');
+            if (resultContainer) resultContainer.classList.add('hidden');
+
+            const profilePopup = document.getElementById('profile-popup');
+            const profileOverlay = document.getElementById('profile-overlay');
+            if (profilePopup) profilePopup.classList.add('hidden');
+            if (profileOverlay) profileOverlay.classList.remove('active');
         });
     }
 
@@ -318,7 +332,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 loginBtn.click();
             }
         });
-        
+
         regModal.addEventListener('click', (e) => {
             if (e.target === regModal) {
                 regModal.classList.add('hidden');

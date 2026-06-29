@@ -31,38 +31,45 @@
             </div>
             <div class="user-auth" style="position: relative;">
                 {% if user %}
-                    <div class="user-profile-circle authenticated" id="user-btn" title="{{ user.name }}">
-                        <img src="{{ user.picture }}" alt="{{ user.name }}" class="profile-img">
-                    </div>
-                    <div id="profile-popup" class="profile-popup glass hidden">
-                        <div class="profile-content">
-                            <div class="profile-header">
-                                <div class="profile-avatar-large">
-                                    <img src="{{ user.picture }}" alt="{{ user.name }}">
-                                </div>
-                                <h3 class="profile-name">{{ user.name }}</h3>
-                                <p class="profile-email">{{ user.email }}</p>
+                <div class="user-profile-circle authenticated" id="user-btn" title="{{ user.name }}">
+                    <img src="{{ user.picture }}" alt="{{ user.name }}" class="profile-img">
+                </div>
+                <div id="profile-popup" class="profile-popup glass hidden">
+                    <div class="profile-content">
+                        <div class="profile-header">
+                            <div class="profile-avatar-large">
+                                <img src="{{ user.picture }}" alt="{{ user.name }}">
                             </div>
-                            <div class="profile-menu">
-                                <form action="/logout" method="GET" style="margin: 0;">
-                                    <button type="submit" class="profile-menu-item logout-item" style="width: 100%; border: none; background: transparent; cursor: pointer; font-family: inherit;">
-                                        <span>Logout</span>
-                                    </button>
-                                </form>
-                            </div>
+                            <h3 class="profile-name">{{ user.name }}</h3>
+                            <p class="profile-email">{{ user.email }}</p>
+                        </div>
+                        <div class="profile-menu">
+                            <button type="button" class="profile-menu-item" id="menu-edit-info-btn"
+                                style="width: 100%; border: none; background: transparent; cursor: pointer; font-family: inherit; border-bottom: 1px solid rgba(255,255,255,0.1);">
+                                <span>Edit Birth Info</span>
+                            </button>
+                            <form action="/logout" method="GET" style="margin: 0;">
+                                <button type="submit" class="profile-menu-item logout-item"
+                                    style="width: 100%; border: none; background: transparent; cursor: pointer; font-family: inherit;">
+                                    <span>Logout</span>
+                                </button>
+                            </form>
                         </div>
                     </div>
+                </div>
                 {% else %}
-                    <button class="user-profile-circle" id="login-btn" title="Sign in with Google">
-                        <svg viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
-                        </svg>
-                    </button>
+                <button class="user-profile-circle" id="login-btn" title="Sign in with Google">
+                    <svg viewBox="0 0 24 24" fill="currentColor">
+                        <path
+                            d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" />
+                    </svg>
+                </button>
                 {% endif %}
             </div>
         </header>
 
-        <div id="summary-pill-container" class="hidden" style="text-align: center; margin-bottom: 2rem; margin-top: 1rem;">
+        <div id="summary-pill-container" class="hidden"
+            style="text-align: center; margin-bottom: 2rem; margin-top: 1rem;">
             <button id="summary-pill" class="glass" style="
                 background: rgba(30, 30, 40, 0.8);
                 border: 1px solid rgba(255, 255, 255, 0.1);
@@ -153,11 +160,13 @@
                 </div>
 
                 <div id="star-conjunction-container"></div>
-                
+
                 <!-- AI Analysis Section -->
                 <div class="ai-analysis-container hidden" id="ai-analysis-container">
-                    <h3 class="section-title" style="text-align: center; margin-top: 1.5rem; color: #4B0082;">AI Setup & Deep Readings</h3>
-                    <p style="text-align: center; color: #666; font-size: 0.9rem; margin-bottom: 1rem;">Select a house below for a personalized AI interpretation.</p>
+                    <h3 class="section-title" style="text-align: center; margin-top: 1.5rem; color: #4B0082;">AI Setup &
+                        Deep Readings</h3>
+                    <p style="text-align: center; color: #666; font-size: 0.9rem; margin-bottom: 1rem;">Select a house
+                        below for a personalized AI interpretation.</p>
                     <div class="house-grid" id="house-grid">
                         <!-- 1-12 blocks generated via JS or hardcoded here -->
                         <div class="house-block" data-house="1">1</div>
@@ -181,7 +190,8 @@
                     </div>
                 </div>
 
-                <a id="report-link" href="#" target="_blank" class="view-btn" style="margin-top: 2rem;">View Detailed Report</a>
+                <a id="report-link" href="#" target="_blank" class="view-btn" style="margin-top: 2rem;">View Detailed
+                    Report</a>
             </div>
         </div>
     </main>
@@ -271,21 +281,25 @@
 
     <!-- Registration Prompt Modal -->
     <div id="reg-modal" class="modal-overlay hidden" style="z-index: 10000;">
-        <div class="modal-content glass" style="max-width: 400px; text-align: center; padding: 2.5rem 2rem; border-radius: 1.5rem;">
+        <div class="modal-content glass"
+            style="max-width: 400px; text-align: center; padding: 2.5rem 2rem; border-radius: 1.5rem;">
             <div style="font-size: 3rem; margin-bottom: 1rem;">✨</div>
             <h3 style="margin-bottom: 1rem; color: #fff; font-family: 'Outfit', sans-serif;">Unlock Your Destiny</h3>
             <p style="color: rgba(255, 255, 255, 0.8); margin-bottom: 2rem; font-size: 0.95rem; line-height: 1.5;">
                 To reveal your personalized astrological insights and save your chart, please sign in with your account.
             </p>
             <button id="modal-login-btn" class="submit-btn" style="width: 100%; margin-bottom: 1rem;">
-                <span class="btn-text" style="display: flex; align-items: center; justify-content: center; gap: 0.5rem;">
+                <span class="btn-text"
+                    style="display: flex; align-items: center; justify-content: center; gap: 0.5rem;">
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                        <path
+                            d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" />
                     </svg>
                     Sign in to Continue
                 </span>
             </button>
-            <button id="modal-close-btn" style="background: transparent; border: none; color: rgba(255,255,255,0.5); cursor: pointer; font-size: 0.85rem; text-decoration: underline;">
+            <button id="modal-close-btn"
+                style="background: transparent; border: none; color: rgba(255,255,255,0.5); cursor: pointer; font-size: 0.85rem; text-decoration: underline;">
                 Maybe Later
             </button>
         </div>
