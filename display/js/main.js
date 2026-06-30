@@ -306,8 +306,8 @@ document.addEventListener('DOMContentLoaded', () => {
                         canvas.height = 800;
                         const ctx = canvas.getContext('2d');
 
-                        // Draw a solid background so it isn't transparent (assuming light theme chart)
-                        ctx.fillStyle = '#ffffff';
+                        // Draw a solid dark background to match the theme
+                        ctx.fillStyle = '#0d0b14';
                         ctx.fillRect(0, 0, canvas.width, canvas.height);
 
                         ctx.drawImage(img, 0, 0, canvas.width, canvas.height);

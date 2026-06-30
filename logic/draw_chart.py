@@ -99,9 +99,7 @@ def create_pro_svg(planets, aspects):
     for name, data in planets.items():
         if name in ['Midheaven', 'IC', 'Asc', 'Dsc'] or name.startswith('House '): continue
         draw_lon = (data['lon'] - asc_lon) % 360
-        color = "rgba(255, 255, 255, 0.85)" # unified pale color for planets
-        if name == 'Sun' or name == 'Moon':
-            color = "#e6c98b"
+        color = PLANET_COLORS.get(name, 'white')
         px, py = pol2cart(cx, cy, r_in - 15, draw_lon)
         lx, ly = pol2cart(cx, cy, r_in + 15, draw_lon)
         svg.append(f'<circle cx="{px}" cy="{py}" r="3" fill="{color}"/>')
