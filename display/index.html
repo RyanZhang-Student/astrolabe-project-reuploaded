@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="css/stars-modal.css">
     <link rel="stylesheet" href="css/timepicker.css">
     <link rel="stylesheet" href="css/ai-analysis.css">
+    <link rel="stylesheet" href="css/chatbot.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
@@ -161,6 +162,16 @@
 
                 <div id="star-conjunction-container"></div>
 
+                <!-- Chatbot Consult Section -->
+                <div class="consult-section hidden" id="consult-section">
+                    <h3>Consult the Stars</h3>
+                    <p>Have questions about your chart? Ask our AI astrology advisor for personalized guidance.</p>
+                    <button type="button" class="consult-btn" id="consult-btn">
+                        <span class="btn-icon">💬</span>
+                        <span>Consult</span>
+                    </button>
+                </div>
+
                 <!-- AI Analysis Section -->
                 <div class="ai-analysis-container hidden" id="ai-analysis-container">
                     <h3 class="section-title" style="text-align: center; margin-top: 1.5rem; color: #4B0082;">AI Setup &
@@ -279,6 +290,42 @@
         </div>
     </div>
 
+    <!-- Chatbot Modal -->
+    <div id="chatbot-modal" class="chat-modal-overlay">
+        <div class="chat-container" onclick="event.stopPropagation()">
+            <div class="chat-header">
+                <div class="chat-header-info">
+                    <div class="chat-advisor-avatar">☆</div>
+                    <div>
+                        <div class="chat-advisor-name">Astrolabe Advisor</div>
+                        <div class="chat-advisor-status"><span class="status-dot"></span> Online</div>
+                    </div>
+                </div>
+                <button type="button" class="chat-close-btn" onclick="window.closeChatbot()">&times;</button>
+            </div>
+            <div class="chat-messages" id="chat-messages">
+                <div class="chat-welcome">
+                    <h4>Welcome to your personal consultation</h4>
+                    <p>Ask anything about your astrological chart — placements, aspects, houses, or life guidance based on the stars.</p>
+                    <div class="suggestions">
+                        <span class="suggestion-chip">What does my Sun sign mean?</span>
+                        <span class="suggestion-chip">Explain my 7th house</span>
+                        <span class="suggestion-chip">My career outlook</span>
+                        <span class="suggestion-chip">Love compatibility</span>
+                    </div>
+                </div>
+            </div>
+            <div class="chat-input-area">
+                <textarea class="chat-input" id="chat-input" placeholder="Ask about your chart..." rows="1"></textarea>
+                <button type="button" class="chat-send-btn" id="chat-send-btn">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </div>
+
     <!-- Registration Prompt Modal -->
     <div id="reg-modal" class="modal-overlay hidden" style="z-index: 10000;">
         <div class="modal-content glass"
@@ -312,6 +359,7 @@
     <script src="js/stars-modal.js"></script>
     <script src="js/auth.js"></script>
     <script src="js/ai-analysis.js"></script>
+    <script src="js/chatbot.js"></script>
     <script src="js/main.js"></script>
 </body>
 

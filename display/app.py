@@ -21,6 +21,8 @@ sys.path.append(BASE_DIR)
 sys.path.append(LOGIC_DIR)
 AI_ANALYSIS_DIR = os.path.join(BASE_DIR, 'ai_analysis')
 sys.path.append(AI_ANALYSIS_DIR)
+CHATBOT_DIR = os.path.join(BASE_DIR, 'chatbot')
+sys.path.append(CHATBOT_DIR)
 
 from engine import get_astronomical_data
 from utils import is_day_chart, get_zodiac_sign, determine_house, SIGNS, CLASSICAL_RULERS, EXALTATIONS, DETRIMENTS, FALLS, get_dignities_at_position, get_debilities_at_position, get_advanced_reception, calculate_mutual_reception_rejection, get_aspects
@@ -30,6 +32,7 @@ from scoring import calculate_essential_score, calculate_accidental_score, calcu
 from draw_chart import create_pro_svg
 import main as astrolabe_main
 import analyzer as ai_analyzer
+import chatbot as chatbot_module
 from account.auth import auth_bp, init_oauth
 
 app = Flask(__name__, static_folder='.', static_url_path='', template_folder='.')
@@ -343,6 +346,23 @@ def api_ai_analysis():
     return jsonify({
         'status': 'success',
         'analysis': analysis_text
+    })
+
+@app.route('/api/chatbot', methods=['POST'])
+def api_chatbot():
+    data = request.json
+    user_name = data.get('user_name')
+    message = data.get('message')
+    history = data.get('history', [])
+    
+    if not user_name or not message:
+        return jsonify({'error': 'Missing parameters'}), 400
+        
+    user_email = session.get('user', {}).get('email') if session.get('user') else 'guest'
+    reply = chatbot_module.get_chat_response(user_email, user_name, message, history)
+    return jsonify({
+        'status': 'success',
+        'reply': reply
     })
 
 if __name__ == '__main__':

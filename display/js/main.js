@@ -329,6 +329,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 // Show AI Analysis section and store current user
                 window.currentAnalysisUserName = result.user_name || name;
                 document.getElementById('ai-analysis-container').classList.remove('hidden');
+                document.getElementById('consult-section').classList.remove('hidden');
 
             } else {
                 alert('Error: ' + (result.error || 'Failed to calculate'));
