@@ -1,22 +1,26 @@
-﻿.form-card {
-    padding: 3rem;
-    border-radius: 2rem;
+.form-card {
+    padding: 3.5rem;
+    border-radius: 1.5rem;
     transform: translateY(0);
-    transition: transform 0.3s ease;
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .form-header {
-    margin-bottom: 2rem;
+    margin-bottom: 2.5rem;
+    text-align: center;
 }
 
 .form-header h2 {
-    font-size: 1.5rem;
+    font-size: 2.2rem;
     margin-bottom: 0.5rem;
+    color: var(--primary);
+    font-style: italic;
 }
 
 .form-header p {
     color: var(--text-muted);
-    font-size: 0.9rem;
+    font-size: 0.95rem;
+    font-family: 'Inter', sans-serif;
 }
 
 .input-grid {
@@ -32,36 +36,42 @@
 label {
     display: block;
     margin-bottom: 0.5rem;
-    font-size: 0.8rem;
-    font-weight: 600;
+    font-size: 0.75rem;
+    font-weight: 400;
     color: var(--text-muted);
     text-transform: uppercase;
-    letter-spacing: 0.05rem;
+    letter-spacing: 0.15rem;
+    font-family: 'Inter', sans-serif;
 }
 
 input {
     width: 100%;
-    padding: 1rem;
-    background: rgba(15, 23, 42, 0.5);
+    padding: 1.2rem;
+    background: rgba(18, 15, 28, 0.8);
     border: 1px solid var(--glass-border);
-    border-radius: 0.75rem;
-    color: white;
+    border-radius: 0.5rem;
+    color: var(--text-light);
     font-size: 1rem;
-    transition: all 0.2s ease;
-    cursor: pointer;
+    font-family: 'Inter', sans-serif;
+    transition: all 0.3s ease;
+    cursor: text;
 }
 
 input:focus {
     outline: none;
     border-color: var(--primary);
-    box-shadow: 0 0 0 2px var(--primary-glow);
+    box-shadow: 0 0 15px var(--primary-glow);
+    background: rgba(18, 15, 28, 0.95);
+}
+
+input::placeholder {
+    color: rgba(166, 163, 176, 0.5); /* Muted text */
 }
 
 .gender-options {
     display: flex;
-    gap: 0.5rem;
-    height: 3.25rem;
-    /* Match input height roughly */
+    gap: 0.75rem;
+    height: 3.5rem;
 }
 
 .gender-box {
@@ -70,41 +80,49 @@ input:focus {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    background: rgba(15, 23, 42, 0.5);
+    background: rgba(18, 15, 28, 0.8);
     border: 1px solid var(--glass-border);
-    border-radius: 0.75rem;
+    border-radius: 0.5rem;
     cursor: pointer;
-    transition: all 0.2s ease;
+    transition: all 0.3s ease;
 }
 
 .gender-box:hover {
-    background: rgba(109, 40, 217, 0.2);
+    background: rgba(230, 201, 139, 0.1); /* Slight gold tint */
+    border-color: rgba(230, 201, 139, 0.3);
 }
 
 .gender-options.gender-selected .gender-box:hover {
-    background: #ebef07;
-    color: #000;
+    background: var(--primary);
+    color: var(--bg-dark);
 }
 
 .gender-box.selected {
     background: var(--primary);
     border-color: var(--primary);
-    box-shadow: 0 0 10px var(--primary-glow);
+    box-shadow: 0 0 15px var(--primary-glow);
 }
 
 .gender-icon {
     font-size: 1.2rem;
     margin-bottom: 0.1rem;
+    filter: sepia(1) hue-rotate(10deg) saturate(0.5); /* Mute emoji colors */
+}
+
+.gender-box.selected .gender-icon {
+    filter: brightness(0); /* Make black when selected */
 }
 
 .gender-label {
     font-size: 0.65rem;
     color: var(--text-muted);
     font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1rem;
 }
 
 .gender-box.selected .gender-label {
-    color: white;
+    color: var(--bg-dark);
 }
 
 small {
@@ -126,20 +144,20 @@ small {
     background: var(--glass-bg);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
-    border-radius: 0.75rem;
+    border-radius: 0.5rem;
     overflow: hidden;
     margin-top: 0.2rem;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
 }
 
 .autocomplete-item {
-    padding: 0.75rem 1rem;
+    padding: 1rem 1.2rem;
     cursor: pointer;
     background-color: transparent;
     border-bottom: 1px solid var(--glass-border);
-    color: white;
-    font-size: 0.9rem;
-    transition: background-color 0.2s ease;
+    color: var(--text-light);
+    font-size: 0.95rem;
+    transition: background-color 0.3s ease;
 }
 
 .autocomplete-item:last-child {
@@ -147,29 +165,31 @@ small {
 }
 
 .autocomplete-item:hover {
-    background-color: rgba(109, 40, 217, 0.5);
-    /* Primary glow color */
+    background-color: rgba(230, 201, 139, 0.15); /* Gold hover */
 }
 
 .submit-btn {
     width: 100%;
     padding: 1.25rem;
-    margin-top: 1rem;
-    background: linear-gradient(135deg, var(--primary), #4f46e5);
+    margin-top: 2rem;
+    background: var(--primary);
     border: none;
-    border-radius: 1rem;
-    color: white;
-    font-size: 1.1rem;
-    font-weight: 700;
+    border-radius: 2rem; /* Pill shape */
+    color: var(--bg-dark); /* Dark text */
+    font-size: 0.9rem;
+    font-weight: 600;
+    letter-spacing: 0.15rem;
+    text-transform: uppercase;
     cursor: pointer;
     position: relative;
     overflow: hidden;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
 }
 
 .submit-btn:hover {
     transform: translateY(-2px);
-    box-shadow: 0 10px 20px -10px var(--primary);
+    box-shadow: 0 10px 25px var(--primary-glow);
+    background: #f0d59b; /* Slightly lighter gold */
 }
 
 .submit-btn:active {
@@ -181,9 +201,9 @@ small {
     display: none;
     width: 20px;
     height: 20px;
-    border: 3px solid rgba(255, 255, 255, 0.3);
+    border: 3px solid rgba(13, 11, 20, 0.3);
     border-radius: 50%;
-    border-top-color: #fff;
+    border-top-color: var(--bg-dark);
     animation: spin 1s ease-in-out infinite;
     position: absolute;
     left: 50%;

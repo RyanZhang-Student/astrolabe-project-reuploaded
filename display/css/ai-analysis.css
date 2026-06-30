@@ -1,4 +1,4 @@
-﻿/* AI Analysis Feature */
+/* AI Analysis Feature */
 .house-grid {
     display: grid;
     grid-template-columns: repeat(6, 1fr);
@@ -19,59 +19,66 @@
 }
 
 .house-block {
-    background: rgba(15, 23, 42, 0.5);
+    background: rgba(18, 15, 28, 0.8);
     border: 1px solid var(--glass-border);
-    border-radius: 0.75rem;
+    border-radius: 0.5rem;
     padding: 1.5rem 0;
     text-align: center;
     font-size: 1.5rem;
-    font-weight: 700;
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 400;
     color: var(--text-muted);
     cursor: pointer;
     transition: all 0.3s ease;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
 
 .house-block:hover {
-    background: rgba(109, 40, 217, 0.2);
+    background: rgba(230, 201, 139, 0.1);
+    border-color: rgba(230, 201, 139, 0.3);
     transform: translateY(-2px);
-    color: white;
+    color: var(--text-light);
 }
 
 .house-block.selected {
-    background: linear-gradient(135deg, var(--primary), #4f46e5);
+    background: var(--primary);
     border-color: var(--primary);
-    color: white;
+    color: var(--bg-dark);
     box-shadow: 0 0 15px var(--primary-glow);
     transform: translateY(-2px);
 }
 
 .ai-analyze-btn {
     display: inline-block;
-    padding: 1rem 3rem;
-    background: linear-gradient(135deg, #10b981, #059669);
-    border: none;
+    padding: 1.25rem 3.5rem;
+    background: transparent;
+    border: 1px solid var(--primary);
     border-radius: 2rem;
-    color: white;
-    font-size: 1.1rem;
-    font-weight: 700;
+    color: var(--primary);
+    font-size: 0.9rem;
+    font-weight: 400;
+    font-family: 'Inter', sans-serif;
+    letter-spacing: 0.15rem;
+    text-transform: uppercase;
     cursor: pointer;
     position: relative;
     overflow: hidden;
     transition: all 0.3s ease;
-    box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4);
 }
 
 .ai-analyze-btn.disabled {
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(255, 255, 255, 0.1);
     color: var(--text-muted);
     cursor: not-allowed;
     box-shadow: none;
 }
 
 .ai-analyze-btn:not(.disabled):hover {
+    background: var(--primary);
+    color: var(--bg-dark);
     transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(16, 185, 129, 0.6);
+    box-shadow: 0 8px 25px var(--primary-glow);
 }
 
 .ai-analyze-btn:not(.disabled):active {
@@ -81,9 +88,9 @@
 .ai-btn-loader {
     width: 20px;
     height: 20px;
-    border: 3px solid rgba(255, 255, 255, 0.3);
+    border: 3px solid rgba(13, 11, 20, 0.3);
     border-radius: 50%;
-    border-top-color: #fff;
+    border-top-color: var(--bg-dark);
     animation: spin 1s ease-in-out infinite;
     position: absolute;
     left: 50%;
@@ -94,31 +101,37 @@
 
 .ai-result-content {
     font-size: 0.95rem;
-    line-height: 1.6;
+    line-height: 1.8;
     color: var(--text-light);
+    font-family: 'Inter', sans-serif;
     text-align: left;
-    padding: 1rem;
+    padding: 1.5rem;
 }
 
 .ai-result-content h1, 
 .ai-result-content h2, 
 .ai-result-content h3 {
-    color: #e2e8f0;
-    margin-top: 1.5rem;
-    margin-bottom: 0.75rem;
+    color: var(--primary);
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+    font-weight: 400;
 }
 
 .ai-result-content p {
-    margin-bottom: 1rem;
+    margin-bottom: 1.25rem;
+    color: var(--text-muted);
 }
 
 .ai-result-content ul, 
 .ai-result-content ol {
-    margin-left: 1.5rem;
-    margin-bottom: 1rem;
+    margin-left: 2rem;
+    margin-bottom: 1.5rem;
+    color: var(--text-muted);
 }
 
 .ai-result-content li {
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.75rem;
 }
 

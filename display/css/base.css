@@ -1,12 +1,13 @@
-﻿:root {
-    --primary: #6d28d9;
-    --primary-glow: rgba(109, 40, 217, 0.4);
-    --secondary: #ec4899;
-    --bg-dark: #0f172a;
-    --text-light: #f8fafc;
-    --text-muted: #94a3b8;
-    --glass-bg: rgba(30, 41, 59, 0.7);
-    --glass-border: rgba(255, 255, 255, 0.1);
+:root {
+    --primary: #e6c98b; /* Elegant gold */
+    --primary-glow: rgba(230, 201, 139, 0.4);
+    --secondary: #b39b6b;
+    --bg-dark: #0d0b14; /* Deep dark purple/black */
+    --text-light: #fdfbf7; /* Creamy off-white */
+    --text-muted: #a6a3b0; /* Soft grey */
+    --glass-bg: rgba(18, 15, 28, 0.65);
+    --glass-border: rgba(230, 201, 139, 0.15); /* Subtle gold border */
+    --accent: #5e4f7a; /* Subtle purple accent */
 }
 
 * {
@@ -28,9 +29,13 @@ body {
 
 h1,
 h2,
-h3,
+h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 400;
+}
+
 .submit-btn {
-    font-family: 'Outfit', sans-serif;
+    font-family: 'Inter', sans-serif;
 }
 
 .stars-container {
@@ -40,68 +45,70 @@ h3,
     width: 100%;
     height: 100%;
     z-index: -1;
-    background: radial-gradient(circle at center, #1e1b4b 0%, #0f172a 100%);
+    background: radial-gradient(circle at center, #1b162e 0%, #0d0b14 80%);
 }
 
 .star {
     position: absolute;
-    background: white;
+    background: #fdfbf7;
     border-radius: 50%;
-    opacity: 0.5;
+    opacity: 0.6;
     animation: twinkle var(--duration) infinite ease-in-out;
 }
 
 @keyframes twinkle {
-
     0%,
     100% {
         opacity: 0.3;
         transform: scale(1);
+        box-shadow: 0 0 2px rgba(253, 251, 247, 0.2);
     }
-
     50% {
         opacity: 1;
         transform: scale(1.2);
+        box-shadow: 0 0 4px rgba(253, 251, 247, 0.8);
     }
 }
 
 .container {
     max-width: 600px;
     width: 90%;
-    padding: 2rem 0;
+    padding: 3rem 0;
     position: relative;
 }
 
 .header {
     text-align: center;
-    margin-bottom: 3rem;
+    margin-bottom: 3.5rem;
 }
 
 .glow-text {
-    font-size: 4rem;
-    font-weight: 800;
-    letter-spacing: 0.5rem;
-    background: linear-gradient(to right, #818cf8, #c084fc, #f472b6);
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-    filter: drop-shadow(0 0 10px var(--primary-glow));
-    margin-bottom: 0.5rem;
+    font-size: 3rem;
+    font-weight: 300;
+    letter-spacing: 0.4rem;
+    color: var(--text-light);
+    text-transform: uppercase;
+    margin-bottom: 0.75rem;
+    font-family: 'Cormorant Garamond', serif;
+    /* Removed rainbow neon glow, added elegant soft shadow */
+    text-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
 }
 
 .subtitle {
-    color: var(--text-muted);
-    font-weight: 300;
-    letter-spacing: 0.2rem;
+    color: var(--primary);
+    font-size: 0.85rem;
+    font-weight: 400;
+    letter-spacing: 0.25rem;
     text-transform: uppercase;
+    font-family: 'Inter', sans-serif;
 }
 
 .glass {
     background: var(--glass-bg);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
     border: 1px solid var(--glass-border);
-    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+    box-shadow: 0 10px 40px 0 rgba(0, 0, 0, 0.5);
 }
 
 .hidden {
@@ -109,18 +116,17 @@ h3,
 }
 
 .success-message {
-    padding: 2rem;
-    border-radius: 1.5rem;
+    padding: 2.5rem;
+    border-radius: 1rem;
     text-align: center;
-    animation: slideUp 0.5s ease-out;
+    animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 @keyframes slideUp {
     from {
         opacity: 0;
-        transform: translateY(20px);
+        transform: translateY(30px);
     }
-
     to {
         opacity: 1;
         transform: translateY(0);
@@ -129,19 +135,23 @@ h3,
 
 .view-btn {
     display: inline-block;
-    margin-top: 1.5rem;
-    padding: 0.75rem 2rem;
-    background: rgba(236, 72, 153, 0.2);
-    border: 1px solid var(--secondary);
-    border-radius: 0.5rem;
-    color: var(--secondary);
+    margin-top: 2rem;
+    padding: 0.8rem 2.5rem;
+    background: transparent;
+    border: 1px solid var(--primary);
+    border-radius: 2rem;
+    color: var(--primary);
     text-decoration: none;
-    font-weight: 600;
-    transition: all 0.2s ease;
+    font-weight: 400;
+    font-size: 0.9rem;
+    letter-spacing: 0.1rem;
+    text-transform: uppercase;
+    transition: all 0.3s ease;
 }
 
 .view-btn:hover {
-    background: var(--secondary);
-    color: white;
+    background: var(--primary);
+    color: var(--bg-dark);
+    box-shadow: 0 4px 15px var(--primary-glow);
 }
 

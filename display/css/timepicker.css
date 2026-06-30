@@ -1,4 +1,4 @@
-﻿/* Time Picker Modal Styles */
+/* Time Picker Modal Styles */
 .modal-overlay {
     position: fixed;
     top: 0;
@@ -136,17 +136,20 @@
 .confirm-btn {
     width: 100%;
     padding: 1rem;
-    background: linear-gradient(135deg, var(--secondary), #be185d);
+    background: var(--primary);
     border: none;
-    border-radius: 1rem;
-    color: white;
-    font-size: 1rem;
-    font-weight: 700;
+    border-radius: 2rem;
+    color: var(--bg-dark);
+    font-size: 0.9rem;
+    font-weight: 600;
+    letter-spacing: 0.15rem;
+    text-transform: uppercase;
     cursor: pointer;
-    transition: transform 0.2s ease;
+    transition: transform 0.3s ease, background 0.3s ease;
 }
 
 .confirm-btn:hover {
     transform: scale(1.02);
+    background: #f0d59b;
 }
 
