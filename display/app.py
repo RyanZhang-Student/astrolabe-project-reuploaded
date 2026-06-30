@@ -360,6 +360,12 @@ def api_chatbot():
         
     user_email = session.get('user', {}).get('email') if session.get('user') else 'guest'
     reply = chatbot_module.get_chat_response(user_email, user_name, message, history)
+
+    if reply == "__SERVICE_UNAVAILABLE__":
+        return jsonify({'status': 'error', 'error': 'unavailable'}), 503
+    elif reply == "__SERVICE_ERROR__":
+        return jsonify({'status': 'error', 'error': 'internal'}), 500
+
     return jsonify({
         'status': 'success',
         'reply': reply

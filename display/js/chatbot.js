@@ -74,13 +74,21 @@ document.addEventListener('DOMContentLoaded', () => {
             if (response.ok && result.status === 'success') {
                 appendMessage('assistant', result.reply);
                 chatHistory.push({ role: 'assistant', content: result.reply });
+            } else if (response.status === 503 || (result && result.error === 'unavailable')) {
+                // Service unavailable (429 rate limit / quota depleted)
+                appendMessage('assistant', 'Your Consultant is temporarily unavailable. Please try again in a few minutes.');
+                // Update header status to offline
+                const statusEl = document.querySelector('.chat-header-status');
+                if (statusEl) {
+                    statusEl.innerHTML = '<span class="status-dot offline"></span> Offline';
+                }
             } else {
-                appendMessage('assistant', 'Sorry, something went wrong. Please try again.');
+                appendMessage('assistant', 'Sorry, something went wrong. Please try again later.');
             }
         } catch (error) {
             console.error('Chatbot error:', error);
             removeTypingIndicator();
-            appendMessage('assistant', 'Connection error. Please try again later.');
+            appendMessage('assistant', 'Unable to reach your Consultant. Please check your connection and try again.');
         }
 
         chatSendBtn.disabled = false;

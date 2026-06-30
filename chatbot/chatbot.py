@@ -71,4 +71,8 @@ USER'S CHART DATA:
         response = chat.send_message(user_message)
         return response.text
     except Exception as e:
-        return f"An error occurred: {str(e)}"
+        error_str = str(e)
+        print(f"Chatbot API error: {error_str}", flush=True)
+        if '429' in error_str or 'quota' in error_str.lower() or 'rate limit' in error_str.lower() or 'depleted' in error_str.lower():
+            return "__SERVICE_UNAVAILABLE__"
+        return "__SERVICE_ERROR__"
