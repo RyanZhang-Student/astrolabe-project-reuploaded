@@ -1,4 +1,4 @@
-﻿document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', () => {
     window.starMythosData = null;
     fetch('star_mythos.json')
         .then(response => response.json())
@@ -106,12 +106,14 @@
 
     window.showStarDetail = function (index) {
         window.currentStarIndex = index;
+        document.getElementById('starModal').classList.add('detail-active');
         document.getElementById('starListView').classList.add('hidden');
         document.getElementById('starDetailView').classList.remove('hidden');
         window.renderSingleStar();
     };
 
     window.backToStarList = function () {
+        document.getElementById('starModal').classList.remove('detail-active');
         document.getElementById('starListView').classList.remove('hidden');
         document.getElementById('starDetailView').classList.add('hidden');
     };

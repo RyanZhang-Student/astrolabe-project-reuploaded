@@ -263,6 +263,9 @@
     <!-- Star Conjunction Modal -->
     <div id="starModal" class="modal-overlay hidden">
         <div class="modal-content glass">
+            <button id="prevStarBtn" class="nav-btn" onclick="window.prevStar()">
+                <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+            </button>
             <div class="modal-header">
                 <h3 id="modalTitle" data-i18n="star_modal_title">Star Conjunctions</h3>
                 <span class="close-btn" onclick="window.closeStarModal()">&times;</span>
@@ -272,7 +275,6 @@
                     <!-- Dynamic List Content -->
                 </div>
                 <div id="starDetailView" class="star-pagination-body hidden">
-                    <button id="prevStarBtn" class="nav-btn" onclick="window.prevStar()">&#9664;</button>
                     <div class="star-page-container">
                         <div class="star-nav-header">
                             <span class="back-to-list" onclick="window.backToStarList()" data-i18n="back_to_list">&#8592; Back to List</span>
@@ -282,9 +284,11 @@
                             <!-- Dynamic Content -->
                         </div>
                     </div>
-                    <button id="nextStarBtn" class="nav-btn" onclick="window.nextStar()">&#9654;</button>
                 </div>
             </div>
+            <button id="nextStarBtn" class="nav-btn" onclick="window.nextStar()">
+                <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+            </button>
         </div>
     </div>
 
