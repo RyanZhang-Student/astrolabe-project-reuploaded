@@ -44,6 +44,17 @@ const translations = {
         // Star Conjunctions Modal
         star_modal_title: "Star Conjunctions",
         back_to_list: "← Back to List",
+        star_col_cusp: "Star / Cusp head",
+        star_col_fixed: "Fixed star",
+        star_col_orb: "Orb(°)",
+        star_col_meaning: "Meaning",
+        star_label_planet_star: "Planet & Star",
+        star_label_orb: "Orb",
+        star_label_meaning: "Meaning",
+        star_label_astrological_meaning: "Astrological Meaning",
+        star_label_deity: "Representative Deity",
+        star_label_origin: "Origin",
+        star_label_mythology: "Mythology",
         
         // AI Modal
         ai_modal_title: "AI House Interpretation",
@@ -112,6 +123,17 @@ const translations = {
         // Star Conjunctions Modal
         star_modal_title: "Conjonctions Stellaires",
         back_to_list: "← Retour à la Liste",
+        star_col_cusp: "Étoile / Cuspide",
+        star_col_fixed: "Étoile fixe",
+        star_col_orb: "Orbe(°)",
+        star_col_meaning: "Signification",
+        star_label_planet_star: "Planète & Étoile",
+        star_label_orb: "Orbe",
+        star_label_meaning: "Signification",
+        star_label_astrological_meaning: "Signification Astrologique",
+        star_label_deity: "Divinité Représentative",
+        star_label_origin: "Origine",
+        star_label_mythology: "Mythologie",
         
         // AI Modal
         ai_modal_title: "Interprétation de Maison IA",

@@ -35,7 +35,10 @@ document.addEventListener('DOMContentLoaded', () => {
         const modal = document.getElementById('starModal');
         const modalTitle = document.getElementById('modalTitle');
 
-        modalTitle.innerText = "All Star Conjunctions";
+        const lang = window.currentLanguage || 'en';
+        const t = window.translations[lang] || window.translations['en'];
+        modalTitle.innerText = t.star_modal_title || "All Star Conjunctions";
+        
         window.currentStarData = window.starData; // Show all
 
         window.renderStarList();
@@ -50,14 +53,17 @@ document.addEventListener('DOMContentLoaded', () => {
         const listContainer = document.getElementById('starListView');
         listContainer.innerHTML = '';
 
+        const lang = window.currentLanguage || 'en';
+        const t = window.translations[lang] || window.translations['en'];
+
         let tableHtml = `
             <table class="styled-star-table">
                 <thead>
                     <tr>
-                        <th style="text-align:left;">Star / Cusp head</th>
-                        <th style="text-align:left;">Fixed star</th>
-                        <th style="text-align:left;">Orb(°)</th>
-                        <th style="text-align:left;">Meaning</th>
+                        <th style="text-align:left;">${t.star_col_cusp || 'Star / Cusp head'}</th>
+                        <th style="text-align:left;">${t.star_col_fixed || 'Fixed star'}</th>
+                        <th style="text-align:left;">${t.star_col_orb || 'Orb(°)'}</th>
+                        <th style="text-align:left;">${t.star_col_meaning || 'Meaning'}</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -68,20 +74,35 @@ document.addEventListener('DOMContentLoaded', () => {
             let prefix = "";
             let orbText = sa.orb.toFixed(2) + "&deg;";
 
+            // Look up mythos object for translation
+            let mythosObj = null;
+            if (window.starMythosData) {
+                for (const key of Object.keys(window.starMythosData)) {
+                    if (key.includes(sa.star)) {
+                        mythosObj = window.starMythosData[key];
+                        break;
+                    }
+                }
+            }
+
             if (sa.is_royal) {
                 starNameClass = "royal-star-text";
-                prefix = "[王星] ";
+                prefix = lang === 'fr' ? "[Étoile Royale] " : "[Royal Star] ";
             } else if (sa.is_behenian) {
                 starNameClass = "behenian-star-text";
                 prefix = "[Behenian] ";
             } else if (sa.is_practical) {
                 starNameClass = "practical-star-text";
-                prefix = "[实战] ";
+                prefix = lang === 'fr' ? "[Pratique] " : "[Practical] ";
             } else if (sa.is_robson) {
                 starNameClass = "robson-star-text";
             }
 
             let meaningText = sa.meaning;
+            if (mythosObj && mythosObj.astrological_meaning) {
+                meaningText = mythosObj.astrological_meaning[lang] || mythosObj.astrological_meaning['en'] || sa.meaning;
+            }
+
             if (!meaningText.startsWith("[")) {
                 meaningText = prefix + meaningText;
             }
@@ -130,61 +151,69 @@ document.addEventListener('DOMContentLoaded', () => {
 
         counter.innerText = `${currentIndex + 1} / ${total}`;
 
-        let detailHtml = `
-            <div class="star-detail-row">
-                <div class="star-detail-label">Planet & Star</div>
-                <div class="star-detail-value">${sa.planet} &mdash; ${sa.star}</div>
-            </div>
-            <div class="star-detail-row">
-                <div class="star-detail-label">Orb</div>
-                <div class="star-detail-value orb-value">${sa.orb.toFixed(2)}&deg;</div>
-            </div>
-            <div class="star-detail-row">
-                <div class="star-detail-label">Meaning</div>
-                <div class="star-detail-value" style="font-size: 1rem; text-transform:none; line-height:1.6; text-align:left; padding: 0 1rem;">${sa.meaning}</div>
-            </div>
-        `;
+        const lang = window.currentLanguage || 'en';
+        const t = window.translations[lang] || window.translations['en'];
 
+        // Find mythosObj
+        let mythosObj = null;
         if (window.starMythosData) {
-            let mythosObj = null;
             for (const key of Object.keys(window.starMythosData)) {
                 if (key.includes(sa.star)) {
                     mythosObj = window.starMythosData[key];
                     break;
                 }
             }
+        }
 
-            if (mythosObj) {
-                const addSection = (title, contentText) => {
-                    if (!contentText) return '';
-                    let formatted = contentText.replace(/\n/g, '<br/>');
-                    return `
-                        <div style="text-align: left; padding: 1.5rem 0 0 0; width:100%;">
-                            <h4 style="color: #ffd700; margin-bottom: 0.75rem; font-size: 1.1rem; text-align:left;">${title}</h4>
-                            <div style="color: var(--text-light); line-height: 1.6; font-size: 0.95rem;">${formatted}</div>
-                        </div>
-                    `;
-                };
+        let meaningText = sa.meaning;
+        if (mythosObj && mythosObj.astrological_meaning) {
+            meaningText = mythosObj.astrological_meaning[lang] || mythosObj.astrological_meaning['en'] || sa.meaning;
+        }
 
-                // Add Deep Analysis styling container
-                let mythosHtml = `<div style="margin-top: 1.5rem; padding-top: 0.5rem; border-top: 1px solid rgba(255, 255, 255, 0.1);">`;
-                
-                if (mythosObj.astrological_meaning && mythosObj.astrological_meaning.en) {
-                    mythosHtml += addSection('Astrological Meaning', mythosObj.astrological_meaning.en);
-                }
-                if (mythosObj.deity && mythosObj.deity.en) {
-                    mythosHtml += addSection('Representative Deity', mythosObj.deity.en);
-                }
-                if (mythosObj.origin && mythosObj.origin.en) {
-                    mythosHtml += addSection('Origin', mythosObj.origin.en);
-                }
-                if (mythosObj.myth && mythosObj.myth.en) {
-                    mythosHtml += addSection('Mythology', mythosObj.myth.en);
-                }
-                
-                mythosHtml += `</div>`;
-                detailHtml += mythosHtml;
-            }
+        let detailHtml = `
+            <div class="star-detail-row">
+                <div class="star-detail-label">${t.star_label_planet_star || 'Planet & Star'}</div>
+                <div class="star-detail-value">${sa.planet} &mdash; ${sa.star}</div>
+            </div>
+            <div class="star-detail-row">
+                <div class="star-detail-label">${t.star_label_orb || 'Orb'}</div>
+                <div class="star-detail-value orb-value">${sa.orb.toFixed(2)}&deg;</div>
+            </div>
+            <div class="star-detail-row">
+                <div class="star-detail-label">${t.star_label_meaning || 'Meaning'}</div>
+                <div class="star-detail-value" style="font-size: 1rem; text-transform:none; line-height:1.6; text-align:left; padding: 0 1rem;">${meaningText}</div>
+            </div>
+        `;
+
+        if (mythosObj) {
+            const getLangField = (field) => {
+                if (!field) return '';
+                return field[lang] || field['en'] || '';
+            };
+
+            const addSection = (titleKey, defaultTitle, field) => {
+                const textVal = getLangField(field);
+                if (!textVal) return '';
+                let formatted = textVal.replace(/\n/g, '<br/>');
+                const title = t[titleKey] || defaultTitle;
+                return `
+                    <div style="text-align: left; padding: 1.5rem 0 0 0; width:100%;">
+                        <h4 style="color: #ffd700; margin-bottom: 0.75rem; font-size: 1.1rem; text-align:left;">${title}</h4>
+                        <div style="color: var(--text-light); line-height: 1.6; font-size: 0.95rem;">${formatted}</div>
+                    </div>
+                `;
+            };
+
+            // Add Deep Analysis styling container
+            let mythosHtml = `<div style="margin-top: 1.5rem; padding-top: 0.5rem; border-top: 1px solid rgba(255, 255, 255, 0.1);">`;
+            
+            mythosHtml += addSection('star_label_astrological_meaning', 'Astrological Meaning', mythosObj.astrology_meaning);
+            mythosHtml += addSection('star_label_deity', 'Representative Deity', mythosObj.deity);
+            mythosHtml += addSection('star_label_origin', 'Origin', mythosObj.origin);
+            mythosHtml += addSection('star_label_mythology', 'Mythology', mythosObj.myth);
+            
+            mythosHtml += `</div>`;
+            detailHtml += mythosHtml;
         }
 
         content.innerHTML = detailHtml;

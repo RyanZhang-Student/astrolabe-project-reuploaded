@@ -22,6 +22,21 @@ document.addEventListener('DOMContentLoaded', () => {
         
         const langBtn = document.getElementById('lang-btn');
         if (langBtn) langBtn.textContent = lang.toUpperCase();
+
+        // Dynamically update star modal contents if it is open
+        const starModal = document.getElementById('starModal');
+        if (starModal && !starModal.classList.contains('hidden')) {
+            const modalTitle = document.getElementById('modalTitle');
+            if (modalTitle) {
+                modalTitle.innerText = dict.star_modal_title || "All Star Conjunctions";
+            }
+            if (typeof window.renderStarList === 'function') {
+                window.renderStarList();
+            }
+            if (starModal.classList.contains('detail-active') && typeof window.renderSingleStar === 'function') {
+                window.renderSingleStar();
+            }
+        }
     };
     
     window.updatePageLanguage(window.currentLanguage);
