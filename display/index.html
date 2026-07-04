@@ -295,13 +295,28 @@
         <div class="chat-container" onclick="event.stopPropagation()">
             <div class="chat-header">
                 <div class="chat-header-info">
-                    <div class="chat-advisor-avatar">☆</div>
+                    <div class="chat-advisor-avatar" id="chat-current-avatar">☆</div>
                     <div>
-                        <div class="chat-advisor-name">Astrolabe Advisor</div>
+                        <div class="chat-advisor-name" id="chat-current-name">Ester</div>
                         <div class="chat-advisor-status"><span class="status-dot"></span> Online</div>
                     </div>
                 </div>
                 <button type="button" class="chat-close-btn" onclick="window.closeChatbot()">&times;</button>
+            </div>
+            <div class="chat-profiles-bar">
+                <div class="chat-profiles-scroll">
+                    <div class="chat-profile active" data-persona="bot1" data-name="Ester" data-avatar="☆" data-desc="Top-tier general oracle, expert in holistic astrological guidance.">
+                        <div class="chat-profile-avatar">☆</div>
+                        <div class="chat-profile-name">Ester</div>
+                    </div>
+                    <div class="chat-profile" data-persona="bot2" data-name="Aurelius" data-avatar="☀" data-desc="Top-tier oracle for 'Wealth and Career', expert in revealing financial potential and business landscapes.">
+                        <div class="chat-profile-avatar">☀</div>
+                        <div class="chat-profile-name">Aurelius</div>
+                    </div>
+                </div>
+                <div class="chat-profile-desc" id="chat-profile-desc">
+                    Top-tier general oracle, expert in holistic astrological guidance.
+                </div>
             </div>
             <div class="chat-messages" id="chat-messages">
                 <div class="chat-welcome">

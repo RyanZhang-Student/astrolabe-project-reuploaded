@@ -6,6 +6,53 @@ document.addEventListener('DOMContentLoaded', () => {
     const consultBtn = document.getElementById('consult-btn');
 
     let chatHistory = []; // {role: 'user'|'assistant', content: '...'}
+    let currentPersona = 'bot1';
+    let currentAvatar = '☆';
+    
+    // Profile Selection Logic
+    const profiles = document.querySelectorAll('.chat-profile');
+    const profileDesc = document.getElementById('chat-profile-desc');
+    const headerAvatar = document.getElementById('chat-current-avatar');
+    const headerName = document.getElementById('chat-current-name');
+    
+    // Original welcome message HTML template
+    const welcomeHtml = `
+        <div class="chat-welcome">
+            <h4>Welcome to your personal consultation</h4>
+            <p>Ask anything about your astrological chart — placements, aspects, houses, or life guidance based on the stars.</p>
+            <div class="suggestions">
+                <span class="suggestion-chip">What does my Sun sign mean?</span>
+                <span class="suggestion-chip">Explain my 7th house</span>
+                <span class="suggestion-chip">My career outlook</span>
+                <span class="suggestion-chip">Love compatibility</span>
+            </div>
+        </div>
+    `;
+
+    profiles.forEach(profile => {
+        profile.addEventListener('click', () => {
+            if (profile.dataset.persona === currentPersona) return;
+            
+            // Update active styling
+            profiles.forEach(p => p.classList.remove('active'));
+            profile.classList.add('active');
+            
+            // Update state
+            currentPersona = profile.dataset.persona;
+            currentAvatar = profile.dataset.avatar;
+            const name = profile.dataset.name;
+            const desc = profile.dataset.desc;
+            
+            // Update UI
+            headerAvatar.textContent = currentAvatar;
+            headerName.textContent = name;
+            profileDesc.textContent = desc;
+            
+            // Clear chat history
+            chatHistory = [];
+            chatMessages.innerHTML = welcomeHtml;
+        });
+    });
 
     // Open chatbot modal
     if (consultBtn) {
@@ -64,6 +111,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 body: JSON.stringify({
                     user_name: userName,
                     message: text,
+                    persona: currentPersona,
                     history: chatHistory.slice(0, -1) // exclude the message we just added
                 })
             });
@@ -101,7 +149,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const avatarDiv = document.createElement('div');
         avatarDiv.className = 'msg-avatar';
-        avatarDiv.textContent = role === 'assistant' ? '☆' : '✦';
+        avatarDiv.textContent = role === 'assistant' ? currentAvatar : '✦';
 
         const bubbleDiv = document.createElement('div');
         bubbleDiv.className = 'msg-bubble';
@@ -134,7 +182,7 @@ document.addEventListener('DOMContentLoaded', () => {
         avatarDiv.className = 'msg-avatar';
         avatarDiv.style.background = 'linear-gradient(135deg, var(--primary), #b39b6b)';
         avatarDiv.style.color = 'var(--bg-dark)';
-        avatarDiv.textContent = '☆';
+        avatarDiv.textContent = currentAvatar;
 
         const dotsDiv = document.createElement('div');
         dotsDiv.className = 'typing-dots';

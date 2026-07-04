@@ -1,5 +1,6 @@
 import os
 import json
+import re
 from pathlib import Path
 import google.generativeai as genai
 
@@ -31,6 +32,8 @@ def get_house_analysis(user_email: str, user_name: str, house_number: int) -> st
     if os.path.exists(report_path):
         with open(report_path, 'r', encoding='utf-8') as f:
             html_content = f.read()
+            # Remove base64 images to save tokens and prevent 429 errors
+            html_content = re.sub(r'<img[^>]+>', '', html_content)
     else:
         return f"Error: Could not find report summary for user {user_name}."
 
@@ -47,7 +50,7 @@ def get_house_analysis(user_email: str, user_name: str, house_number: int) -> st
     - respond in english
     HTML DATA:
     ======================================
-    {html_content[:30000]} # Trim to fit in standard contexts just in case, though Gemini handles large contexts easily.
+    {html_content}
     """
 
     try:

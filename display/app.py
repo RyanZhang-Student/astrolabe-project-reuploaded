@@ -32,7 +32,8 @@ from scoring import calculate_essential_score, calculate_accidental_score, calcu
 from draw_chart import create_pro_svg
 import main as astrolabe_main
 import analyzer as ai_analyzer
-import chatbot as chatbot_module
+import chatbot1
+import chatbot2
 from account.auth import auth_bp, init_oauth
 
 app = Flask(__name__, static_folder='.', static_url_path='', template_folder='.')
@@ -354,12 +355,17 @@ def api_chatbot():
     user_name = data.get('user_name')
     message = data.get('message')
     history = data.get('history', [])
+    persona = data.get('persona', 'bot1')
     
     if not user_name or not message:
         return jsonify({'error': 'Missing parameters'}), 400
         
     user_email = session.get('user', {}).get('email') if session.get('user') else 'guest'
-    reply = chatbot_module.get_chat_response(user_email, user_name, message, history)
+    
+    if persona == 'bot2':
+        reply = chatbot2.get_chat_response(user_email, user_name, message, history)
+    else:
+        reply = chatbot1.get_chat_response(user_email, user_name, message, history)
 
     if reply == "__SERVICE_UNAVAILABLE__":
         return jsonify({'status': 'error', 'error': 'unavailable'}), 503
