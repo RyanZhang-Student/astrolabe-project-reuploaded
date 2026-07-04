@@ -15,7 +15,7 @@ def load_env():
                     key, val = line.split('=', 1)
                     os.environ[key.strip()] = val.strip().strip("'\"")
 
-def get_house_analysis(user_email: str, user_name: str, house_number: int) -> str:
+def get_house_analysis(user_email: str, user_name: str, house_number: int, lang: str = 'en') -> str:
     load_env()
     api_key = os.environ.get('GEMINI_API_KEY')
     if not api_key:
@@ -37,6 +37,7 @@ def get_house_analysis(user_email: str, user_name: str, house_number: int) -> st
     else:
         return f"Error: Could not find report summary for user {user_name}."
 
+    lang_instruction = "IMPORTANT: Write the entire analysis in French." if lang == 'fr' else "IMPORTANT: Write the entire analysis in English."
     prompt = f"""
     You are an expert, premium astrologer interface.
     I will provide you with the HTML structure of a generated Astrolabe report for a user.
@@ -45,9 +46,8 @@ def get_house_analysis(user_email: str, user_name: str, house_number: int) -> st
     Guidelines:
     - Draw connections using the specific planets occupying House {house_number}, the sign on its cusp, its ruler, and any active aspects.
     - Mention any Fixed Stars conjuncted to points in this house if applicable.
-    - Write the analysis in the language of the user's interface (Chinese preferably, or English if preferred, given the "Analyze" button might be implied in Chinese based on instructions). Please output the response in Chinese as requested by user context ("一到十二的方块... 分析键").
+    - {lang_instruction}
     - Format output in beautiful Markdown with headers and bullet points.
-    - respond in english
     HTML DATA:
     ======================================
     {html_content}

@@ -1,4 +1,4 @@
-﻿document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', () => {
     // AI Analysis Logic
     let selectedHouse = null;
     const houseBlocks = document.querySelectorAll('.house-block');
@@ -37,7 +37,8 @@
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     user_name: userName,
-                    house_number: parseInt(selectedHouse)
+                    house_number: parseInt(selectedHouse),
+                    lang: window.currentLanguage || 'en'
                 })
             });
 

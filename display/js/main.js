@@ -1,6 +1,52 @@
 document.addEventListener('DOMContentLoaded', () => {
     createStars();
     window.timePicker.init();
+    
+    // --- Language Logic ---
+    window.currentLanguage = localStorage.getItem('language') || 'en';
+    
+    window.updatePageLanguage = function(lang) {
+        window.currentLanguage = lang;
+        localStorage.setItem('language', lang);
+        const dict = window.translations[lang];
+        if (!dict) return;
+        
+        document.querySelectorAll('[data-i18n]').forEach(el => {
+            const key = el.getAttribute('data-i18n');
+            if (dict[key]) el.textContent = dict[key];
+        });
+        document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+            const key = el.getAttribute('data-i18n-placeholder');
+            if (dict[key]) el.placeholder = dict[key];
+        });
+        
+        const langBtn = document.getElementById('lang-btn');
+        if (langBtn) langBtn.textContent = lang.toUpperCase();
+    };
+    
+    window.updatePageLanguage(window.currentLanguage);
+    
+    const langBtn = document.getElementById('lang-btn');
+    const langDropdown = document.getElementById('lang-dropdown');
+    if (langBtn && langDropdown) {
+        langBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            langDropdown.classList.toggle('hidden');
+        });
+        document.addEventListener('click', (e) => {
+            if (!langDropdown.contains(e.target) && e.target !== langBtn) {
+                langDropdown.classList.add('hidden');
+            }
+        });
+        document.querySelectorAll('.lang-option').forEach(btn => {
+            btn.addEventListener('click', () => {
+                window.updatePageLanguage(btn.getAttribute('data-lang'));
+                langDropdown.classList.add('hidden');
+            });
+        });
+    }
+    // --- End Language Logic ---
+
     const form = document.getElementById('astrolabe-form');
     const submitBtn = document.getElementById('submit-btn');
     const btnText = submitBtn.querySelector('.btn-text');
@@ -270,7 +316,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     name: name,
                     gender: gender,
                     location: location,
-                    dob: dobFormatted
+                    dob: dobFormatted,
+                    lang: window.currentLanguage
                 })
             });
 

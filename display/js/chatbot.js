@@ -15,19 +15,21 @@ document.addEventListener('DOMContentLoaded', () => {
     const headerAvatar = document.getElementById('chat-current-avatar');
     const headerName = document.getElementById('chat-current-name');
     
-    // Original welcome message HTML template
-    const welcomeHtml = `
+    const getWelcomeHtml = () => {
+        const t = window.translations[window.currentLanguage || 'en'];
+        return `
         <div class="chat-welcome">
-            <h4>Welcome to your personal consultation</h4>
-            <p>Ask anything about your astrological chart — placements, aspects, houses, or life guidance based on the stars.</p>
+            <h4>${t.chat_welcome_title}</h4>
+            <p>${t.chat_welcome_desc}</p>
             <div class="suggestions">
-                <span class="suggestion-chip">What does my Sun sign mean?</span>
-                <span class="suggestion-chip">Explain my 7th house</span>
-                <span class="suggestion-chip">My career outlook</span>
-                <span class="suggestion-chip">Love compatibility</span>
+                <span class="suggestion-chip">${t.chat_sugg_1}</span>
+                <span class="suggestion-chip">${t.chat_sugg_2}</span>
+                <span class="suggestion-chip">${t.chat_sugg_3}</span>
+                <span class="suggestion-chip">${t.chat_sugg_4}</span>
             </div>
         </div>
-    `;
+        `;
+    };
 
     profiles.forEach(profile => {
         profile.addEventListener('click', () => {
@@ -50,7 +52,8 @@ document.addEventListener('DOMContentLoaded', () => {
             
             // Clear chat history
             chatHistory = [];
-            chatMessages.innerHTML = welcomeHtml;
+            chatMessages.innerHTML = getWelcomeHtml();
+            chatInput.placeholder = window.translations[window.currentLanguage || 'en'].chat_placeholder;
         });
     });
 
@@ -112,7 +115,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     user_name: userName,
                     message: text,
                     persona: currentPersona,
-                    history: chatHistory.slice(0, -1) // exclude the message we just added
+                    history: chatHistory.slice(0, -1), // exclude the message we just added
+                    lang: window.currentLanguage || 'en'
                 })
             });
 
@@ -126,9 +130,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 // Service unavailable (429 rate limit / quota depleted)
                 appendMessage('assistant', 'Your Consultant is temporarily unavailable. Please try again in a few minutes.');
                 // Update header status to offline
-                const statusEl = document.querySelector('.chat-header-status');
+                const statusEl = document.querySelector('.chat-advisor-status');
                 if (statusEl) {
-                    statusEl.innerHTML = '<span class="status-dot offline"></span> Offline';
+                    const t = window.translations[window.currentLanguage || 'en'];
+                    statusEl.innerHTML = `<span class="status-dot offline"></span> ${t.chat_offline}`;
                 }
             } else {
                 appendMessage('assistant', 'Sorry, something went wrong. Please try again later.');

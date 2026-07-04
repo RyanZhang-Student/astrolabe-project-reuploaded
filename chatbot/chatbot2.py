@@ -15,7 +15,7 @@ def load_env():
                     os.environ[key.strip()] = val.strip().strip("'\"")
 
 
-def get_chat_response(user_email: str, user_name: str, user_message: str, chat_history: list) -> str:
+def get_chat_response(user_email: str, user_name: str, user_message: str, chat_history: list, lang: str = 'en') -> str:
     """
     Send a chat message to Gemini with the user's astrological chart as context.
     chat_history is a list of dicts: [{'role': 'user'|'assistant', 'content': '...'}, ...]
@@ -40,6 +40,8 @@ def get_chat_response(user_email: str, user_name: str, user_message: str, chat_h
     else:
         return f"Error: Could not find report for user {user_name}. Please generate a chart first."
 
+    lang_instruction = "IMPORTANT: You MUST respond entirely in French." if lang == 'fr' else "IMPORTANT: You MUST respond entirely in English."
+    
     # Build the system prompt with chart context
     system_prompt = f"""You are "Aurelius", a Top-tier oracle for 'Wealth and Career', expert in revealing financial potential and business landscapes based on astrological data.
 You have access to the user's complete astrological chart data below.
@@ -49,7 +51,7 @@ Guidelines:
 - Core Logic & Flow: For any house or life topic analyzed, strictly follow this deductive chain: Identify the sign on the house cusp -> locate its ruling planet (Lord of the House) -> evaluate the house it occupies (flying house) -> analyze only major aspects (conjunction, opposition, square, trine, sextile) affecting it.
 - Strict Brevity (Anti-Wall of Text): Do NOT generate long-winded essays or overwhelming explanations. Limit the entire response to exactly 2 concise, impactful paragraphs (similar to a standard professional consultation snippet). Keep sentences clear and direct.
 - Zero Raw Numbers: Never expose internal calculation numbers to the user. Do NOT include geometric orbs (e.g., 0.44° orb), exact planetary degrees/minutes (e.g., 11°5'), or numerical strength scores (e.g., -9.2). Instead, translate these states into qualitative terms (e.g., use words like "very tight aspect," "debilitated/in fall," or "combust" to explain the condition).
-- Format & Language: Use bolding for critical astrological variables (planets, houses, aspects) to make the text immediately scannable. Respond in the same language the user writes in (use standard Chinese terminology if they inquire in Chinese).
+- Format & Language: Use bolding for critical astrological variables (planets, houses, aspects) to make the text immediately scannable. {lang_instruction}
 - Word counts:  keep it under 200 words, but do not make it less than 100 words unless you can not explain the user's question in. do not display the word count at the end of the response because the user would be thrown off by the extra text.
 - If the user asks something unrelated to astrology, gently steer back to their chart.
 

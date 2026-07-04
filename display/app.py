@@ -338,12 +338,13 @@ def api_ai_analysis():
     data = request.json
     user_name = data.get('user_name')
     house_number = data.get('house_number')
+    lang = data.get('lang', 'en')
     
     if not user_name or not house_number:
         return jsonify({'error': 'Missing parameters'}), 400
         
     user_email = session.get('user', {}).get('email') if session.get('user') else 'guest'
-    analysis_text = ai_analyzer.get_house_analysis(user_email, user_name, house_number)
+    analysis_text = ai_analyzer.get_house_analysis(user_email, user_name, house_number, lang)
     return jsonify({
         'status': 'success',
         'analysis': analysis_text
@@ -356,6 +357,7 @@ def api_chatbot():
     message = data.get('message')
     history = data.get('history', [])
     persona = data.get('persona', 'bot1')
+    lang = data.get('lang', 'en')
     
     if not user_name or not message:
         return jsonify({'error': 'Missing parameters'}), 400
@@ -363,9 +365,9 @@ def api_chatbot():
     user_email = session.get('user', {}).get('email') if session.get('user') else 'guest'
     
     if persona == 'bot2':
-        reply = chatbot2.get_chat_response(user_email, user_name, message, history)
+        reply = chatbot2.get_chat_response(user_email, user_name, message, history, lang)
     else:
-        reply = chatbot1.get_chat_response(user_email, user_name, message, history)
+        reply = chatbot1.get_chat_response(user_email, user_name, message, history, lang)
 
     if reply == "__SERVICE_UNAVAILABLE__":
         return jsonify({'status': 'error', 'error': 'unavailable'}), 503

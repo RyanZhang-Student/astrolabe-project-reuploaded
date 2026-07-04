@@ -28,44 +28,57 @@
         <header class="header" style="display: flex; justify-content: space-between; align-items: center;">
             <div>
                 <h1 class="glow-text">ASTROLABE</h1>
-                <p class="subtitle">Celestial Insights • Mathematical Precision</p>
+                <p class="subtitle" data-i18n="subtitle">Celestial Insights • Mathematical Precision</p>
             </div>
-            <div class="user-auth" style="position: relative;">
-                {% if user %}
-                <div class="user-profile-circle authenticated" id="user-btn" title="{{ user.name }}">
-                    <img src="{{ user.picture }}" alt="{{ user.name }}" class="profile-img">
-                </div>
-                <div id="profile-popup" class="profile-popup glass hidden">
-                    <div class="profile-content">
-                        <div class="profile-header">
-                            <div class="profile-avatar-large">
-                                <img src="{{ user.picture }}" alt="{{ user.name }}">
-                            </div>
-                            <h3 class="profile-name">{{ user.name }}</h3>
-                            <p class="profile-email">{{ user.email }}</p>
-                        </div>
-                        <div class="profile-menu">
-                            <button type="button" class="profile-menu-item" id="menu-edit-info-btn"
-                                style="width: 100%; border: none; background: transparent; cursor: pointer; font-family: inherit; border-bottom: 1px solid rgba(255,255,255,0.1);">
-                                <span>Edit Birth Info</span>
-                            </button>
-                            <form action="/logout" method="GET" style="margin: 0;">
-                                <button type="submit" class="profile-menu-item logout-item"
-                                    style="width: 100%; border: none; background: transparent; cursor: pointer; font-family: inherit;">
-                                    <span>Logout</span>
-                                </button>
-                            </form>
-                        </div>
+            <div style="display: flex; align-items: center; gap: 1rem;">
+                <!-- Language Switcher -->
+                <div class="lang-switcher" style="position: relative;">
+                    <button id="lang-btn" class="user-profile-circle" title="Change Language" style="font-size: 0.9rem; font-weight: bold; font-family: 'Inter', sans-serif; background: rgba(255,255,255,0.1); color: white;">
+                        EN
+                    </button>
+                    <div id="lang-dropdown" class="profile-popup glass hidden" style="top: 120%; right: 0; min-width: 120px; padding: 0.5rem 0; text-align: left;">
+                        <button type="button" class="lang-option" data-lang="en" style="width: 100%; padding: 0.8rem 1.2rem; border: none; background: transparent; color: white; cursor: pointer; text-align: left; font-family: 'Inter', sans-serif; transition: background 0.2s;">English</button>
+                        <button type="button" class="lang-option" data-lang="fr" style="width: 100%; padding: 0.8rem 1.2rem; border: none; background: transparent; color: white; cursor: pointer; text-align: left; font-family: 'Inter', sans-serif; transition: background 0.2s;">Français</button>
                     </div>
                 </div>
-                {% else %}
-                <button class="user-profile-circle" id="login-btn" title="Sign in with Google">
-                    <svg viewBox="0 0 24 24" fill="currentColor">
-                        <path
-                            d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" />
-                    </svg>
-                </button>
-                {% endif %}
+                
+                <div class="user-auth" style="position: relative;">
+                    {% if user %}
+                    <div class="user-profile-circle authenticated" id="user-btn" title="{{ user.name }}">
+                        <img src="{{ user.picture }}" alt="{{ user.name }}" class="profile-img">
+                    </div>
+                    <div id="profile-popup" class="profile-popup glass hidden">
+                        <div class="profile-content">
+                            <div class="profile-header">
+                                <div class="profile-avatar-large">
+                                    <img src="{{ user.picture }}" alt="{{ user.name }}">
+                                </div>
+                                <h3 class="profile-name">{{ user.name }}</h3>
+                                <p class="profile-email">{{ user.email }}</p>
+                            </div>
+                            <div class="profile-menu">
+                                <button type="button" class="profile-menu-item" id="menu-edit-info-btn"
+                                    style="width: 100%; border: none; background: transparent; cursor: pointer; font-family: inherit; border-bottom: 1px solid rgba(255,255,255,0.1);">
+                                    <span data-i18n="edit_info">Edit Birth Info</span>
+                                </button>
+                                <form action="/logout" method="GET" style="margin: 0;">
+                                    <button type="submit" class="profile-menu-item logout-item"
+                                        style="width: 100%; border: none; background: transparent; cursor: pointer; font-family: inherit;">
+                                        <span data-i18n="logout">Logout</span>
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    {% else %}
+                    <button class="user-profile-circle" id="login-btn" title="Sign in with Google">
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                            <path
+                                d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" />
+                        </svg>
+                    </button>
+                    {% endif %}
+                </div>
             </div>
         </header>
 
@@ -92,30 +105,30 @@
 
         <section class="form-card glass" id="form-section">
             <div class="form-header">
-                <h2>Get my Astrolabe</h2>
+                <h2 data-i18n="form_title">Get my Astrolabe</h2>
             </div>
 
             <form id="astrolabe-form">
                 <div class="input-grid">
                     <div class="input-group">
-                        <label for="name">Name</label>
-                        <input type="text" id="name" required placeholder="Enter Name">
+                        <label for="name" data-i18n="label_name">Name</label>
+                        <input type="text" id="name" required placeholder="Enter Name" data-i18n-placeholder="placeholder_name">
                     </div>
 
                     <div class="input-group">
-                        <label>Gender </label>
+                        <label data-i18n="label_gender">Gender </label>
                         <div class="gender-options">
                             <div class="gender-box" data-value="Male">
                                 <span class="gender-icon">♂️ </span>
-                                <span class="gender-label">Male</span>
+                                <span class="gender-label" data-i18n="gender_male">Male</span>
                             </div>
                             <div class="gender-box" data-value="Female">
                                 <span class="gender-icon">♀️</span>
-                                <span class="gender-label">Female</span>
+                                <span class="gender-label" data-i18n="gender_female">Female</span>
                             </div>
                             <div class="gender-box" data-value="Other">
                                 <span class="gender-icon">🌈</span>
-                                <span class="gender-label">Other</span>
+                                <span class="gender-label" data-i18n="gender_other">Other</span>
                             </div>
                         </div>
                         <input type="hidden" id="gender" required>
@@ -123,27 +136,27 @@
                 </div>
 
                 <div class="input-group location-group" style="position: relative;">
-                    <label for="location">Birth City & Country</label>
-                    <input type="text" id="location" placeholder="CITY - COUNTRY" autocomplete="off" required>
+                    <label for="location" data-i18n="label_location">Birth City & Country</label>
+                    <input type="text" id="location" placeholder="CITY - COUNTRY" data-i18n-placeholder="placeholder_location" autocomplete="off" required>
                     <div id="autocomplete-list" class="autocomplete-items hidden"></div>
                 </div>
 
                 <div class="input-grid">
                     <div class="input-group">
-                        <label for="birth-date">Birth Date</label>
-                        <input type="text" id="birth-date" placeholder="Select Date" readonly required
+                        <label for="birth-date" data-i18n="label_date">Birth Date</label>
+                        <input type="text" id="birth-date" placeholder="Select Date" data-i18n-placeholder="placeholder_date" readonly required
                             onclick="window.timePicker.show(event)">
                     </div>
 
                     <div class="input-group">
-                        <label for="birth-time">Birth Time</label>
-                        <input type="text" id="birth-time" placeholder="Select Time" readonly required
+                        <label for="birth-time" data-i18n="label_time">Birth Time</label>
+                        <input type="text" id="birth-time" placeholder="Select Time" data-i18n-placeholder="placeholder_time" readonly required
                             onclick="window.timePicker.show(event)">
                     </div>
                 </div>
 
                 <button type="submit" class="submit-btn" id="submit-btn">
-                    <span class="btn-text">Reveal My Astrology</span>
+                    <span class="btn-text" data-i18n="btn_submit">Reveal My Astrology</span>
                     <div class="btn-loader" id="loader"></div>
                 </button>
             </form>
@@ -151,8 +164,8 @@
 
         <div id="result-container" class="result-container hidden">
             <div class="success-message glass">
-                <h3>Success!</h3>
-                <p>Your report has been generated. Click below to view it.</p>
+                <h3 data-i18n="success_title">Success!</h3>
+                <p data-i18n="success_desc">Your report has been generated. Click below to view it.</p>
 
                 <!-- Chart Photo Display -->
                 <div id="chart-image-container" class="chart-image-container hidden">
@@ -164,19 +177,19 @@
 
                 <!-- Chatbot Consult Section -->
                 <div class="consult-section hidden" id="consult-section">
-                    <h3>Consult the Stars</h3>
-                    <p>Have questions about your chart? Ask our AI astrology advisor for personalized guidance.</p>
+                    <h3 data-i18n="consult_title">Consult the Stars</h3>
+                    <p data-i18n="consult_desc">Have questions about your chart? Ask our AI astrology advisor for personalized guidance.</p>
                     <button type="button" class="consult-btn" id="consult-btn">
                         <span class="btn-icon">💬</span>
-                        <span>Consult</span>
+                        <span data-i18n="btn_consult">Consult</span>
                     </button>
                 </div>
 
                 <!-- AI Analysis Section -->
                 <div class="ai-analysis-container hidden" id="ai-analysis-container">
-                    <h3 class="section-title" style="text-align: center; margin-top: 1.5rem; color: #4B0082;">AI Setup &
+                    <h3 class="section-title" data-i18n="ai_title" style="text-align: center; margin-top: 1.5rem; color: #4B0082;">AI Setup &
                         Deep Readings</h3>
-                    <p style="text-align: center; color: #666; font-size: 0.9rem; margin-bottom: 1rem;">Select a house
+                    <p data-i18n="ai_desc" style="text-align: center; color: #666; font-size: 0.9rem; margin-bottom: 1rem;">Select a house
                         below for a personalized AI interpretation.</p>
                     <div class="house-grid" id="house-grid">
                         <!-- 1-12 blocks generated via JS or hardcoded here -->
@@ -195,13 +208,13 @@
                     </div>
                     <div style="text-align: center; margin-top: 1.5rem;">
                         <button type="button" class="ai-analyze-btn disabled" id="ai-analyze-btn" disabled>
-                            <span class="ai-btn-text">AI 分析 (Analyze)</span>
+                            <span class="ai-btn-text" data-i18n="btn_ai_analyze">AI 分析 (Analyze)</span>
                             <div class="ai-btn-loader" id="ai-loader" style="display: none;"></div>
                         </button>
                     </div>
                 </div>
 
-                <a id="report-link" href="#" target="_blank" class="view-btn" style="margin-top: 2rem;">View Detailed
+                <a id="report-link" href="#" target="_blank" class="view-btn" style="margin-top: 2rem;" data-i18n="view_report">View Detailed
                     Report</a>
             </div>
         </div>
@@ -213,36 +226,36 @@
         onclick="window.timePicker.hide(event)">
         <div class="picker-container glass" onclick="event.stopPropagation()">
             <div class="picker-header">
-                <h3>Select Birth Time</h3>
+                <h3 data-i18n="timepicker_title">Select Birth Time</h3>
                 <button type="button" id="close-picker" class="close-btn"
                     onclick="window.timePicker.hide(event)">&times;</button>
             </div>
             <div class="picker-content">
                 <div class="picker-column" id="picker-year">
                     <div class="picker-scroll"></div>
-                    <div class="picker-label">YEAR</div>
+                    <div class="picker-label" data-i18n="timepicker_year">YEAR</div>
                 </div>
                 <div class="picker-column" id="picker-month">
                     <div class="picker-scroll"></div>
-                    <div class="picker-label">MONTH</div>
+                    <div class="picker-label" data-i18n="timepicker_month">MONTH</div>
                 </div>
                 <div class="picker-column" id="picker-day">
                     <div class="picker-scroll"></div>
-                    <div class="picker-label">DAY</div>
+                    <div class="picker-label" data-i18n="timepicker_day">DAY</div>
                 </div>
                 <div class="picker-column" id="picker-hour">
                     <div class="picker-scroll"></div>
-                    <div class="picker-label">HOUR</div>
+                    <div class="picker-label" data-i18n="timepicker_hour">HOUR</div>
                 </div>
                 <div class="picker-column" id="picker-minute">
                     <div class="picker-scroll"></div>
-                    <div class="picker-label">MIN</div>
+                    <div class="picker-label" data-i18n="timepicker_min">MIN</div>
                 </div>
                 <div class="selection-highlight"></div>
             </div>
             <div class="picker-footer">
                 <button type="button" id="confirm-selection" class="confirm-btn"
-                    onclick="window.timePicker.confirm(event)">Confirm Selection</button>
+                    onclick="window.timePicker.confirm(event)" data-i18n="btn_confirm_time">Confirm Selection</button>
             </div>
         </div>
     </div>
@@ -251,7 +264,7 @@
     <div id="starModal" class="modal-overlay hidden">
         <div class="modal-content glass">
             <div class="modal-header">
-                <h3 id="modalTitle">Star Conjunctions</h3>
+                <h3 id="modalTitle" data-i18n="star_modal_title">Star Conjunctions</h3>
                 <span class="close-btn" onclick="window.closeStarModal()">&times;</span>
             </div>
             <div class="modal-body">
@@ -262,7 +275,7 @@
                     <button id="prevStarBtn" class="nav-btn" onclick="window.prevStar()">&#9664;</button>
                     <div class="star-page-container">
                         <div class="star-nav-header">
-                            <span class="back-to-list" onclick="window.backToStarList()">&#8592; Back to List</span>
+                            <span class="back-to-list" onclick="window.backToStarList()" data-i18n="back_to_list">&#8592; Back to List</span>
                             <div class="star-counter" id="starCounter">1 / 1</div>
                         </div>
                         <div id="singleStarContent" class="single-star-content">
@@ -279,7 +292,7 @@
     <div id="aiModal" class="modal-overlay hidden">
         <div class="modal-content glass" style="max-height: 80vh; overflow-y: auto;">
             <div class="modal-header">
-                <h3 id="aiModalTitle">AI House Interpretation</h3>
+                <h3 id="aiModalTitle" data-i18n="ai_modal_title">AI House Interpretation</h3>
                 <span class="close-btn" onclick="window.closeAiModal()">&times;</span>
             </div>
             <div class="modal-body" style="padding-top: 0;">
@@ -346,8 +359,8 @@
         <div class="modal-content glass"
             style="max-width: 400px; text-align: center; padding: 2.5rem 2rem; border-radius: 1.5rem;">
             <div style="font-size: 3rem; margin-bottom: 1rem;">✨</div>
-            <h3 style="margin-bottom: 1rem; color: #fff; font-family: 'Outfit', sans-serif;">Unlock Your Destiny</h3>
-            <p style="color: rgba(255, 255, 255, 0.8); margin-bottom: 2rem; font-size: 0.95rem; line-height: 1.5;">
+            <h3 style="margin-bottom: 1rem; color: #fff; font-family: 'Outfit', sans-serif;" data-i18n="reg_title">Unlock Your Destiny</h3>
+            <p style="color: rgba(255, 255, 255, 0.8); margin-bottom: 2rem; font-size: 0.95rem; line-height: 1.5;" data-i18n="reg_desc">
                 To reveal your personalized astrological insights and save your chart, please sign in with your account.
             </p>
             <button id="modal-login-btn" class="submit-btn" style="width: 100%; margin-bottom: 1rem;">
@@ -357,11 +370,11 @@
                         <path
                             d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" />
                     </svg>
-                    Sign in to Continue
+                    <span data-i18n="btn_signin">Sign in to Continue</span>
                 </span>
             </button>
             <button id="modal-close-btn"
-                style="background: transparent; border: none; color: rgba(255,255,255,0.5); cursor: pointer; font-size: 0.85rem; text-decoration: underline;">
+                style="background: transparent; border: none; color: rgba(255,255,255,0.5); cursor: pointer; font-size: 0.85rem; text-decoration: underline;" data-i18n="btn_maybe_later">
                 Maybe Later
             </button>
         </div>
@@ -369,6 +382,7 @@
 
     <!-- Profile Popup Moved to Header -->
 
+    <script src="js/translations.js"></script>
     <script src="js/background.js"></script>
     <script src="js/timepicker.js"></script>
     <script src="js/stars-modal.js"></script>
