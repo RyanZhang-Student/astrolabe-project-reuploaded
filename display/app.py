@@ -36,7 +36,7 @@ import main as astrolabe_main
 import analyzer as ai_analyzer
 import chatbot1
 import chatbot2
-import pdf_generator
+import report_generator
 from account.auth import auth_bp, init_oauth
 
 app = Flask(__name__, static_folder='.', static_url_path='', template_folder='.')
@@ -388,7 +388,7 @@ def generate_pdf():
     user_info = session.get('user')
     user_email = user_info.get('email') if user_info else 'guest'
     
-    return pdf_generator.generate_full_pdf(user_email, data, RESULTS_DIR)
+    return report_generator.generate_full_report(user_email, data, RESULTS_DIR)
 
 if __name__ == '__main__':
     app.run(debug=True, port=5001)
