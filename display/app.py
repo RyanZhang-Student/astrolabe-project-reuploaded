@@ -23,6 +23,8 @@ AI_ANALYSIS_DIR = os.path.join(BASE_DIR, 'ai_analysis')
 sys.path.append(AI_ANALYSIS_DIR)
 CHATBOT_DIR = os.path.join(BASE_DIR, 'chatbot')
 sys.path.append(CHATBOT_DIR)
+FULL_ANALYSIS_DIR = os.path.join(BASE_DIR, 'full_analysis')
+sys.path.append(FULL_ANALYSIS_DIR)
 
 from engine import get_astronomical_data
 from utils import is_day_chart, get_zodiac_sign, determine_house, SIGNS, CLASSICAL_RULERS, EXALTATIONS, DETRIMENTS, FALLS, get_dignities_at_position, get_debilities_at_position, get_advanced_reception, calculate_mutual_reception_rejection, get_aspects
@@ -34,6 +36,7 @@ import main as astrolabe_main
 import analyzer as ai_analyzer
 import chatbot1
 import chatbot2
+import pdf_generator
 from account.auth import auth_bp, init_oauth
 
 app = Flask(__name__, static_folder='.', static_url_path='', template_folder='.')
@@ -381,31 +384,11 @@ def api_chatbot():
 
 @app.route('/generate_pdf', methods=['POST'])
 def generate_pdf():
+    data = request.json or {}
     user_info = session.get('user')
     user_email = user_info.get('email') if user_info else 'guest'
     
-    email_folder = os.path.join(RESULTS_DIR, user_email)
-    if not os.path.exists(email_folder):
-        os.makedirs(email_folder)
-        
-    pdf_filename = f"full_report_{user_email}.pdf"
-    pdf_filepath = os.path.join(email_folder, pdf_filename)
-    
-    try:
-        from reportlab.pdfgen import canvas
-        from reportlab.lib.pagesizes import letter
-        
-        c = canvas.Canvas(pdf_filepath, pagesize=letter)
-        c.showPage()
-        c.save()
-    except Exception as e:
-        return jsonify({'error': str(e)}), 500
-        
-    pdf_url = f"/results/{user_email}/{pdf_filename}"
-    return jsonify({
-        'status': 'success',
-        'pdf_url': pdf_url
-    })
+    return pdf_generator.generate_full_pdf(user_email, data, RESULTS_DIR)
 
 if __name__ == '__main__':
     app.run(debug=True, port=5001)

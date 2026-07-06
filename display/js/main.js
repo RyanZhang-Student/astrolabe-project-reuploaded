@@ -472,9 +472,23 @@ document.addEventListener('DOMContentLoaded', () => {
             viewFullReportBtn.innerHTML = '<span class="btn-icon">⏳</span><span class="btn-text">Generating PDF...</span>';
 
             try {
+                const chartImgEl = document.getElementById('natal-chart-img');
+                const chartImgBase64 = chartImgEl ? chartImgEl.src : '';
+                const nameVal = document.getElementById('name').value;
+                const birthDateVal = document.getElementById('birth-date').value;
+                const birthTimeVal = document.getElementById('birth-time').value;
+                const locationVal = document.getElementById('location').value;
+
                 const response = await fetch('/generate_pdf', {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json' }
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        chart_img: chartImgBase64,
+                        name: nameVal,
+                        birth_date: birthDateVal,
+                        birth_time: birthTimeVal,
+                        location: locationVal
+                    })
                 });
                 
                 const result = await response.json();
