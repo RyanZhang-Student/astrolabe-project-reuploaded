@@ -462,4 +462,34 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }
+
+    // View Full Analysis Report PDF Generation
+    const viewFullReportBtn = document.getElementById('view-full-report-btn');
+    if (viewFullReportBtn) {
+        viewFullReportBtn.addEventListener('click', async () => {
+            viewFullReportBtn.disabled = true;
+            const originalText = viewFullReportBtn.innerHTML;
+            viewFullReportBtn.innerHTML = '<span class="btn-icon">⏳</span><span class="btn-text">Generating PDF...</span>';
+
+            try {
+                const response = await fetch('/generate_pdf', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' }
+                });
+                
+                const result = await response.json();
+                if (response.ok && result.pdf_url) {
+                    window.open(result.pdf_url, '_blank');
+                } else {
+                    alert('Failed to generate PDF: ' + (result.error || 'Unknown error'));
+                }
+            } catch (error) {
+                console.error('Error generating PDF:', error);
+                alert('An error occurred during PDF generation.');
+            } finally {
+                viewFullReportBtn.disabled = false;
+                viewFullReportBtn.innerHTML = originalText;
+            }
+        });
+    }
 });
