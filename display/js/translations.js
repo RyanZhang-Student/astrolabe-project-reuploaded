@@ -31,6 +31,9 @@ const translations = {
         ai_desc: "Select a house below for a personalized AI interpretation.",
         btn_ai_analyze: "Analyze",
         view_report: "View Detailed Report",
+        cta_title: "Chart Interpretation",
+        cta_btn_free: "Free Analysis of Section 1",
+        cta_btn_full: "View Full Analysis Report",
         
         // Time Picker Modal
         timepicker_title: "Select Birth Time",
@@ -110,6 +113,9 @@ const translations = {
         ai_desc: "Sélectionnez une maison ci-dessous pour une interprétation IA personnalisée.",
         btn_ai_analyze: "Analyser",
         view_report: "Voir le Rapport Détaillé",
+        cta_title: "Interprétation du Thème",
+        cta_btn_free: "Analyse Gratuite de la Zone 1",
+        cta_btn_full: "Consulter le Rapport d'Analyse Complet",
         
         // Time Picker Modal
         timepicker_title: "Heure de Naissance",
