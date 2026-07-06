@@ -39,6 +39,35 @@ def generate_full_report(user_email, data, results_dir):
             min-height: 100vh;
             text-align: center;
             box-sizing: border-box;
+            position: relative;
+        }}
+        .back-btn {{
+            position: absolute;
+            top: 2rem;
+            left: 2rem;
+            width: 3.2rem;
+            height: 3.2rem;
+            border-radius: 50%;
+            background-color: #0d0b14;
+            border: 1px solid rgba(230, 201, 139, 0.4);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            z-index: 100;
+            outline: none;
+        }}
+        .back-btn:hover {{
+            transform: scale(1.1);
+            border-color: rgba(255, 204, 0, 0.8);
+            box-shadow: 0 6px 20px rgba(255, 204, 0, 0.3);
+        }}
+        .back-btn svg {{
+            width: 1.5rem;
+            height: 1.5rem;
+            fill: #ffcc00;
         }}
         .report-container {{
             max-width: 800px;
@@ -76,6 +105,11 @@ def generate_full_report(user_email, data, results_dir):
     </style>
 </head>
 <body>
+    <button class="back-btn" onclick="if(window.opener){{window.close();}}else{{window.history.back();}}" aria-label="返回">
+        <svg viewBox="0 0 24 24">
+            <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/>
+        </svg>
+    </button>
     <div class="report-container">
         <img class="chart-img" src="{chart_img_data}" alt="Natal Chart">
         <div class="birth-info-title">{birth_date} {birth_time}</div>
