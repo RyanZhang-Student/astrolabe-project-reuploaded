@@ -471,6 +471,62 @@ document.addEventListener('DOMContentLoaded', () => {
             const originalText = viewFullReportBtn.innerHTML;
             viewFullReportBtn.innerHTML = '<span class="btn-icon">⏳</span><span class="btn-text">Generating Report...</span>';
 
+            // Open a new tab immediately to bypass popup blockers
+            const reportWindow = window.open('', '_blank');
+            if (reportWindow) {
+                reportWindow.document.write(`
+                    <html>
+                    <head>
+                        <title>Generating Astrological Report...</title>
+                        <style>
+                            body {
+                                background-color: #0d0b14;
+                                color: #e6c98b;
+                                font-family: 'Inter', sans-serif;
+                                display: flex;
+                                align-items: center;
+                                justify-content: center;
+                                height: 100vh;
+                                margin: 0;
+                                text-align: center;
+                            }
+                            .loader {
+                                border: 4px solid rgba(230, 201, 139, 0.1);
+                                border-top: 4px solid #ffcc00;
+                                border-radius: 50%;
+                                width: 50px;
+                                height: 50px;
+                                animation: spin 1s linear infinite;
+                                margin: 0 auto 24px;
+                                box-shadow: 0 0 15px rgba(255, 204, 0, 0.2);
+                            }
+                            h2 {
+                                font-weight: 300;
+                                letter-spacing: 2px;
+                                margin-bottom: 8px;
+                            }
+                            p {
+                                color: #a0aec0;
+                                font-size: 0.95rem;
+                            }
+                            @keyframes spin {
+                                0% { transform: rotate(0deg); }
+                                100% { transform: rotate(360deg); }
+                            }
+                        </style>
+                    </head>
+                    <body>
+                        <div>
+                            <div class="loader"></div>
+                            <h2>ASTROLABE</h2>
+                            <p>Analyzing Natal Chart and Generating Premium Report...</p>
+                        </div>
+                    </body>
+                    </html>
+                `);
+                reportWindow.document.close();
+            }
+
             try {
                 const chartImgEl = document.getElementById('natal-chart-img');
                 const chartImgBase64 = chartImgEl ? chartImgEl.src : '';
@@ -487,18 +543,25 @@ document.addEventListener('DOMContentLoaded', () => {
                         name: nameVal,
                         birth_date: birthDateVal,
                         birth_time: birthTimeVal,
-                        location: locationVal
+                        location: locationVal,
+                        language: window.currentLanguage || 'zh-CN'
                     })
                 });
                 
                 const result = await response.json();
                 if (response.ok && result.report_url) {
-                    window.open(result.report_url, '_blank');
+                    if (reportWindow) {
+                        reportWindow.location.href = result.report_url;
+                    } else {
+                        window.open(result.report_url, '_blank');
+                    }
                 } else {
+                    if (reportWindow) reportWindow.close();
                     alert('Failed to generate report: ' + (result.error || 'Unknown error'));
                 }
             } catch (error) {
                 console.error('Error generating report:', error);
+                if (reportWindow) reportWindow.close();
                 alert('An error occurred during report generation.');
             } finally {
                 viewFullReportBtn.disabled = false;
