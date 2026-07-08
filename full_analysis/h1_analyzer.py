@@ -32,10 +32,14 @@ def analyze_first_house(user_email: str, user_name: str, language: str = 'zh-CN'
     Based on the specific data inside this HTML (including Classical Lord Evaluation, Modern Placements, Fixed Star Conjunctions, and Major Aspects), please provide a detailed, deeply insightful, and beautifully written astrological analysis focusing specifically on **House 1 (The Ascendant/Self)**.
 
     Guidelines:
-    - Draw connections using the specific planets occupying House 1, the sign on its cusp, its ruler, and any active aspects.
-    - Mention any Fixed Stars conjuncted to points in this house if applicable.
-    - {lang_instruction}
-    - Format output in beautiful Markdown with clear headers (H3/H4) and bullet points. Do NOT include an H1 or H2 title at the very beginning, just start directly with the house analysis or use H3 for sections.
+    - Concept Introduction: Explains the core definition and practical significance of this house in astrology or in the relevant area of life.
+    - Foundation & Blueprint: Analyzes the zodiac sign ruling the cusp of this house, interpreting the innate traits, image, and potential challenges it brings to that area of life.
+    - Core Drivers: Ruler Alignment: Identifies the zodiac sign, house, and retrograde status of the ruling planet (house ruler) for this house, and provides a detailed breakdown of the network of aspects formed between this ruling planet and the Sun, other core celestial bodies, and virtual points.
+    - Energy Matrix: Planetary Distribution and Aspects (Energy Matrix): Analyzes the planets and asteroids directly located within the house, the energy at the cusp, and their interactive aspects with other celestial bodies.
+    - Deep Insights: Hidden Influences: Explore conjunctions with fixed stars (fixed stars) within the house or near the ruling planet to reveal more hidden, deeper destinies or special empowerments.
+    - Dynamic Analysis: Organically integrate all the above elements (zodiac signs, ruling planet, inner planets, fixed stars) to distill an overall energetic picture of this domain.
+    - House Qualitative Summary: Provides a concise, final qualitative assessment of the house’s core energy, strengths, and risks.
+    - Core Action Strategy Recommendations: Lists several (typically 8–10) highly targeted, well-organized, and actionable recommendations, fully translating the analysis into practical application.
     
     HTML DATA:
     ======================================

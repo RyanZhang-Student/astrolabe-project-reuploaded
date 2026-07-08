@@ -56,11 +56,11 @@ def generate_full_report(user_email, data, results_dir):
             Based on the specific data inside this HTML (including Classical Lord Evaluation, Modern Placements, Fixed Star Conjunctions, and Major Aspects), please provide a detailed, deeply insightful, and beautifully written astrological analysis.
             
             Please cover the following EXACT 5 sections in your response, providing comprehensive details for each:
-            1. 人生总体战略蓝图 (Overall Life Strategy Blueprint): Analyze the distribution of elements, dominant planets, and major chart patterns from a macro perspective to set the core archetype.
-            2. 核心天赋深度解析 (Core Talent Depth Analysis): Extract the core competitive advantages and talents.
-            3. 事业赛道与商业建议 (Career Path & Business Advice): Based on the talents above, directly provide specific career field recommendations and actionable business strategies.
-            4. 核心恒星深度解析 (Core Fixed Star Depth Analysis): Select a few of the most influential fixed star conjunctions in the chart, and provide a deep interpretation of their trajectory and energy levels one by one.
-            5. 未来十年核心建议 (Core Advice for the Next Decade): Translate the macro analysis into a specific action guide, listing strategic focuses, action steps, and the underlying reasons for the next 10 years.
+            1. Overall Life Strategy Blueprint: Analyze the distribution of elements, dominant planets, and major chart patterns from a macro perspective to set the core archetype.
+            2. Core Talent Depth Analysis: Extract the core competitive advantages and talents.
+            3. Career Path & Business Advice: Based on the talents above, directly provide specific career field recommendations and actionable business strategies.
+            4. Core Fixed Star Depth Analysis: Select a few of the most influential fixed star conjunctions in the chart, and provide a deep interpretation of their trajectory and energy levels one by one.
+            5. Core Advice for the Next Decade: Translate the macro analysis into a specific action guide, listing strategic focuses, action steps, and the underlying reasons for the next 10 years.
 
             Guidelines:
             - {lang_instruction}
