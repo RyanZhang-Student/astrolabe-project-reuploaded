@@ -55,6 +55,7 @@ def generate_full_report(user_email, data, results_dir):
             I will provide you with the HTML structure of a generated Astrolabe report for a user.
             Based on the specific data inside this HTML (including Classical Lord Evaluation, Modern Placements, Fixed Star Conjunctions, and Major Aspects), please provide a detailed, deeply insightful, and beautifully written astrological analysis.
             
+            Do not say anything extra like "here is the report" or "this report suggests something". Just provide the analysis.
             Please cover the following EXACT 5 sections in your response, providing comprehensive details for each:
             1. Overall Life Strategy Blueprint: Analyze the distribution of elements, dominant planets, and major chart patterns from a macro perspective to set the core archetype.
             2. Core Talent Depth Analysis: Extract the core competitive advantages and talents.

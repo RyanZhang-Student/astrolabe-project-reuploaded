@@ -31,7 +31,10 @@ def analyze_first_house(user_email: str, user_name: str, language: str = 'zh-CN'
     I will provide you with the HTML structure of a generated Astrolabe report for a user's 1st House.
     Based on the specific data inside this HTML (including Classical Lord Evaluation, Modern Placements, Fixed Star Conjunctions, and Major Aspects), please provide a detailed, deeply insightful, and beautifully written astrological analysis focusing specifically on **House 1 (The Ascendant/Self)**.
 
-    Guidelines:
+    Do not say anything extra like "here is the report" or "this yeah。report suggests something". Just provide the analysis.
+    Do not give score numbers and orb degrees.
+
+    Please cover the following EXACT 6 sections in your response, providing comprehensive details for each:
     - Concept Introduction: Explains the core definition and practical significance of this house in astrology or in the relevant area of life.
     - Foundation & Blueprint: Analyzes the zodiac sign ruling the cusp of this house, interpreting the innate traits, image, and potential challenges it brings to that area of life.
     - Core Drivers: Ruler Alignment: Identifies the zodiac sign, house, and retrograde status of the ruling planet (house ruler) for this house, and provides a detailed breakdown of the network of aspects formed between this ruling planet and the Sun, other core celestial bodies, and virtual points.
