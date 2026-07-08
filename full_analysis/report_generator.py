@@ -15,17 +15,17 @@ def generate_full_report(user_email, data, results_dir):
     birth_time = data.get('birth_time', '')
     location = data.get('location', '')
     language = data.get('language', 'zh-CN')
-    user_name = data.get('name', 'guest')
+    user_name = data.get('name', 'guest').upper()
     
-    email_folder = os.path.join(results_dir, user_email)
-    if not os.path.exists(email_folder):
-        os.makedirs(email_folder)
+    user_folder = os.path.join(results_dir, user_email, user_name)
+    if not os.path.exists(user_folder):
+        os.makedirs(user_folder)
         
     html_filename = f"full_report_{user_email}.html"
-    html_filepath = os.path.join(email_folder, html_filename)
+    html_filepath = os.path.join(user_folder, html_filename)
     
     if os.path.exists(html_filepath):
-        report_url = f"/results/{user_email}/{html_filename}"
+        report_url = f"/results/{user_email}/{user_name}/{html_filename}"
         return jsonify({
             'status': 'success',
             'report_url': report_url
@@ -41,7 +41,7 @@ def generate_full_report(user_email, data, results_dir):
             genai.configure(api_key=api_key)
             
             # Read base report HTML for context
-            report_path = os.path.join(email_folder, user_name, f'report_{user_name.upper()}.html')
+            report_path = os.path.join(user_folder, f'report_{user_name}.html')
             base_html_content = ""
             if os.path.exists(report_path):
                 with open(report_path, 'r', encoding='utf-8') as f:
@@ -78,6 +78,17 @@ def generate_full_report(user_email, data, results_dir):
             
             # Convert Markdown to HTML
             ai_html_content = markdown.markdown(markdown_text, extensions=['extra', 'nl2br'])
+            
+            # --- First House Analysis ---
+            try:
+                import h1_analyzer
+                first_house_md = h1_analyzer.analyze_first_house(user_email, user_name, language)
+                first_house_html = markdown.markdown(first_house_md, extensions=['extra', 'nl2br'])
+                
+                # Append with a visual separator
+                ai_html_content += f"\n<hr style='border:1px solid rgba(230, 201, 139, 0.2); margin: 3rem 0;'>\n<h2>第一宫 (1st House) 深度解析</h2>\n" + first_house_html
+            except Exception as inner_e:
+                ai_html_content += f"\n<p style='color: red;'>Error generating House 1 analysis: {str(inner_e)}</p>"
             
     except Exception as e:
         traceback.print_exc()
@@ -232,7 +243,7 @@ def generate_full_report(user_email, data, results_dir):
         traceback.print_exc()
         return jsonify({'error': str(e)}), 500
         
-    report_url = f"/results/{user_email}/{html_filename}"
+    report_url = f"/results/{user_email}/{user_name}/{html_filename}"
     return jsonify({
         'status': 'success',
         'report_url': report_url
