@@ -34,6 +34,9 @@ def analyze_first_house(user_email: str, user_name: str, language: str = 'zh-CN'
     Do not say anything extra like "here is the report" or "this report suggests something". Just provide the analysis.
     Do not give score numbers and orb degrees.
 
+    Please start your response with a main title:
+    House 1 (1st House) Deep Analysis
+
     Please cover the following EXACT sections in your response, providing comprehensive details for each:
     - Concept Introduction: Explains the core definition and practical significance of this house in astrology or in the relevant area of life.
     - Foundation & Blueprint: Analyzes the zodiac sign ruling the cusp of this house, interpreting the innate traits, image, and potential challenges it brings to that area of life.
@@ -62,6 +65,9 @@ def analyze_first_house(user_email: str, user_name: str, language: str = 'zh-CN'
         Ne dites rien de superflu comme « voici le rapport » ou « ce rapport suggère ». Fournissez uniquement l'analyse.
         Ne donnez pas de scores numériques ni de degrés d'orbe.
 
+        Veuillez commencer votre réponse par un titre principal :
+        Maison 1 (1st House) Analyse Approfondie
+
         Veuillez aborder EXACTEMENT les sections suivantes dans votre réponse, en fournissant des détails complets pour chacune :
         - Concept Introduction : Explique la définition fondamentale et la signification pratique de cette maison en astrologie ou dans le domaine de vie correspondant.
         - Foundation & Blueprint : Analyse le signe du zodiaque régissant la cuspide de cette maison, en interprétant les traits innés, l'image et les défis potentiels qu'il apporte à ce domaine de vie.
@@ -89,6 +95,9 @@ def analyze_first_house(user_email: str, user_name: str, language: str = 'zh-CN'
 
         Do not say anything extra like "here is the report" or "this report suggests something". Just provide the analysis.
         Do not give score numbers and orb degrees.
+
+        Please start your response with a main title:
+        House 1 (1st House) Deep Analysis
 
         Please cover the following EXACT sections in your response, providing comprehensive details for each:
         - Concept Introduction: Explains the core definition and practical significance of this house in astrology or in the relevant area of life.
