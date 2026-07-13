@@ -37,7 +37,7 @@ def get_house_analysis(user_email: str, user_name: str, house_number: int, lang:
     else:
         return f"Error: Could not find report summary for user {user_name}."
 
-    lang_instruction = "IMPORTANT: Write the entire analysis in French." if lang == 'fr' else "IMPORTANT: Write the entire analysis in English."
+    # Default to English prompt
     prompt = f"""
     You are an expert, premium astrologer interface.
     I will provide you with the HTML structure of a generated Astrolabe report for a user.
@@ -46,12 +46,44 @@ def get_house_analysis(user_email: str, user_name: str, house_number: int, lang:
     Guidelines:
     - Draw connections using the specific planets occupying House {house_number}, the sign on its cusp, its ruler, and any active aspects.
     - Mention any Fixed Stars conjuncted to points in this house if applicable.
-    - {lang_instruction}
+    - IMPORTANT: Write the entire analysis in English.
     - Format output in beautiful Markdown with headers and bullet points.
     HTML DATA:
     ======================================
     {html_content}
     """
+
+    if lang == 'en':
+        prompt = f"""
+        You are an expert, premium astrologer interface.
+        I will provide you with the HTML structure of a generated Astrolabe report for a user.
+        Based on the specific data inside this HTML (including Classical Lord Evaluation, Modern Placements, Fixed Star Conjunctions, and Major Aspects), please provide a detailed, deeply insightful, and beautifully written astrological analysis focusing specifically on **House {house_number}**.
+
+        Guidelines:
+        - Draw connections using the specific planets occupying House {house_number}, the sign on its cusp, its ruler, and any active aspects.
+        - Mention any Fixed Stars conjuncted to points in this house if applicable.
+        - IMPORTANT: Write the entire analysis in English.
+        - Format output in beautiful Markdown with headers and bullet points.
+        HTML DATA:
+        ======================================
+        {html_content}
+        """
+
+    if lang == 'fr':
+        prompt = f"""
+        Vous êtes une interface d'astrologie experte et haut de gamme.
+        Je vais vous fournir la structure HTML d'un rapport d'Astrolabe généré pour un utilisateur.
+        Sur la base des données spécifiques à l'intérieur de ce HTML (y compris Classical Lord Evaluation, Modern Placements, Fixed Star Conjunctions, et Major Aspects), veuillez fournir une analyse astrologique détaillée, profondément perspicace et magnifiquement écrite, en vous concentrant spécifiquement sur la **Maison {house_number}**.
+
+        Directives :
+        - Établissez des liens en utilisant les planètes spécifiques occupant la Maison {house_number}, le signe sur sa cuspide, son maître et tous les aspects actifs.
+        - Mentionnez toutes les étoiles fixes conjointes à des points de cette maison, le cas échéant.
+        - IMPORTANT : Rédigez l'intégralité de l'analyse en français.
+        - Formatez la sortie dans un format Markdown soigné avec des en-têtes et des listes à puces.
+        DONNÉES HTML :
+        ======================================
+        {html_content}
+        """
 
     try:
         model = genai.GenerativeModel('gemini-2.5-flash')

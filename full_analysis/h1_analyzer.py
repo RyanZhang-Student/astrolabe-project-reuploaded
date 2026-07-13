@@ -25,29 +25,89 @@ def analyze_first_house(user_email: str, user_name: str, language: str = 'zh-CN'
     else:
         return f"Error: Could not find House 1 report for user {user_name}. Looked at: {report_path}"
 
-    lang_instruction = f"IMPORTANT: Write the entire analysis strictly in the following language code: {language}."
+    # Default to English prompt
     prompt = f"""
     You are an expert, premium astrologer interface.
     I will provide you with the HTML structure of a generated Astrolabe report for a user's 1st House.
     Based on the specific data inside this HTML (including Classical Lord Evaluation, Modern Placements, Fixed Star Conjunctions, and Major Aspects), please provide a detailed, deeply insightful, and beautifully written astrological analysis focusing specifically on **House 1 (The Ascendant/Self)**.
 
-    Do not say anything extra like "here is the report" or "this yeah。report suggests something". Just provide the analysis.
+    Do not say anything extra like "here is the report" or "this report suggests something". Just provide the analysis.
     Do not give score numbers and orb degrees.
 
-    Please cover the following EXACT 6 sections in your response, providing comprehensive details for each:
+    Please cover the following EXACT sections in your response, providing comprehensive details for each:
     - Concept Introduction: Explains the core definition and practical significance of this house in astrology or in the relevant area of life.
     - Foundation & Blueprint: Analyzes the zodiac sign ruling the cusp of this house, interpreting the innate traits, image, and potential challenges it brings to that area of life.
     - Core Drivers: Ruler Alignment: Identifies the zodiac sign, house, and retrograde status of the ruling planet (house ruler) for this house, and provides a detailed breakdown of the network of aspects formed between this ruling planet and the Sun, other core celestial bodies, and virtual points.
-    - Energy Matrix: Planetary Distribution and Aspects (Energy Matrix): Analyzes the planets and asteroids directly located within the house, the energy at the cusp, and their interactive aspects with other celestial bodies.
-    - Deep Insights: Hidden Influences: Explore conjunctions with fixed stars (fixed stars) within the house or near the ruling planet to reveal more hidden, deeper destinies or special empowerments.
+    - Energy Matrix: Planetary Distribution and Aspects: Analyzes the planets and asteroids directly located within the house, the energy at the cusp, and their interactive aspects with other celestial bodies.
+    - Deep Insights: Hidden Influences: Explore conjunctions with fixed stars within the house or near the ruling planet to reveal more hidden, deeper destinies or special empowerments.
     - Dynamic Analysis: Organically integrate all the above elements (zodiac signs, ruling planet, inner planets, fixed stars) to distill an overall energetic picture of this domain.
     - House Qualitative Summary: Provides a concise, final qualitative assessment of the house’s core energy, strengths, and risks.
     - Core Action Strategy Recommendations: Lists several (typically 8–10) highly targeted, well-organized, and actionable recommendations, fully translating the analysis into practical application.
-    
+
+    Guidelines:
+    - IMPORTANT: Write the entire analysis strictly in English. Do not use any other language.
+    - Format output in beautiful Markdown with headers and bullet points.
+
     HTML DATA:
     ======================================
     {html_content}
     """
+
+    if language == 'fr':
+        prompt = f"""
+        Vous êtes une interface d'astrologie experte et haut de gamme.
+        Je vais vous fournir la structure HTML d'un rapport d'Astrolabe généré pour la 1ère Maison d'un utilisateur.
+        Sur la base des données spécifiques à l'intérieur de ce HTML (y compris Classical Lord Evaluation, Modern Placements, Fixed Star Conjunctions, et Major Aspects), veuillez fournir une analyse astrologique détaillée, profondément perspicace et magnifiquement écrite, en vous concentrant spécifiquement sur la **Maison 1 (L'Ascendant/Le Soi)**.
+
+        Ne dites rien de superflu comme « voici le rapport » ou « ce rapport suggère ». Fournissez uniquement l'analyse.
+        Ne donnez pas de scores numériques ni de degrés d'orbe.
+
+        Veuillez aborder EXACTEMENT les sections suivantes dans votre réponse, en fournissant des détails complets pour chacune :
+        - Concept Introduction : Explique la définition fondamentale et la signification pratique de cette maison en astrologie ou dans le domaine de vie correspondant.
+        - Foundation & Blueprint : Analyse le signe du zodiaque régissant la cuspide de cette maison, en interprétant les traits innés, l'image et les défis potentiels qu'il apporte à ce domaine de vie.
+        - Core Drivers: Ruler Alignment : Identifie le signe du zodiaque, la maison et l'état de rétrogradation de la planète maîtresse (régent de la maison) pour cette maison, et fournit une analyse détaillée du réseau d'aspects formés entre cette planète maîtresse et le Soleil, d'autres corps célestes essentiels et les points virtuels.
+        - Energy Matrix: Planetary Distribution and Aspects : Analyse les planètes et astéroïdes directement situés dans la maison, l'énergie à la cuspide et leurs aspects interactifs avec d'autres corps célestes.
+        - Deep Insights: Hidden Influences : Explore les conjonctions avec les étoiles fixes dans la maison ou à proximité de la planète maîtresse pour révéler des destins plus cachés et profonds ou des habilitations spéciales.
+        - Dynamic Analysis : Intègre de manière organique tous les éléments ci-dessus (signes du zodiaque, planète maîtresse, planètes intérieures, étoiles fixes) pour distiller une image énergétique globale de ce domaine.
+        - House Qualitative Summary : Fournit une évaluation qualitative concise et finale de l'énergie fondamentale de la maison, de ses forces et de ses risques.
+        - Core Action Strategy Recommendations : Liste plusieurs (généralement 8 à 10) recommandations très ciblées, bien organisées et applicables, traduisant pleinement l'analyse en applications pratiques.
+
+        Directives :
+        - IMPORTANT : Rédigez l'intégralité de l'analyse strictement en français. N'utilisez aucune autre langue.
+        - Formatez la sortie dans un format Markdown soigné avec des en-têtes et des listes à puces.
+
+        DONNÉES HTML :
+        ======================================
+        {html_content}
+        """
+
+    if language == 'en':
+        prompt = f"""
+        You are an expert, premium astrologer interface.
+        I will provide you with the HTML structure of a generated Astrolabe report for a user's 1st House.
+        Based on the specific data inside this HTML (including Classical Lord Evaluation, Modern Placements, Fixed Star Conjunctions, and Major Aspects), please provide a detailed, deeply insightful, and beautifully written astrological analysis focusing specifically on **House 1 (The Ascendant/Self)**.
+
+        Do not say anything extra like "here is the report" or "this report suggests something". Just provide the analysis.
+        Do not give score numbers and orb degrees.
+
+        Please cover the following EXACT sections in your response, providing comprehensive details for each:
+        - Concept Introduction: Explains the core definition and practical significance of this house in astrology or in the relevant area of life.
+        - Foundation & Blueprint: Analyzes the zodiac sign ruling the cusp of this house, interpreting the innate traits, image, and potential challenges it brings to that area of life.
+        - Core Drivers: Ruler Alignment: Identifies the zodiac sign, house, and retrograde status of the ruling planet (house ruler) for this house, and provides a detailed breakdown of the network of aspects formed between this ruling planet and the Sun, other core celestial bodies, and virtual points.
+        - Energy Matrix: Planetary Distribution and Aspects: Analyzes the planets and asteroids directly located within the house, the energy at the cusp, and their interactive aspects with other celestial bodies.
+        - Deep Insights: Hidden Influences: Explore conjunctions with fixed stars within the house or near the ruling planet to reveal more hidden, deeper destinies or special empowerments.
+        - Dynamic Analysis: Organically integrate all the above elements (zodiac signs, ruling planet, inner planets, fixed stars) to distill an overall energetic picture of this domain.
+        - House Qualitative Summary: Provides a concise, final qualitative assessment of the house’s core energy, strengths, and risks.
+        - Core Action Strategy Recommendations: Lists several (typically 8–10) highly targeted, well-organized, and actionable recommendations, fully translating the analysis into practical application.
+
+        Guidelines:
+        - IMPORTANT: Write the entire analysis strictly in English. Do not use any other language.
+        - Format output in beautiful Markdown with headers and bullet points.
+
+        HTML DATA:
+        ======================================
+        {html_content}
+        """
 
     try:
         model = genai.GenerativeModel('gemini-2.5-flash')

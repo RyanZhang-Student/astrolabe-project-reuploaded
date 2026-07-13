@@ -48,8 +48,7 @@ def generate_full_report(user_email, data, results_dir):
                     base_html_content = f.read()
                     base_html_content = re.sub(r'<img[^>]+>', '', base_html_content)
             
-            lang_instruction = f"IMPORTANT: Write the ENTIRE analysis strictly in the following language code: {language}. Do not use any other language. Make sure the headers correspond exactly to the requested sections in {language}."
-            
+            # Default to English prompt
             prompt = f"""
             You are an expert, premium astrologer interface.
             I will provide you with the HTML structure of a generated Astrolabe report for a user.
@@ -64,7 +63,7 @@ def generate_full_report(user_email, data, results_dir):
             5. Core Advice for the Next Decade: Translate the macro analysis into a specific action guide, listing strategic focuses, action steps, and the underlying reasons for the next 10 years.
 
             Guidelines:
-            - {lang_instruction}
+            - IMPORTANT: Write the ENTIRE analysis strictly in English. Do not use any other language. Make sure the headers correspond exactly to the requested sections in English.
             - Base your analysis purely on the provided HTML data. If the data is empty, invent a generic reading.
             - Format output in beautiful Markdown with clear headers (H2/H3) and bullet points.
             
@@ -72,6 +71,54 @@ def generate_full_report(user_email, data, results_dir):
             ======================================
             {base_html_content}
             """
+
+            if language == 'fr':
+                prompt = f"""
+                Vous êtes une interface d'astrologie experte et haut de gamme.
+                Je vais vous fournir la structure HTML d'un rapport d'Astrolabe généré pour un utilisateur.
+                Sur la base des données spécifiques à l'intérieur de ce HTML (y compris Classical Lord Evaluation, Modern Placements, Fixed Star Conjunctions, et Major Aspects), veuillez fournir une analyse astrologique détaillée, profondément perspicace et magnifiquement écrite.
+                
+                Ne dites rien de superflu comme « voici le rapport » ou « ce rapport suggère ». Fournissez uniquement l'analyse.
+                Veuillez aborder EXACTEMENT les 5 sections suivantes dans votre réponse, en fournissant des détails complets pour chacune :
+                1. Overall Life Strategy Blueprint : Analysez la répartition des éléments, les planètes dominantes et les configurations majeures du thème d'un point de vue macro pour définir l'archétype central.
+                2. Core Talent Depth Analysis : Extrayez les avantages concurrentiels et les talents fondamentaux.
+                3. Career Path & Business Advice : Sur la base des talents ci-dessus, proposez directement des recommandations de domaines de carrière spécifiques et des stratégies commerciales applicables.
+                4. Core Fixed Star Depth Analysis : Sélectionnez quelques-unes des conjonctions d'étoiles fixes les plus influentes du thème, et fournissez une interprétation approfondie de leur trajectoire et de leurs niveaux d'énergie une par une.
+                5. Core Advice for the Next Decade : Traduisez l'analyse macro en un guide d'action spécifique, énumérant les axes stratégiques, les étapes d'action et les raisons sous-jacentes pour les 10 prochaines années.
+
+                Directives :
+                - IMPORTANT : Rédigez l'intégralité de l'analyse strictement en français. N'utilisez aucune autre langue. Veillez à ce que les en-têtes correspondent exactement aux sections demandées en français.
+                - Basez votre analyse uniquement sur les données HTML fournies. Si les données sont vides, inventez une lecture générique.
+                - Formatez la sortie dans un format Markdown soigné avec des en-têtes clairs (H2/H3) et des listes à puces.
+                
+                DONNÉES HTML :
+                ======================================
+                {base_html_content}
+                """
+
+            if language == 'en':
+                prompt = f"""
+                You are an expert, premium astrologer interface.
+                I will provide you with the HTML structure of a generated Astrolabe report for a user.
+                Based on the specific data inside this HTML (including Classical Lord Evaluation, Modern Placements, Fixed Star Conjunctions, and Major Aspects), please provide a detailed, deeply insightful, and beautifully written astrological analysis.
+                
+                Do not say anything extra like "here is the report" or "this report suggests something". Just provide the analysis.
+                Please cover the following EXACT 5 sections in your response, providing comprehensive details for each:
+                1. Overall Life Strategy Blueprint: Analyze the distribution of elements, dominant planets, and major chart patterns from a macro perspective to set the core archetype.
+                2. Core Talent Depth Analysis: Extract the core competitive advantages and talents.
+                3. Career Path & Business Advice: Based on the talents above, directly provide specific career field recommendations and actionable business strategies.
+                4. Core Fixed Star Depth Analysis: Select a few of the most influential fixed star conjunctions in the chart, and provide a deep interpretation of their trajectory and energy levels one by one.
+                5. Core Advice for the Next Decade: Translate the macro analysis into a specific action guide, listing strategic focuses, action steps, and the underlying reasons for the next 10 years.
+
+                Guidelines:
+                - IMPORTANT: Write the ENTIRE analysis strictly in English. Do not use any other language. Make sure the headers correspond exactly to the requested sections in English.
+                - Base your analysis purely on the provided HTML data. If the data is empty, invent a generic reading.
+                - Format output in beautiful Markdown with clear headers (H2/H3) and bullet points.
+                
+                HTML DATA:
+                ======================================
+                {base_html_content}
+                """
             
             model = genai.GenerativeModel('gemini-2.5-flash')
             response = model.generate_content(prompt)
