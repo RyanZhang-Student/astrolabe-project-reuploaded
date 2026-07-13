@@ -126,14 +126,16 @@ def generate_full_report(user_email, data, results_dir):
             
             # Convert Markdown to HTML
             ai_html_content = markdown.markdown(markdown_text, extensions=['extra', 'nl2br'])
+            # Wrap overall analysis with target ID for TOC
+            ai_html_content = f'<div id="section-overall">\n{ai_html_content}\n</div>'
             
             # --- First House Analysis ---
             try:
                 import h1_analyzer
                 first_house_md = h1_analyzer.analyze_first_house(user_email, user_name, language)
                 first_house_html = markdown.markdown(first_house_md, extensions=['extra', 'nl2br'])
-                # Append with a visual separator
-                ai_html_content += f"\n<hr style='border:1px solid rgba(230, 201, 139, 0.2); margin: 3rem 0;'>\n" + first_house_html
+                # Append with a visual separator and target ID
+                ai_html_content += f"\n<hr style='border:1px solid rgba(230, 201, 139, 0.2); margin: 3rem 0;'>\n<div id='section-house-1'>\n{first_house_html}\n</div>"
             except Exception as inner_e:
                 ai_html_content += f"\n<p style='color: red;'>Error generating House 1 analysis: {str(inner_e)}</p>"
 
@@ -142,14 +144,21 @@ def generate_full_report(user_email, data, results_dir):
                 import h2_analyzer
                 second_house_md = h2_analyzer.analyze_second_house(user_email, user_name, language)
                 second_house_html = markdown.markdown(second_house_md, extensions=['extra', 'nl2br'])
-                # Append with a visual separator
-                ai_html_content += f"\n<hr style='border:1px solid rgba(230, 201, 139, 0.2); margin: 3rem 0;'>\n" + second_house_html
+                # Append with a visual separator and target ID
+                ai_html_content += f"\n<hr style='border:1px solid rgba(230, 201, 139, 0.2); margin: 3rem 0;'>\n<div id='section-house-2'>\n{second_house_html}\n</div>"
             except Exception as inner_e:
                 ai_html_content += f"\n<p style='color: red;'>Error generating House 2 analysis: {str(inner_e)}</p>"
             
     except Exception as e:
         traceback.print_exc()
         ai_html_content = f"<p style='color: red;'>An error occurred during AI generation: {str(e)}</p>"
+
+    # Generate Table of Contents
+    try:
+        import toc
+        toc_html = toc.generate_toc_html(language)
+    except Exception as e:
+        toc_html = f"<!-- Error generating TOC: {str(e)} -->"
 
     # HTML Template
     html_template = f"""<!DOCTYPE html>
@@ -285,6 +294,8 @@ def generate_full_report(user_email, data, results_dir):
         <img class="chart-img" src="{chart_img_data}" alt="Natal Chart">
         <div class="birth-info-title">{birth_date} {birth_time}</div>
         <div class="birth-info-sub">{location}</div>
+        
+        {toc_html}
         
         <div class="ai-content">
             {ai_html_content}
