@@ -132,9 +132,8 @@ def generate_full_report(user_email, data, results_dir):
                 import h1_analyzer
                 first_house_md = h1_analyzer.analyze_first_house(user_email, user_name, language)
                 first_house_html = markdown.markdown(first_house_md, extensions=['extra', 'nl2br'])
-                
                 # Append with a visual separator
-                ai_html_content += f"\n<hr style='border:1px solid rgba(230, 201, 139, 0.2); margin: 3rem 0;'>\n<h2>第一宫 (1st House) 深度解析</h2>\n" + first_house_html
+                ai_html_content += f"\n<hr style='border:1px solid rgba(230, 201, 139, 0.2); margin: 3rem 0;'>\n" + first_house_html
             except Exception as inner_e:
                 ai_html_content += f"\n<p style='color: red;'>Error generating House 1 analysis: {str(inner_e)}</p>"
             
