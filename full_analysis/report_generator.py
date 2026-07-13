@@ -136,6 +136,16 @@ def generate_full_report(user_email, data, results_dir):
                 ai_html_content += f"\n<hr style='border:1px solid rgba(230, 201, 139, 0.2); margin: 3rem 0;'>\n" + first_house_html
             except Exception as inner_e:
                 ai_html_content += f"\n<p style='color: red;'>Error generating House 1 analysis: {str(inner_e)}</p>"
+
+            # --- Second House Analysis ---
+            try:
+                import h2_analyzer
+                second_house_md = h2_analyzer.analyze_second_house(user_email, user_name, language)
+                second_house_html = markdown.markdown(second_house_md, extensions=['extra', 'nl2br'])
+                # Append with a visual separator
+                ai_html_content += f"\n<hr style='border:1px solid rgba(230, 201, 139, 0.2); margin: 3rem 0;'>\n" + second_house_html
+            except Exception as inner_e:
+                ai_html_content += f"\n<p style='color: red;'>Error generating House 2 analysis: {str(inner_e)}</p>"
             
     except Exception as e:
         traceback.print_exc()
