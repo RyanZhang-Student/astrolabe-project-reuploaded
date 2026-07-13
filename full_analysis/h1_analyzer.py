@@ -69,18 +69,18 @@ def analyze_first_house(user_email: str, user_name: str, language: str = 'zh-CN'
         ## Maison 1 Analyse Approfondie
 
         Veuillez aborder EXACTEMENT les sections suivantes dans votre réponse, en fournissant des détails complets pour chacune :
-        - Concept Introduction : Explique la définition fondamentale et la signification pratique de cette maison en astrologie ou dans le domaine de vie correspondant.
-        - Foundation & Blueprint : Analyse le signe du zodiaque régissant la cuspide de cette maison, en interprétant les traits innés, l'image et les défis potentiels qu'il apporte à ce domaine de vie.
-        - Core Drivers: Ruler Alignment : Identifie le signe du zodiaque, la maison et l'état de rétrogradation de la planète maîtresse (régent de la maison) pour cette maison, et fournit une analyse détaillée du réseau d'aspects formés entre cette planète maîtresse et le Soleil, d'autres corps célestes essentiels et les points virtuels.
-        - Energy Matrix: Planetary Distribution and Aspects : Analyse les planètes et astéroïdes directement situés dans la maison, l'énergie à la cuspide et leurs aspects interactifs avec d'autres corps célestes.
-        - Deep Insights: Hidden Influences : Explore les conjonctions avec les étoiles fixes dans la maison ou à proximité de la planète maîtresse pour révéler des destins plus cachés et profonds ou des habilitations spéciales.
-        - Dynamic Analysis : Intègre de manière organique tous les éléments ci-dessus (signes du zodiaque, planète maîtresse, planètes intérieures, étoiles fixes) pour distiller une image énergétique globale de ce domaine.
-        - House Qualitative Summary : Fournit une évaluation qualitative concise et finale de l'énergie fondamentale de la maison, de ses forces et de ses risques.
-        - Core Action Strategy Recommendations : Liste plusieurs (généralement 8 à 10) recommandations très ciblées, bien organisées et applicables, traduisant pleinement l'analyse en applications pratiques.
+        - Présentation du concept: Explique la définition fondamentale et la signification pratique de cette maison en astrologie ou dans le domaine de vie correspondant.
+        - Fondements et plan directeur: Analyse le signe du zodiaque régissant la cuspide de cette maison, en interprétant les traits innés, l'image et les défis potentiels qu'il apporte à ce domaine de vie.
+        - principaux facteurs : Identifie le signe du zodiaque, la maison et l'état de rétrogradation de la planète maîtresse (régent de la maison) pour cette maison, et fournit une analyse détaillée du réseau d'aspects formés entre cette planète maîtresse et le Soleil, d'autres corps célestes essentiels et les points virtuels.
+        - Matrice énergétique : Analyse les planètes et astéroïdes directement situés dans la maison, l'énergie à la cuspide et leurs aspects interactifs avec d'autres corps célestes.
+        - analyses approfondies : Explore les conjonctions avec les étoiles fixes dans la maison ou à proximité de la planète maîtresse pour révéler des destins plus cachés et profonds ou des habilitations spéciales.
+        - analyse dynamique : Intègre de manière organique tous les éléments ci-dessus (signes du zodiaque, planète maîtresse, planètes intérieures, étoiles fixes) pour distiller une image énergétique globale de ce domaine.
+        - Résumé qualitatif de la maison: Fournit une évaluation qualitative concise et finale de l'énergie fondamentale de la maison, de ses forces et de ses risques.
+        - Recommandations relatives à la stratégie d'action principale: Liste plusieurs (généralement 8 à 10) recommandations très ciblées, bien organisées et applicables, traduisant pleinement l'analyse en applications pratiques.
 
         Directives :
         - IMPORTANT : Rédigez l'intégralité de l'analyse strictement en français. N'utilisez aucune autre langue.
-        - Formatez la sortie dans un format Markdown soigné avec des en-têtes et des listes à puces.
+        - Formatez la sortie dans un format Markdown soigné avec des en-têtes et  des listes à puces.
 
         DONNÉES HTML :
         ======================================
