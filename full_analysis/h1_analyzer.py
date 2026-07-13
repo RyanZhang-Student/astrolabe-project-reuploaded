@@ -119,7 +119,7 @@ def analyze_first_house(user_email: str, user_name: str, language: str = 'zh-CN'
         """
 
     try:
-        model = genai.GenerativeModel('gemini-2.5-flash')
+        model = genai.GenerativeModel('gemini-2.5-flash-lite')
         response = model.generate_content(prompt)
         return response.text
     except Exception as e:

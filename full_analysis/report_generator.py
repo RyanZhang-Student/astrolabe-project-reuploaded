@@ -120,7 +120,7 @@ def generate_full_report(user_email, data, results_dir):
                 {base_html_content}
                 """
             
-            model = genai.GenerativeModel('gemini-2.5-flash')
+            model = genai.GenerativeModel('gemini-2.5-flash-lite')
             response = model.generate_content(prompt)
             markdown_text = response.text
             
@@ -148,6 +148,16 @@ def generate_full_report(user_email, data, results_dir):
                 ai_html_content += f"\n<hr style='border:1px solid rgba(230, 201, 139, 0.2); margin: 3rem 0;'>\n<div id='section-house-2'>\n{second_house_html}\n</div>"
             except Exception as inner_e:
                 ai_html_content += f"\n<p style='color: red;'>Error generating House 2 analysis: {str(inner_e)}</p>"
+
+            # --- Third House Analysis ---
+            try:
+                import h3_analyzer
+                third_house_md = h3_analyzer.analyze_third_house(user_email, user_name, language)
+                third_house_html = markdown.markdown(third_house_md, extensions=['extra', 'nl2br'])
+                # Append with a visual separator and target ID
+                ai_html_content += f"\n<hr style='border:1px solid rgba(230, 201, 139, 0.2); margin: 3rem 0;'>\n<div id='section-house-3'>\n{third_house_html}\n</div>"
+            except Exception as inner_e:
+                ai_html_content += f"\n<p style='color: red;'>Error generating House 3 analysis: {str(inner_e)}</p>"
             
     except Exception as e:
         traceback.print_exc()

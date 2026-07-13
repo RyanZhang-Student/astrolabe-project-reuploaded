@@ -2,9 +2,9 @@ import os
 import re
 import google.generativeai as genai
 
-def analyze_second_house(user_email: str, user_name: str, language: str = 'zh-CN') -> str:
+def analyze_third_house(user_email: str, user_name: str, language: str = 'zh-CN') -> str:
     """
-    Reads the 2nd House HTML file for the user and generates an AI analysis.
+    Reads the 3rd House HTML file for the user and generates an AI analysis.
     """
     api_key = os.environ.get('GEMINI_API_KEY')
     if not api_key:
@@ -13,9 +13,9 @@ def analyze_second_house(user_email: str, user_name: str, language: str = 'zh-CN
     # Configure Gemini
     genai.configure(api_key=api_key)
     
-    # In order to read the house 2 chart result html
+    # In order to read the house 3 chart result html
     base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-    report_path = os.path.join(base_dir, 'results', user_email, user_name, f'{user_name}_HOUSE 2.html')
+    report_path = os.path.join(base_dir, 'results', user_email, user_name, f'{user_name}_HOUSE 3.html')
     
     html_content = ""
     if os.path.exists(report_path):
@@ -23,19 +23,19 @@ def analyze_second_house(user_email: str, user_name: str, language: str = 'zh-CN
             html_content = f.read()
             html_content = re.sub(r'<img[^>]+>', '', html_content)
     else:
-        return f"Error: Could not find House 2 report for user {user_name}. Looked at: {report_path}"
+        return f"Error: Could not find House 3 report for user {user_name}. Looked at: {report_path}"
 
     # Default to English prompt
     prompt = f"""
     You are an expert, premium astrologer interface.
-    I will provide you with the HTML structure of a generated Astrolabe report for a user's 2nd House.
-    Based on the specific data inside this HTML (including Classical Lord Evaluation, Modern Placements, Fixed Star Conjunctions, and Major Aspects), please provide a detailed, deeply insightful, and beautifully written astrological analysis focusing specifically on **House 2 (The Ascendant/Self)**.
+    I will provide you with the HTML structure of a generated Astrolabe report for a user's 3rd House.
+    Based on the specific data inside this HTML (including Classical Lord Evaluation, Modern Placements, Fixed Star Conjunctions, and Major Aspects), please provide a detailed, deeply insightful, and beautifully written astrological analysis focusing specifically on **House 3 (The Ascendant/Self)**.
 
     Do not say anything extra like "here is the report" or "this report suggests something". Just provide the analysis.
     Do not give score numbers and orb degrees.
 
     Please start your response with a main title:
-    ## House 2 Deep Analysis
+    ## House 3 Deep Analysis
 
     Please cover the following EXACT sections in your response, providing comprehensive details for each:
     - Concept Introduction: Explains the core definition and practical significance of this house in astrology or in the relevant area of life.
@@ -59,14 +59,14 @@ def analyze_second_house(user_email: str, user_name: str, language: str = 'zh-CN
     if language == 'fr':
         prompt = f"""
         Vous êtes une interface d'astrologie experte et haut de gamme.
-        Je vais vous fournir la structure HTML d'un rapport d'Astrolabe généré pour la 2ème Maison d'un utilisateur.
-        Sur la base des données spécifiques à l'intérieur de ce HTML (y compris Classical Lord Evaluation, Modern Placements, Fixed Star Conjunctions, et Major Aspects), veuillez fournir une analyse astrologique détaillée, profondément perspicace et magnifiquement écrite, en vous concentrant spécifiquement sur la **Maison 2 (L'Ascendant/Le Soi)**.
+        Je vais vous fournir la structure HTML d'un rapport d'Astrolabe généré pour la 3ème Maison d'un utilisateur.
+        Sur la base des données spécifiques à l'intérieur de ce HTML (y compris Classical Lord Evaluation, Modern Placements, Fixed Star Conjunctions, et Major Aspects), veuillez fournir une analyse astrologique détaillée, profondément perspicace et magnifiquement écrite, en vous concentrant spécifiquement sur la **Maison 3 (L'Ascendant/Le Soi)**.
 
         Ne dites rien de superflu comme « voici le rapport » ou « ce rapport suggère ». Fournissez uniquement l'analyse.
         Ne donnez pas de scores numériques ni de degrés d'orbe.
 
         Veuillez commencer votre réponse par un titre principal :
-        ## Maison 2 Analyse Approfondie
+        ## Maison 3 Analyse Approfondie
 
         Veuillez aborder EXACTEMENT les sections suivantes dans votre réponse, en fournissant des détails complets pour chacune :
         - Présentation du concept: Explique la définition fondamentale et la signification pratique de cette maison en astrologie ou dans le domaine de vie correspondant.
@@ -90,14 +90,14 @@ def analyze_second_house(user_email: str, user_name: str, language: str = 'zh-CN
     if language == 'en':
         prompt = f"""
         You are an expert, premium astrologer interface.
-        I will provide you with the HTML structure of a generated Astrolabe report for a user's 2nd House.
-        Based on the specific data inside this HTML (including Classical Lord Evaluation, Modern Placements, Fixed Star Conjunctions, and Major Aspects), please provide a detailed, deeply insightful, and beautifully written astrological analysis focusing specifically on **House 2 (The Ascendant/Self)**.
+        I will provide you with the HTML structure of a generated Astrolabe report for a user's 3rd House.
+        Based on the specific data inside this HTML (including Classical Lord Evaluation, Modern Placements, Fixed Star Conjunctions, and Major Aspects), please provide a detailed, deeply insightful, and beautifully written astrological analysis focusing specifically on **House 3 (The Ascendant/Self)**.
 
         Do not say anything extra like "here is the report" or "this report suggests something". Just provide the analysis.
         Do not give score numbers and orb degrees.
 
         Please start your response with a main title:
-        ## House 2 Deep Analysis
+        ## House 3 Deep Analysis
 
         Please cover the following EXACT sections in your response, providing comprehensive details for each:
         - Concept Introduction: Explains the core definition and practical significance of this house in astrology or in the relevant area of life.
@@ -123,4 +123,4 @@ def analyze_second_house(user_email: str, user_name: str, language: str = 'zh-CN
         response = model.generate_content(prompt)
         return response.text
     except Exception as e:
-        return f"An error occurred during Gemini API call for House 2: {str(e)}"
+        return f"An error occurred during Gemini API call for House 3: {str(e)}"
