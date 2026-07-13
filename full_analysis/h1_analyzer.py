@@ -35,7 +35,7 @@ def analyze_first_house(user_email: str, user_name: str, language: str = 'zh-CN'
     Do not give score numbers and orb degrees.
 
     Please start your response with a main title:
-    House 1 (1st House) Deep Analysis
+    ## House 1 Deep Analysis
 
     Please cover the following EXACT sections in your response, providing comprehensive details for each:
     - Concept Introduction: Explains the core definition and practical significance of this house in astrology or in the relevant area of life.
@@ -66,7 +66,7 @@ def analyze_first_house(user_email: str, user_name: str, language: str = 'zh-CN'
         Ne donnez pas de scores numériques ni de degrés d'orbe.
 
         Veuillez commencer votre réponse par un titre principal :
-        Maison 1 (1st House) Analyse Approfondie
+        ## Maison 1 Analyse Approfondie
 
         Veuillez aborder EXACTEMENT les sections suivantes dans votre réponse, en fournissant des détails complets pour chacune :
         - Concept Introduction : Explique la définition fondamentale et la signification pratique de cette maison en astrologie ou dans le domaine de vie correspondant.
@@ -97,7 +97,7 @@ def analyze_first_house(user_email: str, user_name: str, language: str = 'zh-CN'
         Do not give score numbers and orb degrees.
 
         Please start your response with a main title:
-        House 1 (1st House) Deep Analysis
+        ## House 1 Deep Analysis
 
         Please cover the following EXACT sections in your response, providing comprehensive details for each:
         - Concept Introduction: Explains the core definition and practical significance of this house in astrology or in the relevant area of life.
