@@ -34,6 +34,8 @@ def generate_full_report(user_email, data, results_dir):
     # Generate AI Content
     ai_html_content = ""
     try:
+        from dotenv import load_dotenv
+        load_dotenv(override=True)
         api_key = os.environ.get('GEMINI_API_KEY')
         if not api_key:
             ai_html_content = "<p style='color: red;'>Error: GEMINI_API_KEY not found in .env file.</p>"
@@ -120,7 +122,7 @@ def generate_full_report(user_email, data, results_dir):
                 {base_html_content}
                 """
             
-            model = genai.GenerativeModel('gemini-2.5-flash-lite')
+            model = genai.GenerativeModel(os.environ.get('AI_MODEL', 'gemini-2.5-flash'))
             response = model.generate_content(prompt)
             markdown_text = response.text
             

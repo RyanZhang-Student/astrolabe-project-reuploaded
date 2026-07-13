@@ -3,7 +3,7 @@ from flask import Blueprint, url_for, session, redirect, request
 from authlib.integrations.flask_client import OAuth
 from dotenv import load_dotenv
 
-load_dotenv()
+load_dotenv(override=True)
 os.environ['AUTHLIB_INSECURE_TRANSPORT'] = '1'
 
 auth_bp = Blueprint('auth', __name__)

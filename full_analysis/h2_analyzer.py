@@ -6,6 +6,8 @@ def analyze_second_house(user_email: str, user_name: str, language: str = 'zh-CN
     """
     Reads the 2nd House HTML file for the user and generates an AI analysis.
     """
+    from dotenv import load_dotenv
+    load_dotenv(override=True)
     api_key = os.environ.get('GEMINI_API_KEY')
     if not api_key:
         return "Error: GEMINI_API_KEY not found in environment."
@@ -119,7 +121,7 @@ def analyze_second_house(user_email: str, user_name: str, language: str = 'zh-CN
         """
 
     try:
-        model = genai.GenerativeModel('gemini-2.5-flash-lite')
+        model = genai.GenerativeModel(os.environ.get('AI_MODEL', 'gemini-2.5-flash'))
         response = model.generate_content(prompt)
         return response.text
     except Exception as e:

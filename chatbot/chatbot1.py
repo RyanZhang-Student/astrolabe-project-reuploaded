@@ -69,7 +69,7 @@ USER'S CHART DATA:
 
     try:
         model = genai.GenerativeModel(
-            'gemini-2.5-flash',
+            os.environ.get('AI_MODEL', 'gemini-2.5-flash'),
             system_instruction=system_prompt
         )
         chat = model.start_chat(history=history)

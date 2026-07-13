@@ -86,7 +86,7 @@ def get_house_analysis(user_email: str, user_name: str, house_number: int, lang:
         """
 
     try:
-        model = genai.GenerativeModel('gemini-2.5-flash')
+        model = genai.GenerativeModel(os.environ.get('AI_MODEL', 'gemini-2.5-flash'))
         response = model.generate_content(prompt)
         return response.text
     except Exception as e:

@@ -7,7 +7,7 @@ import shutil
 from flask import Flask, render_template, request, jsonify, send_from_directory, session
 from dotenv import load_dotenv
 
-load_dotenv()
+load_dotenv(override=True)
 
 # Add project root to sys.path
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
