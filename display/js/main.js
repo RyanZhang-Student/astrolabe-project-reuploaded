@@ -37,6 +37,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 window.renderSingleStar();
             }
         }
+
+        // Dynamically update the star stats bar if we have previously generated stats
+        if (window.lastStarStats && typeof window.renderStarStats === 'function') {
+            window.renderStarStats(window.lastStarStats);
+        }
     };
     
     window.updatePageLanguage(window.currentLanguage);

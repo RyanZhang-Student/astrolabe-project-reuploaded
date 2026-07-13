@@ -7,22 +7,29 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Star Rendering & Modal Logic
     window.renderStarStats = function (stats) {
+        if (!stats) return;
+        window.lastStarStats = stats;
         const container = document.getElementById('star-conjunction-container');
         if (!container) return;
 
+        const lang = window.currentLanguage || 'en';
+        const t = window.translations[lang] || window.translations['en'];
+
         const getStatSpan = (count, label, category, title) => {
+            // Escape title string since it might have single quotes (like in French "d'Étoiles")
+            const escapedTitle = title.replace(/'/g, "\\'");
             if (count > 0) {
-                return `<span class="clickable-stat" onclick="window.openStarModal('${category}', '${title}')">${label}: ${count}</span>`;
+                return `<span class="clickable-stat" onclick="window.openStarModal('${category}', '${escapedTitle}')">${label}: ${count}</span>`;
             }
             return `<span>${label}: ${count}</span>`;
         };
 
         container.innerHTML = `
             <div class="stats-bar">
-                ${getStatSpan(stats.royal, '👑 ROYAL STARS', 'is_royal', 'Royal Star Conjunctions')}
-                ${getStatSpan(stats.behenian, '✨ BEHENIAN STARS', 'is_behenian', 'Behenian Star Conjunctions')}
-                ${getStatSpan(stats.practical, '⚔️ PRACTICAL STARS', 'is_practical', 'Practical Star Conjunctions')}
-                ${getStatSpan(stats.robson, '📚 ROBSON STARS', 'is_robson', 'Robson Star Conjunctions')}
+                ${getStatSpan(stats.royal, t.label_royal_stars || '👑 ROYAL STARS', 'is_royal', t.title_royal_conjunctions || 'Royal Star Conjunctions')}
+                ${getStatSpan(stats.behenian, t.label_behenian_stars || '✨ BEHENIAN STARS', 'is_behenian', t.title_behenian_conjunctions || 'Behenian Star Conjunctions')}
+                ${getStatSpan(stats.practical, t.label_practical_stars || '⚔️ PRACTICAL STARS', 'is_practical', t.title_practical_conjunctions || 'Practical Star Conjunctions')}
+                ${getStatSpan(stats.robson, t.label_robson_stars || '📚 ROBSON STARS', 'is_robson', t.title_robson_conjunctions || 'Robson Star Conjunctions')}
             </div>
         `;
     };

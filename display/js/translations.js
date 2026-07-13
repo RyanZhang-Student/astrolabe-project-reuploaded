@@ -59,6 +59,16 @@ const translations = {
         star_label_origin: "Origin",
         star_label_mythology: "Mythology",
         
+        // Star Conjunctions Stats
+        label_royal_stars: "👑 ROYAL STARS",
+        label_behenian_stars: "✨ BEHENIAN STARS",
+        label_practical_stars: "⚔️ PRACTICAL STARS",
+        label_robson_stars: "📚 ROBSON STARS",
+        title_royal_conjunctions: "Royal Star Conjunctions",
+        title_behenian_conjunctions: "Behenian Star Conjunctions",
+        title_practical_conjunctions: "Practical Star Conjunctions",
+        title_robson_conjunctions: "Robson Star Conjunctions",
+        
         // AI Modal
         ai_modal_title: "AI House Interpretation",
         
@@ -140,6 +150,16 @@ const translations = {
         star_label_deity: "Divinité Représentative",
         star_label_origin: "Origine",
         star_label_mythology: "Mythologie",
+        
+        // Star Conjunctions Stats
+        label_royal_stars: "👑 ÉTOILES ROYALES",
+        label_behenian_stars: "✨ ÉTOILES BÉHÉNIENNES",
+        label_practical_stars: "⚔️ ÉTOILES PRATIQUES",
+        label_robson_stars: "📚 ÉTOILES DE ROBSON",
+        title_royal_conjunctions: "Conjonctions d'Étoiles Royales",
+        title_behenian_conjunctions: "Conjonctions d'Étoiles Béhéniennes",
+        title_practical_conjunctions: "Conjonctions d'Étoiles Pratiques",
+        title_robson_conjunctions: "Conjonctions d'Étoiles de Robson",
         
         // AI Modal
         ai_modal_title: "Interprétation de Maison IA",
