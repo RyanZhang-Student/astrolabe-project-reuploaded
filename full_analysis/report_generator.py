@@ -170,6 +170,16 @@ def generate_full_report(user_email, data, results_dir):
                 ai_html_content += f"\n<hr style='border:1px solid rgba(230, 201, 139, 0.2); margin: 3rem 0;'>\n<div id='section-house-4'>\n{fourth_house_html}\n</div>"
             except Exception as inner_e:
                 ai_html_content += f"\n<p style='color: red;'>Error generating House 4 analysis: {str(inner_e)}</p>"
+
+            # --- Fifth House Analysis ---
+            try:
+                import h5_analyzer
+                fifth_house_md = h5_analyzer.analyze_fifth_house(user_email, user_name, language)
+                fifth_house_html = markdown.markdown(fifth_house_md, extensions=['extra', 'nl2br'])
+                # Append with a visual separator and target ID
+                ai_html_content += f"\n<hr style='border:1px solid rgba(230, 201, 139, 0.2); margin: 3rem 0;'>\n<div id='section-house-5'>\n{fifth_house_html}\n</div>"
+            except Exception as inner_e:
+                ai_html_content += f"\n<p style='color: red;'>Error generating House 5 analysis: {str(inner_e)}</p>"
             
     except Exception as e:
         traceback.print_exc()
