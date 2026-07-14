@@ -7,7 +7,8 @@ def generate_toc_html(language: str) -> str:
             ("section-overall", "Rapport Astrolabe : Analyse Astrologique Profonde"),
             ("section-house-1", "Maison 1 Analyse Approfondie"),
             ("section-house-2", "Maison 2 Analyse Approfondie"),
-            ("section-house-3", "Maison 3 Analyse Approfondie")
+            ("section-house-3", "Maison 3 Analyse Approfondie"),
+            ("section-house-4", "Maison 4 Analyse Approfondie")
         ]
         toc_title = "Table des Matières"
     else:
@@ -15,7 +16,8 @@ def generate_toc_html(language: str) -> str:
             ("section-overall", "Astrolabe Report: Deep Astrological Analysis"),
             ("section-house-1", "House 1 Deep Analysis"),
             ("section-house-2", "House 2 Deep Analysis"),
-            ("section-house-3", "House 3 Deep Analysis")
+            ("section-house-3", "House 3 Deep Analysis"),
+            ("section-house-4", "House 4 Deep Analysis")
         ]
         toc_title = "Table of Contents"
 
