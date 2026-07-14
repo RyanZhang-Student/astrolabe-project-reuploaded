@@ -180,6 +180,16 @@ def generate_full_report(user_email, data, results_dir):
                 ai_html_content += f"\n<hr style='border:1px solid rgba(230, 201, 139, 0.2); margin: 3rem 0;'>\n<div id='section-house-5'>\n{fifth_house_html}\n</div>"
             except Exception as inner_e:
                 ai_html_content += f"\n<p style='color: red;'>Error generating House 5 analysis: {str(inner_e)}</p>"
+
+            # --- Sixth House Analysis ---
+            try:
+                import h6_analyzer
+                sixth_house_md = h6_analyzer.analyze_sixth_house(user_email, user_name, language)
+                sixth_house_html = markdown.markdown(sixth_house_md, extensions=['extra', 'nl2br'])
+                # Append with a visual separator and target ID
+                ai_html_content += f"\n<hr style='border:1px solid rgba(230, 201, 139, 0.2); margin: 3rem 0;'>\n<div id='section-house-6'>\n{sixth_house_html}\n</div>"
+            except Exception as inner_e:
+                ai_html_content += f"\n<p style='color: red;'>Error generating House 6 analysis: {str(inner_e)}</p>"
             
     except Exception as e:
         traceback.print_exc()
@@ -214,7 +224,7 @@ def generate_full_report(user_email, data, results_dir):
             position: relative;
         }}
         .back-btn {{
-            position: absolute;
+            position: fixed;
             top: 2rem;
             left: 2rem;
             width: 3.2rem;
