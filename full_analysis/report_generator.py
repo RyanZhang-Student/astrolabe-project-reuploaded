@@ -230,6 +230,26 @@ def generate_full_report(user_email, data, results_dir):
                 ai_html_content += f"\n<hr style='border:1px solid rgba(230, 201, 139, 0.2); margin: 3rem 0;'>\n<div id='section-house-10'>\n{tenth_house_html}\n</div>"
             except Exception as inner_e:
                 ai_html_content += f"\n<p style='color: red;'>Error generating House 10 analysis: {str(inner_e)}</p>"
+
+            # --- Eleventh House Analysis ---
+            try:
+                import h11_analyzer
+                eleventh_house_md = h11_analyzer.analyze_eleventh_house(user_email, user_name, language)
+                eleventh_house_html = markdown.markdown(eleventh_house_md, extensions=['extra', 'nl2br'])
+                # Append with a visual separator and target ID
+                ai_html_content += f"\n<hr style='border:1px solid rgba(230, 201, 139, 0.2); margin: 3rem 0;'>\n<div id='section-house-11'>\n{eleventh_house_html}\n</div>"
+            except Exception as inner_e:
+                ai_html_content += f"\n<p style='color: red;'>Error generating House 11 analysis: {str(inner_e)}</p>"
+
+            # --- Twelfth House Analysis ---
+            try:
+                import h12_analyzer
+                twelfth_house_md = h12_analyzer.analyze_twelfth_house(user_email, user_name, language)
+                twelfth_house_html = markdown.markdown(twelfth_house_md, extensions=['extra', 'nl2br'])
+                # Append with a visual separator and target ID
+                ai_html_content += f"\n<hr style='border:1px solid rgba(230, 201, 139, 0.2); margin: 3rem 0;'>\n<div id='section-house-12'>\n{twelfth_house_html}\n</div>"
+            except Exception as inner_e:
+                ai_html_content += f"\n<p style='color: red;'>Error generating House 12 analysis: {str(inner_e)}</p>"
             
     except Exception as e:
         traceback.print_exc()

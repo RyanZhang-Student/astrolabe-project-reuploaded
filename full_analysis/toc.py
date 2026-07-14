@@ -14,7 +14,9 @@ def generate_toc_html(language: str) -> str:
             ("section-house-7", "Maison 7 Analyse Approfondie"),
             ("section-house-8", "Maison 8 Analyse Approfondie"),
             ("section-house-9", "Maison 9 Analyse Approfondie"),
-            ("section-house-10", "Maison 10 Analyse Approfondie")
+            ("section-house-10", "Maison 10 Analyse Approfondie"),
+            ("section-house-11", "Maison 11 Analyse Approfondie"),
+            ("section-house-12", "Maison 12 Analyse Approfondie")
         ]
         toc_title = "Table des Matières"
     else:
@@ -29,7 +31,9 @@ def generate_toc_html(language: str) -> str:
             ("section-house-7", "House 7 Deep Analysis"),
             ("section-house-8", "House 8 Deep Analysis"),
             ("section-house-9", "House 9 Deep Analysis"),
-            ("section-house-10", "House 10 Deep Analysis")
+            ("section-house-10", "House 10 Deep Analysis"),
+            ("section-house-11", "House 11 Deep Analysis"),
+            ("section-house-12", "House 12 Deep Analysis")
         ]
         toc_title = "Table of Contents"
 
