@@ -3,6 +3,56 @@ document.addEventListener('DOMContentLoaded', () => {
     window.timePicker.init();
     
     // --- Language Logic ---
+    window.planetAbbreviations = {
+        'en': {
+            'Sun': 'Su', 'Moon': 'Mo', 'Mercury': 'Me', 'Venus': 'Ve',
+            'Mars': 'Ma', 'Jupiter': 'Ju', 'Saturn': 'Sa', 'Uranus': 'Ur',
+            'Neptune': 'Ne', 'Pluto': 'Pl', 'North Node': 'No', 'South Node': 'So',
+            'Fortune': 'Fo'
+        },
+        'fr': {
+            'Sun': 'Sol', 'Moon': 'Lun', 'Mercury': 'Mer', 'Venus': 'Ven',
+            'Mars': 'Mar', 'Jupiter': 'Jup', 'Saturn': 'Sat', 'Uranus': 'Ura',
+            'Neptune': 'Nep', 'Pluto': 'Plu', 'North Node': 'NdN', 'South Node': 'NdS',
+            'Fortune': 'PdF'
+        }
+    };
+
+    window.renderLocalizedChart = function(lang) {
+        if (!window.originalChartSvgBase64) return;
+        
+        const abbrDict = window.planetAbbreviations[lang] || window.planetAbbreviations['en'];
+        let svgStr = decodeURIComponent(escape(atob(window.originalChartSvgBase64)));
+        
+        svgStr = svgStr.replace(/<text\s+data-planet="([^"]+)"([^>]*)>([^<]*)<\/text>/g, (match, planetName, restOfTag, oldAbbr) => {
+            const newAbbr = abbrDict[planetName] || oldAbbr;
+            return `<text data-planet="${planetName}"${restOfTag}>${newAbbr}</text>`;
+        });
+        
+        const newBase64 = btoa(unescape(encodeURIComponent(svgStr)));
+        
+        const img = new Image();
+        img.onload = function () {
+            const canvas = document.createElement('canvas');
+            canvas.width = 800;
+            canvas.height = 800;
+            const ctx = canvas.getContext('2d');
+
+            ctx.fillStyle = '#0d0b14';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+            const ptrUrl = canvas.toDataURL('image/png');
+            const chartImg = document.getElementById('natal-chart-img');
+            if (chartImg) {
+                chartImg.src = ptrUrl;
+                const container = document.getElementById('chart-image-container');
+                if (container) container.classList.remove('hidden');
+            }
+        };
+        img.src = 'data:image/svg+xml;base64,' + newBase64;
+    };
+
     window.currentLanguage = localStorage.getItem('language') || 'en';
     
     window.updatePageLanguage = function(lang) {
@@ -41,6 +91,10 @@ document.addEventListener('DOMContentLoaded', () => {
         // Dynamically update the star stats bar if we have previously generated stats
         if (window.lastStarStats && typeof window.renderStarStats === 'function') {
             window.renderStarStats(window.lastStarStats);
+        }
+
+        if (typeof window.renderLocalizedChart === 'function') {
+            window.renderLocalizedChart(lang);
         }
     };
     
@@ -366,25 +420,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 // Render Chart Photo via Canvas to ensure it is a raster image, not decipherable HTML/SVG
                 if (result.chart_svg_base64) {
-                    const img = new Image();
-                    img.onload = function () {
-                        const canvas = document.createElement('canvas');
-                        canvas.width = 800; // SVG viewBox is 800x800
-                        canvas.height = 800;
-                        const ctx = canvas.getContext('2d');
-
-                        // Draw a solid dark background to match the theme
-                        ctx.fillStyle = '#0d0b14';
-                        ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-                        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-
-                        const ptrUrl = canvas.toDataURL('image/png');
-                        const chartImg = document.getElementById('natal-chart-img');
-                        chartImg.src = ptrUrl;
-                        document.getElementById('chart-image-container').classList.remove('hidden');
-                    };
-                    img.src = 'data:image/svg+xml;base64,' + result.chart_svg_base64;
+                    window.originalChartSvgBase64 = result.chart_svg_base64;
+                    window.renderLocalizedChart(window.currentLanguage);
                 }
 
                 // Render Star Conjunctions

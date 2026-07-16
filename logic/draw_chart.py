@@ -103,6 +103,6 @@ def create_pro_svg(planets, aspects):
         px, py = pol2cart(cx, cy, r_in - 15, draw_lon)
         lx, ly = pol2cart(cx, cy, r_in + 15, draw_lon)
         svg.append(f'<circle cx="{px}" cy="{py}" r="3" fill="{color}"/>')
-        svg.append(f'<text x="{lx}" y="{ly}" font-family="\'Inter\', sans-serif" font-size="11" font-weight="600" text-anchor="middle" fill="{color}">{name[:2]}</text>')
+        svg.append(f'<text data-planet="{name}" x="{lx}" y="{ly}" font-family="\'Inter\', sans-serif" font-size="11" font-weight="600" text-anchor="middle" fill="{color}">{name[:2]}</text>')
     
     return "".join(svg)
