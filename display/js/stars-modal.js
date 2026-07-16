@@ -79,22 +79,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 'North Node': 'Nœud Nord', 'South Node': 'Nœud Sud', 'Chiron': 'Chiron', 'Lilith': 'Lune Noire',
                 'Part of Fortune': 'Part de Fortune'
             };
-            const hiMap = {
-                'Sun': 'सूर्य', 'Moon': 'चंद्रमा', 'Mercury': 'बुध', 'Venus': 'शुक्र', 'Mars': 'मंगल',
-                'Jupiter': 'बृहस्पति', 'Saturn': 'शनि', 'Uranus': 'यूरेनस', 'Neptune': 'नेपच्यून', 'Pluto': 'प्लूटो',
-                'Ascendant': 'लग्न', 'Midheaven': 'दशम भाव', 'Descendant': 'अस्त लग्न', 'IC': 'चतुर्थ भाव',
-                'North Node': 'राहु', 'South Node': 'केतु', 'Chiron': 'चिरोन', 'Lilith': 'लिलिथ',
-                'Part of Fortune': 'भाग्य बिंदु'
-            };
             let name = planetEn;
             if (l === 'zh' && zhMap[planetEn]) name = zhMap[planetEn];
             if (l === 'fr' && frMap[planetEn]) name = frMap[planetEn];
-            if (l === 'hi' && hiMap[planetEn]) name = hiMap[planetEn];
             const match = name.match(/House (\d+) cusp head/i);
             if (match) {
                 if (l === 'zh') return `第 ${match[1]} 宫宫头`;
                 if (l === 'fr') return `Cuspide Maison ${match[1]}`;
-                if (l === 'hi') return `भाव ${match[1]} संधि`;
             }
             return name;
         };
@@ -129,21 +120,19 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             let mythosLang = lang === 'zh' ? 'cn' : lang;
-                if (mythosLang === 'hi' && (!field || !field['hi'])) mythosLang = 'en';
-        if (mythosLang === 'hi' && (!mythosObj || !mythosObj.astrological_meaning || !mythosObj.astrological_meaning['hi'])) mythosLang = 'en';
 
             if (sa.is_royal) {
                 starNameClass = "royal-star-text";
-                prefix = lang === 'fr' ? "[Étoile Royale] " : (lang === 'zh' ? "[王室恒星] " : (lang === 'hi' ? "[शाही तारा] " : "[Royal Star] "));
+                prefix = lang === 'fr' ? "[Étoile Royale] " : (lang === 'zh' ? "[王室恒星] " : "[Royal Star] ");
             } else if (sa.is_behenian) {
                 starNameClass = "behenian-star-text";
-                prefix = lang === 'zh' ? "[比黑尼星] " : (lang === 'hi' ? "[बेहेनियन] " : "[Behenian] ");
+                prefix = lang === 'zh' ? "[比黑尼星] " : "[Behenian] ";
             } else if (sa.is_practical) {
                 starNameClass = "practical-star-text";
-                prefix = lang === 'fr' ? "[Pratique] " : (lang === 'zh' ? "[实用恒星] " : (lang === 'hi' ? "[व्यावहारिक] " : "[Practical] "));
+                prefix = lang === 'fr' ? "[Pratique] " : (lang === 'zh' ? "[实用恒星] " : "[Practical] ");
             } else if (sa.is_robson) {
                 starNameClass = "robson-star-text";
-                prefix = lang === 'zh' ? "[罗伯逊星] " : (lang === 'hi' ? "[रॉबसन तारा] " : "");
+                prefix = lang === 'zh' ? "[罗伯逊星] " : "";
             }
 
             let meaningText = sa.meaning;
@@ -242,29 +231,18 @@ document.addEventListener('DOMContentLoaded', () => {
                 'North Node': 'Nœud Nord', 'South Node': 'Nœud Sud', 'Chiron': 'Chiron', 'Lilith': 'Lune Noire',
                 'Part of Fortune': 'Part de Fortune'
             };
-            const hiMap = {
-                'Sun': 'सूर्य', 'Moon': 'चंद्रमा', 'Mercury': 'बुध', 'Venus': 'शुक्र', 'Mars': 'मंगल',
-                'Jupiter': 'बृहस्पति', 'Saturn': 'शनि', 'Uranus': 'यूरेनस', 'Neptune': 'नेपच्यून', 'Pluto': 'प्लूटो',
-                'Ascendant': 'लग्न', 'Midheaven': 'दशम भाव', 'Descendant': 'अस्त लग्न', 'IC': 'चतुर्थ भाव',
-                'North Node': 'राहु', 'South Node': 'केतु', 'Chiron': 'चिरोन', 'Lilith': 'लिलिथ',
-                'Part of Fortune': 'भाग्य बिंदु'
-            };
             let name = planetEn;
             if (l === 'zh' && zhMap[planetEn]) name = zhMap[planetEn];
             if (l === 'fr' && frMap[planetEn]) name = frMap[planetEn];
-            if (l === 'hi' && hiMap[planetEn]) name = hiMap[planetEn];
             const match = name.match(/House (\d+) cusp head/i);
             if (match) {
                 if (l === 'zh') return `第 ${match[1]} 宫宫头`;
                 if (l === 'fr') return `Cuspide Maison ${match[1]}`;
-                if (l === 'hi') return `भाव ${match[1]} संधि`;
             }
             return name;
         };
 
         let mythosLang = lang === 'zh' ? 'cn' : lang;
-                if (mythosLang === 'hi' && (!field || !field['hi'])) mythosLang = 'en';
-        if (mythosLang === 'hi' && (!mythosObj || !mythosObj.astrological_meaning || !mythosObj.astrological_meaning['hi'])) mythosLang = 'en';
         let meaningText = sa.meaning;
         if (mythosObj && mythosObj.astrological_meaning) {
             meaningText = mythosObj.astrological_meaning[mythosLang] || mythosObj.astrological_meaning['en'] || sa.meaning;
@@ -302,8 +280,6 @@ document.addEventListener('DOMContentLoaded', () => {
             const getLangField = (field) => {
                 if (!field) return '';
                 let mythosLang = lang === 'zh' ? 'cn' : lang;
-                if (mythosLang === 'hi' && (!field || !field['hi'])) mythosLang = 'en';
-        if (mythosLang === 'hi' && (!mythosObj || !mythosObj.astrological_meaning || !mythosObj.astrological_meaning['hi'])) mythosLang = 'en';
                 return field[mythosLang] || field['en'] || '';
             };
 
