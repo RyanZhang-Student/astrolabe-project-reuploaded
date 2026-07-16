@@ -79,13 +79,22 @@ document.addEventListener('DOMContentLoaded', () => {
                 'North Node': 'Nœud Nord', 'South Node': 'Nœud Sud', 'Chiron': 'Chiron', 'Lilith': 'Lune Noire',
                 'Part of Fortune': 'Part de Fortune'
             };
+            const esMap = {
+                'Sun': 'Sol', 'Moon': 'Luna', 'Mercury': 'Mercurio', 'Venus': 'Venus', 'Mars': 'Marte',
+                'Jupiter': 'Júpiter', 'Saturn': 'Saturno', 'Uranus': 'Urano', 'Neptune': 'Neptuno', 'Pluto': 'Plutón',
+                'Ascendant': 'Ascendente', 'Midheaven': 'Medio Cielo', 'Descendant': 'Descendente', 'IC': 'Fondo del Cielo',
+                'North Node': 'Nodo Norte', 'South Node': 'Nodo Sur', 'Chiron': 'Quirón', 'Lilith': 'Lilith',
+                'Part of Fortune': 'Parte de la Fortuna'
+            };
             let name = planetEn;
             if (l === 'zh' && zhMap[planetEn]) name = zhMap[planetEn];
             if (l === 'fr' && frMap[planetEn]) name = frMap[planetEn];
+            if (l === 'es' && esMap[planetEn]) name = esMap[planetEn];
             const match = name.match(/House (\d+) cusp head/i);
             if (match) {
                 if (l === 'zh') return `第 ${match[1]} 宫宫头`;
                 if (l === 'fr') return `Cuspide Maison ${match[1]}`;
+                if (l === 'es') return `Cúspide de la Casa ${match[1]}`;
             }
             return name;
         };
@@ -123,16 +132,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (sa.is_royal) {
                 starNameClass = "royal-star-text";
-                prefix = lang === 'fr' ? "[Étoile Royale] " : (lang === 'zh' ? "[王室恒星] " : "[Royal Star] ");
+                prefix = lang === 'fr' ? "[Étoile Royale] " : (lang === 'es' ? "[Estrella Real] " : (lang === 'zh' ? "[王室恒星] " : "[Royal Star] "));
             } else if (sa.is_behenian) {
                 starNameClass = "behenian-star-text";
-                prefix = lang === 'zh' ? "[比黑尼星] " : "[Behenian] ";
+                prefix = lang === 'zh' ? "[比黑尼星] " : (lang === 'es' ? "[Estrella Beheniana] " : "[Behenian] ");
             } else if (sa.is_practical) {
                 starNameClass = "practical-star-text";
-                prefix = lang === 'fr' ? "[Pratique] " : (lang === 'zh' ? "[实用恒星] " : "[Practical] ");
+                prefix = lang === 'fr' ? "[Pratique] " : (lang === 'es' ? "[Práctica] " : (lang === 'zh' ? "[实用恒星] " : "[Practical] "));
             } else if (sa.is_robson) {
                 starNameClass = "robson-star-text";
-                prefix = lang === 'zh' ? "[罗伯逊星] " : "";
+                prefix = lang === 'zh' ? "[罗伯逊星] " : (lang === 'es' ? "[Estrella Robson] " : "");
             }
 
             let meaningText = sa.meaning;
@@ -231,13 +240,22 @@ document.addEventListener('DOMContentLoaded', () => {
                 'North Node': 'Nœud Nord', 'South Node': 'Nœud Sud', 'Chiron': 'Chiron', 'Lilith': 'Lune Noire',
                 'Part of Fortune': 'Part de Fortune'
             };
+            const esMap = {
+                'Sun': 'Sol', 'Moon': 'Luna', 'Mercury': 'Mercurio', 'Venus': 'Venus', 'Mars': 'Marte',
+                'Jupiter': 'Júpiter', 'Saturn': 'Saturno', 'Uranus': 'Urano', 'Neptune': 'Neptuno', 'Pluto': 'Plutón',
+                'Ascendant': 'Ascendente', 'Midheaven': 'Medio Cielo', 'Descendant': 'Descendente', 'IC': 'Fondo del Cielo',
+                'North Node': 'Nodo Norte', 'South Node': 'Nodo Sur', 'Chiron': 'Quirón', 'Lilith': 'Lilith',
+                'Part of Fortune': 'Parte de la Fortuna'
+            };
             let name = planetEn;
             if (l === 'zh' && zhMap[planetEn]) name = zhMap[planetEn];
             if (l === 'fr' && frMap[planetEn]) name = frMap[planetEn];
+            if (l === 'es' && esMap[planetEn]) name = esMap[planetEn];
             const match = name.match(/House (\d+) cusp head/i);
             if (match) {
                 if (l === 'zh') return `第 ${match[1]} 宫宫头`;
                 if (l === 'fr') return `Cuspide Maison ${match[1]}`;
+                if (l === 'es') return `Cúspide de la Casa ${match[1]}`;
             }
             return name;
         };

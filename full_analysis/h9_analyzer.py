@@ -89,6 +89,38 @@ def analyze_ninth_house(user_email: str, user_name: str, language: str = 'zh-CN'
         {html_content}
         """
 
+
+    if language == 'es':
+        prompt = f"""
+        Eres una interfaz de astrólogo experto y premium.
+        Te proporcionaré la estructura HTML de un informe Astrolabe generado para la Casa 9 de un usuario.
+        Basado en los datos específicos dentro de este HTML (incluyendo Evaluación Clásica, Posiciones Modernas, Conjunciones de Estrellas Fijas y Aspectos Mayores), proporciona un análisis astrológico detallado, profundamente perspicaz y bellamente escrito, enfocándote específicamente en la **Casa 9**.
+
+        No digas nada extra como "aquí está el informe". Simplemente proporciona el análisis.
+        No proporciones números de puntuación ni grados de orbe.
+
+        Por favor comienza tu respuesta con un título principal:
+        ## Análisis Profundo de la Casa 9
+
+        Por favor, cubre EXACTAMENTE las siguientes secciones en tu respuesta, proporcionando detalles completos para cada una:
+        - Concept Introduction: Explica la definición central y el significado práctico de esta casa.
+        - Foundation & Blueprint: Analiza el signo zodiacal que rige la cúspide de esta casa.
+        - Core Drivers: Ruler Alignment: Identifica el signo, la casa y el estado del planeta regente.
+        - Energy Matrix: Planetary Distribution and Aspects: Analiza los planetas y asteroides directamente en la casa y sus aspectos.
+        - Deep Insights: Hidden Influences: Explora las conjunciones con estrellas fijas dentro de la casa.
+        - Dynamic Analysis: Integra orgánicamente todos los elementos anteriores.
+        - House Qualitative Summary: Proporciona una evaluación cualitativa final.
+        - Core Action Strategy Recommendations: Enumera varias recomendaciones prácticas y orientadas a la acción.
+
+        Directrices:
+        - IMPORTANTE: Escribe todo el análisis estrictamente en ESPAÑOL. No uses ningún otro idioma.
+        - Formatea la salida en un hermoso Markdown con encabezados y viñetas.
+
+        DATOS HTML:
+        ======================================
+        {{html_content}}
+        """
+
     if language == 'zh':
         prompt = f"""
         你是一个专家级的高端占星分析引擎。

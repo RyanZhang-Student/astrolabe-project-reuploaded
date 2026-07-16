@@ -328,6 +328,98 @@ const translations = {
         chat_online: "ऑनलाइन",
         chat_bot1_desc: "शीर्ष-स्तरीय सामान्य ज्योतिषी, समग्र मार्गदर्शन के लिए।",
         chat_bot2_desc: "धन और करियर विशेषज्ञ, वित्तीय क्षमता को उजागर करने के लिए।"
+    },
+    es: {
+        // Header
+        subtitle: "Perspectivas Celestiales • Precisión Matemática",
+        edit_info: "Editar Información",
+        logout: "Cerrar sesión",
+        
+        // Form
+        form_title: "Obtener mi Astrolabio",
+        label_name: "Nombre",
+        placeholder_name: "Ingrese su nombre",
+        label_gender: "Género",
+        gender_male: "Masculino",
+        gender_female: "Femenino",
+        gender_other: "Otro",
+        label_location: "Ciudad y País de Nacimiento",
+        placeholder_location: "CIUDAD - PAÍS",
+        label_date: "Fecha de Nacimiento",
+        placeholder_date: "Seleccionar Fecha",
+        label_time: "Hora de Nacimiento",
+        placeholder_time: "Seleccionar Hora",
+        btn_submit: "Revelar mi Astrología",
+        
+        // Results & Modals
+        success_title: "¡Éxito!",
+        success_desc: "Su informe ha sido generado. Haga clic abajo para verlo.",
+        consult_title: "Consultar las Estrellas",
+        consult_desc: "¿Tiene preguntas sobre su carta? Pregúntele a nuestro asesor astrológico de IA para obtener orientación personalizada.",
+        btn_consult: "Consultar",
+        ai_title: "Configuración de IA y Lecturas Profundas",
+        ai_desc: "Seleccione una casa a continuación para una interpretación de IA personalizada.",
+        btn_ai_analyze: "Analizar",
+        view_report: "Ver Informe Detallado",
+        cta_title: "Interpretación de la Carta",
+        cta_btn_free: "Análisis Gratuito de la Zona 1",
+        cta_btn_full: "Ver Informe de Análisis Completo",
+        
+        // Time Picker Modal
+        timepicker_title: "Hora de Nacimiento",
+        timepicker_year: "AÑO",
+        timepicker_month: "MES",
+        timepicker_day: "DÍA",
+        timepicker_hour: "HORA",
+        timepicker_min: "MIN",
+        btn_confirm_time: "Confirmar Selección",
+        
+        // Star Conjunctions Modal
+        star_modal_title: "Conjunciones Estelares",
+        back_to_list: "← Volver a la Lista",
+        star_col_cusp: "Estrella / Cúspide",
+        star_col_fixed: "Estrella fija",
+        star_col_orb: "Orbe(°)",
+        star_col_meaning: "Significado",
+        star_label_planet_star: "Planeta y Estrella",
+        star_label_orb: "Orbe",
+        star_label_meaning: "Significado",
+        star_label_astrological_meaning: "Significado Astrológico",
+        star_label_deity: "Deidad Representativa",
+        star_label_origin: "Origen",
+        star_label_mythology: "Mitología",
+        
+        // Star Conjunctions Stats
+        label_royal_stars: "👑 ESTRELLAS REALES",
+        label_behenian_stars: "✨ ESTRELLAS BEHENIANAS",
+        label_practical_stars: "⚔️ ESTRELLAS PRÁCTICAS",
+        label_robson_stars: "📚 ESTRELLAS DE ROBSON",
+        title_royal_conjunctions: "Conjunciones de Estrellas Reales",
+        title_behenian_conjunctions: "Conjunciones de Estrellas Behenianas",
+        title_practical_conjunctions: "Conjunciones de Estrellas Prácticas",
+        title_robson_conjunctions: "Conjunciones de Estrellas de Robson",
+        
+        // AI Modal
+        ai_modal_title: "Interpretación de la Casa por IA",
+        
+        // Registration Modal
+        reg_title: "Desbloquea tu Destino",
+        reg_desc: "Para revelar tus conocimientos astrológicos personalizados y guardar tu carta, inicia sesión con tu cuenta.",
+        btn_signin: "Iniciar sesión para continuar",
+        btn_maybe_later: "Quizás más tarde",
+
+        // Chatbot Default Welcomes
+        chat_welcome_title: "Bienvenido a tu consulta personal",
+        chat_welcome_desc: "Pregunta cualquier cosa sobre tu carta astrológica — ubicaciones, aspectos, casas u orientación de vida basada en las estrellas.",
+        chat_sugg_1: "¿Qué significa mi signo solar?",
+        chat_sugg_2: "Explica mi casa 7",
+        chat_sugg_3: "Mis perspectivas profesionales",
+        chat_sugg_4: "Compatibilidad amorosa",
+        chat_placeholder: "Pregunta sobre tu carta...",
+        chat_offline: "Desconectado",
+        chat_online: "En línea",
+        chat_bot1_desc: "Oráculo general de primer nivel, experto en orientación astrológica holística.",
+        chat_bot2_desc: "Oráculo de primer nivel para 'Riqueza y Profesión', experto en revelar el potencial financiero."
     }
 };
 

@@ -145,6 +145,30 @@ def generate_full_report(user_email, data, results_dir):
                 ======================================
                 {base_html_content}
                 """
+
+            if language == 'es':
+                prompt = f"""
+                Eres una interfaz de astrólogo experto y premium.
+                Te proporcionaré la estructura HTML de un informe Astrolabe generado para un usuario.
+                Basado en los datos específicos dentro de este HTML (incluyendo Evaluación Clásica, Posiciones Modernas, Conjunciones de Estrellas Fijas y Aspectos Mayores), proporciona un análisis astrológico detallado, profundamente perspicaz y bellamente escrito.
+                
+                No digas nada extra como "aquí está el informe" o "este informe sugiere". Simplemente proporciona el análisis.
+                Por favor, cubre EXACTAMENTE las siguientes 5 secciones en tu respuesta, proporcionando detalles completos para cada una:
+                1. Overall Life Strategy Blueprint: Analiza la distribución de elementos, planetas dominantes y patrones principales de la carta desde una perspectiva macro para establecer el arquetipo central.
+                2. Core Talent Depth Analysis: Extrae las ventajas competitivas y talentos centrales.
+                3. Career Path & Business Advice: Basado en los talentos anteriores, proporciona directamente recomendaciones de campos profesionales específicos y estrategias comerciales viables.
+                4. Core Fixed Star Depth Analysis: Selecciona algunas de las conjunciones de estrellas fijas más influyentes en la carta y proporciona una interpretación profunda de su trayectoria y niveles de energía, una por una.
+                5. Core Advice for the Next Decade: Traduce el análisis macro en una guía de acción específica, enumerando enfoques estratégicos, pasos de acción y las razones subyacentes para los próximos 10 años.
+
+                Directrices:
+                - IMPORTANTE: Escribe TODO el análisis estrictamente en ESPAÑOL. No uses ningún otro idioma.
+                - Basa tu análisis puramente en los datos HTML proporcionados. Si los datos están vacíos, inventa una lectura genérica.
+                - Formatea la salida en un hermoso Markdown con encabezados claros (H2/H3) y viñetas.
+                
+                DATOS HTML:
+                ======================================
+                {base_html_content}
+                """
             
             model = genai.GenerativeModel(os.environ.get('AI_MODEL', 'gemini-2.5-flash'))
             response = model.generate_content(prompt)
