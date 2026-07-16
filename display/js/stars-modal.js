@@ -63,6 +63,33 @@ document.addEventListener('DOMContentLoaded', () => {
         const lang = window.currentLanguage || 'en';
         const t = window.translations[lang] || window.translations['en'];
 
+        const getPlanetName = (planetEn, l) => {
+            if (l === 'en') return planetEn;
+            const zhMap = {
+                'Sun': '太阳', 'Moon': '月亮', 'Mercury': '水星', 'Venus': '金星', 'Mars': '火星',
+                'Jupiter': '木星', 'Saturn': '土星', 'Uranus': '天王星', 'Neptune': '海王星', 'Pluto': '冥王星',
+                'Ascendant': '上升点', 'Midheaven': '中天', 'Descendant': '下降点', 'IC': '天底',
+                'North Node': '北交点', 'South Node': '南交点', 'Chiron': '凯龙星', 'Lilith': '暗月莉莉丝',
+                'Part of Fortune': '福点'
+            };
+            const frMap = {
+                'Sun': 'Soleil', 'Moon': 'Lune', 'Mercury': 'Mercure', 'Venus': 'Vénus', 'Mars': 'Mars',
+                'Jupiter': 'Jupiter', 'Saturn': 'Saturne', 'Uranus': 'Uranus', 'Neptune': 'Neptune', 'Pluto': 'Pluton',
+                'Ascendant': 'Ascendant', 'Midheaven': 'Milieu du Ciel', 'Descendant': 'Descendant', 'IC': 'Fond du Ciel',
+                'North Node': 'Nœud Nord', 'South Node': 'Nœud Sud', 'Chiron': 'Chiron', 'Lilith': 'Lune Noire',
+                'Part of Fortune': 'Part de Fortune'
+            };
+            let name = planetEn;
+            if (l === 'zh' && zhMap[planetEn]) name = zhMap[planetEn];
+            if (l === 'fr' && frMap[planetEn]) name = frMap[planetEn];
+            const match = name.match(/House (\d+) cusp head/i);
+            if (match) {
+                if (l === 'zh') return `第 ${match[1]} 宫宫头`;
+                if (l === 'fr') return `Cuspide Maison ${match[1]}`;
+            }
+            return name;
+        };
+
         let tableHtml = `
             <table class="styled-star-table">
                 <thead>
@@ -92,32 +119,48 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             }
 
+            let mythosLang = lang === 'zh' ? 'cn' : lang;
+
             if (sa.is_royal) {
                 starNameClass = "royal-star-text";
-                prefix = lang === 'fr' ? "[Étoile Royale] " : "[Royal Star] ";
+                prefix = lang === 'fr' ? "[Étoile Royale] " : (lang === 'zh' ? "[王室恒星] " : "[Royal Star] ");
             } else if (sa.is_behenian) {
                 starNameClass = "behenian-star-text";
-                prefix = "[Behenian] ";
+                prefix = lang === 'zh' ? "[比黑尼星] " : "[Behenian] ";
             } else if (sa.is_practical) {
                 starNameClass = "practical-star-text";
-                prefix = lang === 'fr' ? "[Pratique] " : "[Practical] ";
+                prefix = lang === 'fr' ? "[Pratique] " : (lang === 'zh' ? "[实用恒星] " : "[Practical] ");
             } else if (sa.is_robson) {
                 starNameClass = "robson-star-text";
+                prefix = lang === 'zh' ? "[罗伯逊星] " : "";
             }
 
             let meaningText = sa.meaning;
             if (mythosObj && mythosObj.astrological_meaning) {
-                meaningText = mythosObj.astrological_meaning[lang] || mythosObj.astrological_meaning['en'] || sa.meaning;
+                meaningText = mythosObj.astrological_meaning[mythosLang] || mythosObj.astrological_meaning['en'] || sa.meaning;
             }
 
             if (!meaningText.startsWith("[")) {
                 meaningText = prefix + meaningText;
             }
 
+            let displayStar = sa.star;
+            if (lang === 'zh' && window.starMythosData) {
+                for (const key of Object.keys(window.starMythosData)) {
+                    if (key.includes(sa.star)) {
+                        const cnMatch = key.match(/\((.*?)\)/);
+                        if (cnMatch) displayStar = `${sa.star} <span style="font-size:0.85em; opacity:0.8;">${cnMatch[0]}</span>`;
+                        break;
+                    }
+                }
+            }
+
+            let displayPlanet = getPlanetName(sa.planet, lang);
+
             tableHtml += `
                 <tr onclick="window.showStarDetail(${index})">
-                    <td class="planet-col">${sa.planet}</td>
-                    <td class="star-col ${starNameClass}">${sa.star}</td>
+                    <td class="planet-col">${displayPlanet}</td>
+                    <td class="star-col ${starNameClass}">${displayStar}</td>
                     <td class="orb-col">${orbText}</td>
                     <td class="meaning-col">${meaningText}</td>
                 </tr>
@@ -172,15 +215,56 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
 
+        const getPlanetName = (planetEn, l) => {
+            if (l === 'en') return planetEn;
+            const zhMap = {
+                'Sun': '太阳', 'Moon': '月亮', 'Mercury': '水星', 'Venus': '金星', 'Mars': '火星',
+                'Jupiter': '木星', 'Saturn': '土星', 'Uranus': '天王星', 'Neptune': '海王星', 'Pluto': '冥王星',
+                'Ascendant': '上升点', 'Midheaven': '中天', 'Descendant': '下降点', 'IC': '天底',
+                'North Node': '北交点', 'South Node': '南交点', 'Chiron': '凯龙星', 'Lilith': '暗月莉莉丝',
+                'Part of Fortune': '福点'
+            };
+            const frMap = {
+                'Sun': 'Soleil', 'Moon': 'Lune', 'Mercury': 'Mercure', 'Venus': 'Vénus', 'Mars': 'Mars',
+                'Jupiter': 'Jupiter', 'Saturn': 'Saturne', 'Uranus': 'Uranus', 'Neptune': 'Neptune', 'Pluto': 'Pluton',
+                'Ascendant': 'Ascendant', 'Midheaven': 'Milieu du Ciel', 'Descendant': 'Descendant', 'IC': 'Fond du Ciel',
+                'North Node': 'Nœud Nord', 'South Node': 'Nœud Sud', 'Chiron': 'Chiron', 'Lilith': 'Lune Noire',
+                'Part of Fortune': 'Part de Fortune'
+            };
+            let name = planetEn;
+            if (l === 'zh' && zhMap[planetEn]) name = zhMap[planetEn];
+            if (l === 'fr' && frMap[planetEn]) name = frMap[planetEn];
+            const match = name.match(/House (\d+) cusp head/i);
+            if (match) {
+                if (l === 'zh') return `第 ${match[1]} 宫宫头`;
+                if (l === 'fr') return `Cuspide Maison ${match[1]}`;
+            }
+            return name;
+        };
+
+        let mythosLang = lang === 'zh' ? 'cn' : lang;
         let meaningText = sa.meaning;
         if (mythosObj && mythosObj.astrological_meaning) {
-            meaningText = mythosObj.astrological_meaning[lang] || mythosObj.astrological_meaning['en'] || sa.meaning;
+            meaningText = mythosObj.astrological_meaning[mythosLang] || mythosObj.astrological_meaning['en'] || sa.meaning;
+        }
+
+        let displayPlanet = getPlanetName(sa.planet, lang);
+        
+        let displayStar = sa.star;
+        if (lang === 'zh' && window.starMythosData) {
+            for (const key of Object.keys(window.starMythosData)) {
+                if (key.includes(sa.star)) {
+                    const cnMatch = key.match(/\((.*?)\)/);
+                    if (cnMatch) displayStar = `${sa.star} ${cnMatch[0]}`;
+                    break;
+                }
+            }
         }
 
         let detailHtml = `
             <div class="star-detail-row">
                 <div class="star-detail-label">${t.star_label_planet_star || 'Planet & Star'}</div>
-                <div class="star-detail-value">${sa.planet} &mdash; ${sa.star}</div>
+                <div class="star-detail-value">${displayPlanet} &mdash; ${displayStar}</div>
             </div>
             <div class="star-detail-row">
                 <div class="star-detail-label">${t.star_label_orb || 'Orb'}</div>
@@ -195,7 +279,8 @@ document.addEventListener('DOMContentLoaded', () => {
         if (mythosObj) {
             const getLangField = (field) => {
                 if (!field) return '';
-                return field[lang] || field['en'] || '';
+                let mythosLang = lang === 'zh' ? 'cn' : lang;
+                return field[mythosLang] || field['en'] || '';
             };
 
             const addSection = (titleKey, defaultTitle, field) => {
