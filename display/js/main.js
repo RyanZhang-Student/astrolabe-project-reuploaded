@@ -18,15 +18,50 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
+    window.signAbbreviations = {
+        'en': {
+            'Aries': 'Ari', 'Taurus': 'Tau', 'Gemini': 'Gem', 'Cancer': 'Can',
+            'Leo': 'Leo', 'Virgo': 'Vir', 'Libra': 'Lib', 'Scorpio': 'Sco',
+            'Sagittarius': 'Sag', 'Capricorn': 'Cap', 'Aquarius': 'Aqu', 'Pisces': 'Pis'
+        },
+        'fr': {
+            'Aries': 'Bél', 'Taurus': 'Tau', 'Gemini': 'Gém', 'Cancer': 'Can',
+            'Leo': 'Lio', 'Virgo': 'Vie', 'Libra': 'Bal', 'Scorpio': 'Sco',
+            'Sagittarius': 'Sag', 'Capricorn': 'Cap', 'Aquarius': 'Ver', 'Pisces': 'Poi'
+        }
+    };
+
+    window.pointAbbreviations = {
+        'en': {
+            'ASC': 'ASC', 'DES': 'DES', 'MC': 'MC', 'IC': 'IC', 'As': 'As', 'Mi': 'Mi'
+        },
+        'fr': {
+            'ASC': 'ASC', 'DES': 'DES', 'MC': 'MC', 'IC': 'FC', 'As': 'As', 'Mi': 'Mi'
+        }
+    };
+
     window.renderLocalizedChart = function(lang) {
         if (!window.originalChartSvgBase64) return;
         
         const abbrDict = window.planetAbbreviations[lang] || window.planetAbbreviations['en'];
+        const signDict = window.signAbbreviations[lang] || window.signAbbreviations['en'];
+        const pointDict = window.pointAbbreviations[lang] || window.pointAbbreviations['en'];
+        
         let svgStr = decodeURIComponent(escape(atob(window.originalChartSvgBase64)));
         
         svgStr = svgStr.replace(/<text\s+data-planet="([^"]+)"([^>]*)>([^<]*)<\/text>/g, (match, planetName, restOfTag, oldAbbr) => {
             const newAbbr = abbrDict[planetName] || oldAbbr;
             return `<text data-planet="${planetName}"${restOfTag}>${newAbbr}</text>`;
+        });
+
+        svgStr = svgStr.replace(/<text\s+data-sign="([^"]+)"([^>]*)>([^<]*)<\/text>/g, (match, signName, restOfTag, oldAbbr) => {
+            const newAbbr = signDict[signName] || oldAbbr;
+            return `<text data-sign="${signName}"${restOfTag}>${newAbbr}</text>`;
+        });
+
+        svgStr = svgStr.replace(/<text\s+data-point="([^"]+)"([^>]*)>([^<]*)<\/text>/g, (match, pointName, restOfTag, oldAbbr) => {
+            const newAbbr = pointDict[pointName] || oldAbbr;
+            return `<text data-point="${pointName}"${restOfTag}>${newAbbr}</text>`;
         });
         
         const newBase64 = btoa(unescape(encodeURIComponent(svgStr)));

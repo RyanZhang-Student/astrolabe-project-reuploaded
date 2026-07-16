@@ -22,7 +22,7 @@ def create_pro_svg(planets, aspects):
         x2, y2 = pol2cart(cx, cy, r_out, draw_angle)
         svg.append(f'<line x1="{x1}" y1="{y1}" x2="{x2}" y2="{y2}" stroke="rgba(230, 201, 139, 0.2)" stroke-width="1"/>')
         tx, ty = pol2cart(cx, cy, (r_out + r_in)/2, (draw_angle + 15) % 360)
-        svg.append(f'<text x="{tx}" y="{ty}" font-family="\'Cormorant Garamond\', serif" font-size="20" font-style="italic" font-weight="400" text-anchor="middle" dominant-baseline="middle" fill="#e6c98b">{SIGNS[i][:3]}</text>')
+        svg.append(f'<text data-sign="{SIGNS[i]}" x="{tx}" y="{ty}" font-family="\'Cormorant Garamond\', serif" font-size="20" font-style="italic" font-weight="400" text-anchor="middle" dominant-baseline="middle" fill="#e6c98b">{SIGNS[i][:3]}</text>')
     
     for h in range(1, 13):
         h_angle_start = (h - 1) * 30 
@@ -45,7 +45,7 @@ def create_pro_svg(planets, aspects):
         mix, miy = pol2cart(cx, cy, r_in - 15, mc_draw_angle) 
         milx, mily = pol2cart(cx, cy, r_in + 15, mc_draw_angle)
         svg.append(f'<circle cx="{mix}" cy="{miy}" r="3" fill="{mi_color}"/>')
-        svg.append(f'<text x="{milx}" y="{mily}" font-family="\'Inter\', sans-serif" font-size="10" font-weight="600" text-anchor="middle" fill="{mi_color}">Mi</text>')
+        svg.append(f'<text data-point="Mi" x="{milx}" y="{mily}" font-family="\'Inter\', sans-serif" font-size="10" font-weight="600" text-anchor="middle" fill="{mi_color}">Mi</text>')
 
     if 'Midheaven' in planets:
         mc_lon = planets['Midheaven']['lon']
@@ -55,9 +55,9 @@ def create_pro_svg(planets, aspects):
         x_mc, y_mc = pol2cart(cx, cy, r_out + 15, mc_draw_angle)
         svg.append(f'<line x1="{x_ic}" y1="{y_ic}" x2="{x_mc}" y2="{y_mc}" stroke="rgba(230, 201, 139, 0.5)" stroke-width="1" stroke-dasharray="6,4" marker-end="url(#arrowhead_brown)" />')
         x_ic_txt, y_ic_txt = pol2cart(cx, cy, r_out + 25, ic_draw_angle)
-        svg.append(f'<text x="{x_ic_txt}" y="{y_ic_txt}" font-family="\'Inter\', sans-serif" font-size="12" font-weight="400" letter-spacing="1" text-anchor="middle" dominant-baseline="middle" fill="rgba(230, 201, 139, 0.7)">IC</text>')
+        svg.append(f'<text data-point="IC" x="{x_ic_txt}" y="{y_ic_txt}" font-family="\'Inter\', sans-serif" font-size="12" font-weight="400" letter-spacing="1" text-anchor="middle" dominant-baseline="middle" fill="rgba(230, 201, 139, 0.7)">IC</text>')
         x_mc_txt, y_mc_txt = pol2cart(cx, cy, r_out + 35, mc_draw_angle)
-        svg.append(f'<text x="{x_mc_txt}" y="{y_mc_txt}" font-family="\'Inter\', sans-serif" font-size="12" font-weight="400" letter-spacing="1" text-anchor="middle" dominant-baseline="middle" fill="rgba(230, 201, 139, 0.7)">MC</text>')
+        svg.append(f'<text data-point="MC" x="{x_mc_txt}" y="{y_mc_txt}" font-family="\'Inter\', sans-serif" font-size="12" font-weight="400" letter-spacing="1" text-anchor="middle" dominant-baseline="middle" fill="rgba(230, 201, 139, 0.7)">MC</text>')
 
     if 'Asc' in planets:
         asc_color = "rgba(230, 201, 139, 0.9)"
@@ -67,11 +67,11 @@ def create_pro_svg(planets, aspects):
         asx, asy = pol2cart(cx, cy, r_in - 15, 0)
         aslx, asly = pol2cart(cx, cy, r_in + 15, 0)
         svg.append(f'<circle cx="{asx}" cy="{asy}" r="3" fill="{asc_color}"/>')
-        svg.append(f'<text x="{aslx}" y="{asly}" font-family="\'Inter\', sans-serif" font-size="10" font-weight="600" text-anchor="middle" fill="{asc_color}">As</text>')
+        svg.append(f'<text data-point="As" x="{aslx}" y="{asly}" font-family="\'Inter\', sans-serif" font-size="10" font-weight="600" text-anchor="middle" fill="{asc_color}">As</text>')
         x_asc_txt, y_asc_txt = pol2cart(cx, cy, r_out + 35, 0)
-        svg.append(f'<text x="{x_asc_txt}" y="{y_asc_txt}" font-family="\'Inter\', sans-serif" font-size="12" font-weight="400" letter-spacing="1" text-anchor="middle" dominant-baseline="middle" fill="{asc_color}">ASC</text>')
+        svg.append(f'<text data-point="ASC" x="{x_asc_txt}" y="{y_asc_txt}" font-family="\'Inter\', sans-serif" font-size="12" font-weight="400" letter-spacing="1" text-anchor="middle" dominant-baseline="middle" fill="{asc_color}">ASC</text>')
         x_des_txt, y_des_txt = pol2cart(cx, cy, r_out + 25, 180)
-        svg.append(f'<text x="{x_des_txt}" y="{y_des_txt}" font-family="\'Inter\', sans-serif" font-size="12" font-weight="400" letter-spacing="1" text-anchor="middle" dominant-baseline="middle" fill="{asc_color}">DES</text>')
+        svg.append(f'<text data-point="DES" x="{x_des_txt}" y="{y_des_txt}" font-family="\'Inter\', sans-serif" font-size="12" font-weight="400" letter-spacing="1" text-anchor="middle" dominant-baseline="middle" fill="{asc_color}">DES</text>')
 
     for asp in aspects:
         p1, p2 = asp['p1'], asp['p2']
