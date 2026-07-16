@@ -19,6 +19,23 @@ def generate_toc_html(language: str) -> str:
             ("section-house-12", "Maison 12 Analyse Approfondie")
         ]
         toc_title = "Table des Matières"
+    elif language == 'zh':
+        items = [
+            ("section-overall", "Astrolabe 报告：深度星盘解析"),
+            ("section-house-1", "第一宫：自我与命宫深度分析"),
+            ("section-house-2", "第二宫：财富与价值观深度分析"),
+            ("section-house-3", "第三宫：心智与沟通深度分析"),
+            ("section-house-4", "第四宫：家庭与根基深度分析"),
+            ("section-house-5", "第五宫：创造与爱情深度分析"),
+            ("section-house-6", "第六宫：工作与健康深度分析"),
+            ("section-house-7", "第七宫：伴侣与合作深度分析"),
+            ("section-house-8", "第八宫：蜕变与隐秘深度分析"),
+            ("section-house-9", "第九宫：远行与智慧深度分析"),
+            ("section-house-10", "第十宫：事业与地位深度分析"),
+            ("section-house-11", "第十一宫：愿景与群体深度分析"),
+            ("section-house-12", "第十二宫：潜意识与因果深度分析")
+        ]
+        toc_title = "目录"
     else:
         items = [
             ("section-overall", "Astrolabe Report: Deep Astrological Analysis"),

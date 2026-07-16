@@ -15,6 +15,12 @@ document.addEventListener('DOMContentLoaded', () => {
             'Mars': 'Mar', 'Jupiter': 'Jup', 'Saturn': 'Sat', 'Uranus': 'Ura',
             'Neptune': 'Nep', 'Pluto': 'Plu', 'North Node': 'NdN', 'South Node': 'NdS',
             'Fortune': 'PdF'
+        },
+        'zh': {
+            'Sun': '日', 'Moon': '月', 'Mercury': '水', 'Venus': '金',
+            'Mars': '火', 'Jupiter': '木', 'Saturn': '土', 'Uranus': '天',
+            'Neptune': '海', 'Pluto': '冥', 'North Node': '北', 'South Node': '南',
+            'Fortune': '福'
         }
     };
 
@@ -28,6 +34,11 @@ document.addEventListener('DOMContentLoaded', () => {
             'Aries': 'Bél', 'Taurus': 'Tau', 'Gemini': 'Gém', 'Cancer': 'Can',
             'Leo': 'Lio', 'Virgo': 'Vie', 'Libra': 'Bal', 'Scorpio': 'Sco',
             'Sagittarius': 'Sag', 'Capricorn': 'Cap', 'Aquarius': 'Ver', 'Pisces': 'Poi'
+        },
+        'zh': {
+            'Aries': '羊', 'Taurus': '牛', 'Gemini': '双', 'Cancer': '蟹',
+            'Leo': '狮', 'Virgo': '处', 'Libra': '秤', 'Scorpio': '蝎',
+            'Sagittarius': '射', 'Capricorn': '摩', 'Aquarius': '瓶', 'Pisces': '鱼'
         }
     };
 
@@ -37,6 +48,9 @@ document.addEventListener('DOMContentLoaded', () => {
         },
         'fr': {
             'ASC': 'ASC', 'DES': 'DES', 'MC': 'MC', 'IC': 'FC', 'As': 'As', 'Mi': 'Mi'
+        },
+        'zh': {
+            'ASC': '升', 'DES': '降', 'MC': '顶', 'IC': '底', 'As': '升', 'Mi': '顶'
         }
     };
 

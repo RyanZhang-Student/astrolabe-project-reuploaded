@@ -182,6 +182,98 @@ const translations = {
         chat_online: "En ligne",
         chat_bot1_desc: "Oracle général de premier plan, expert en conseils astrologiques holistiques.",
         chat_bot2_desc: "Oracle de premier plan pour 'Richesse et Carrière', expert en révélation de potentiel financier."
+    },
+    zh: {
+        // Header
+        subtitle: "浩瀚星海 • 精准测算",
+        edit_info: "修改出生信息",
+        logout: "退出登录",
+        
+        // Form
+        form_title: "获取我的星盘",
+        label_name: "姓名",
+        placeholder_name: "请输入姓名",
+        label_gender: "性别",
+        gender_male: "男",
+        gender_female: "女",
+        gender_other: "其他",
+        label_location: "出生城市与国家",
+        placeholder_location: "城市 - 国家",
+        label_date: "出生日期",
+        placeholder_date: "选择日期",
+        label_time: "出生时间",
+        placeholder_time: "选择时间",
+        btn_submit: "揭晓我的星盘",
+        
+        // Results & Modals
+        success_title: "生成成功！",
+        success_desc: "您的报告已生成。请点击下方查看。",
+        consult_title: "占星咨询",
+        consult_desc: "对星盘有疑问？请向我们的 AI 占星顾问寻求个性化指导。",
+        btn_consult: "立即咨询",
+        ai_title: "AI 配置与深度解读",
+        ai_desc: "在下方选择一个宫位以获取个性化的 AI 解释。",
+        btn_ai_analyze: "分析",
+        view_report: "查看详细报告",
+        cta_title: "星盘解读",
+        cta_btn_free: "免费分析第一宫",
+        cta_btn_full: "查看完整分析报告",
+        
+        // Time Picker Modal
+        timepicker_title: "选择出生时间",
+        timepicker_year: "年",
+        timepicker_month: "月",
+        timepicker_day: "日",
+        timepicker_hour: "时",
+        timepicker_min: "分",
+        btn_confirm_time: "确认选择",
+        
+        // Star Conjunctions Modal
+        star_modal_title: "恒星合相",
+        back_to_list: "← 返回列表",
+        star_col_cusp: "恒星 / 宫头",
+        star_col_fixed: "恒星",
+        star_col_orb: "容许度(°)",
+        star_col_meaning: "含义",
+        star_label_planet_star: "行星与恒星",
+        star_label_orb: "容许度",
+        star_label_meaning: "含义",
+        star_label_astrological_meaning: "占星学意义",
+        star_label_deity: "代表神祇",
+        star_label_origin: "起源",
+        star_label_mythology: "神话故事",
+        
+        // Star Conjunctions Stats
+        label_royal_stars: "👑 皇家四星",
+        label_behenian_stars: "✨ 贝赫尼恩恒星",
+        label_practical_stars: "⚔️ 实用恒星",
+        label_robson_stars: "📚 罗布森恒星",
+        title_royal_conjunctions: "皇家四星合相",
+        title_behenian_conjunctions: "贝赫尼恩恒星合相",
+        title_practical_conjunctions: "实用恒星合相",
+        title_robson_conjunctions: "罗布森恒星合相",
+        
+        // AI Modal
+        ai_modal_title: "AI 宫位解读",
+        
+        // Registration Modal
+        reg_title: "解锁您的命运",
+        reg_desc: "为了揭示您的个性化占星分析并保存您的星盘，请登录您的账户。",
+        btn_signin: "登录以继续",
+        btn_maybe_later: "稍后再说",
+
+        // Chatbot Default Welcomes
+        chat_welcome_title: "欢迎来到您的专属咨询",
+        chat_welcome_desc: "您可以询问关于您的星盘的任何问题——落位、相位、宫位，或者基于星象的生活指导。",
+        chat_sugg_1: "我的太阳星座代表什么？",
+        chat_sugg_2: "解释一下我的第七宫",
+        chat_sugg_3: "我的事业前景如何？",
+        chat_sugg_4: "爱情与适配度",
+        chat_placeholder: "询问关于您的星盘...",
+        chat_offline: "离线",
+        chat_online: "在线",
+        chat_bot1_desc: "顶尖的综合占星师，擅长全面、整体的占星指导。",
+        chat_bot2_desc: "“财富与事业”专精占星师，擅长揭示财务潜力和商业前景。"
     }
 };
 
