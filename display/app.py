@@ -388,10 +388,13 @@ def api_chatbot():
         
     user_email = session.get('user', {}).get('email') if session.get('user') else 'guest'
     
+    # 限制上下文：只保留最近的4轮对话（8条消息），加上本次问答刚好5轮对话（10条消息）
+    recent_history = history[-8:] if len(history) > 8 else history
+    
     if persona == 'bot2':
-        reply = chatbot2.get_chat_response(user_email, user_name, message, history, lang)
+        reply = chatbot2.get_chat_response(user_email, user_name, message, recent_history, lang)
     else:
-        reply = chatbot1.get_chat_response(user_email, user_name, message, history, lang)
+        reply = chatbot1.get_chat_response(user_email, user_name, message, recent_history, lang)
 
     if reply == "__SERVICE_UNAVAILABLE__":
         return jsonify({'status': 'error', 'error': 'unavailable'}), 503
@@ -404,7 +407,7 @@ def api_chatbot():
     if not os.path.exists(conv_dir):
         os.makedirs(conv_dir)
         
-    updated_history = history.copy()
+    updated_history = recent_history.copy()
     updated_history.append({'role': 'user', 'content': message})
     updated_history.append({'role': 'assistant', 'content': reply})
     
