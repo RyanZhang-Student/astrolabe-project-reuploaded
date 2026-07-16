@@ -248,9 +248,8 @@ def calculate():
     user_email = user_info_dict.get('email') if user_info_dict else 'guest'
     
     email_folder = os.path.join(RESULTS_DIR, user_email)
-    if os.path.exists(email_folder):
-        shutil.rmtree(email_folder)
-    os.makedirs(email_folder)
+    if not os.path.exists(email_folder):
+        os.makedirs(email_folder)
     
     user_folder = os.path.join(email_folder, user_name)
     if not os.path.exists(user_folder):
@@ -353,6 +352,28 @@ def api_ai_analysis():
         'analysis': analysis_text
     })
 
+@app.route('/api/chatbot/history', methods=['GET'])
+def api_chatbot_history():
+    user_name = request.args.get('user_name')
+    persona = request.args.get('persona', 'bot1')
+    if not user_name:
+        return jsonify({'error': 'Missing parameters'}), 400
+        
+    user_email = session.get('user', {}).get('email') if session.get('user') else 'guest'
+    bot_folder_name = 'chatbot2' if persona == 'bot2' else 'chatbot1'
+    conv_dir = os.path.join(RESULTS_DIR, user_email, user_name, bot_folder_name)
+    filepath = os.path.join(conv_dir, 'history.json')
+    
+    if os.path.exists(filepath):
+        try:
+            with open(filepath, 'r', encoding='utf-8') as f:
+                history = json.load(f)
+            return jsonify({'status': 'success', 'history': history})
+        except Exception as e:
+            return jsonify({'status': 'error', 'error': str(e)}), 500
+    
+    return jsonify({'status': 'success', 'history': []})
+
 @app.route('/api/chatbot', methods=['POST'])
 def api_chatbot():
     data = request.json
@@ -376,6 +397,24 @@ def api_chatbot():
         return jsonify({'status': 'error', 'error': 'unavailable'}), 503
     elif reply == "__SERVICE_ERROR__":
         return jsonify({'status': 'error', 'error': 'internal'}), 500
+
+    # Save to file
+    bot_folder_name = 'chatbot2' if persona == 'bot2' else 'chatbot1'
+    conv_dir = os.path.join(RESULTS_DIR, user_email, user_name, bot_folder_name)
+    if not os.path.exists(conv_dir):
+        os.makedirs(conv_dir)
+        
+    updated_history = history.copy()
+    updated_history.append({'role': 'user', 'content': message})
+    updated_history.append({'role': 'assistant', 'content': reply})
+    
+    filepath = os.path.join(conv_dir, 'history.json')
+    
+    try:
+        with open(filepath, 'w', encoding='utf-8') as f:
+            json.dump(updated_history, f, ensure_ascii=False, indent=4)
+    except Exception as e:
+        print(f"Error saving chatbot history: {e}", flush=True)
 
     return jsonify({
         'status': 'success',

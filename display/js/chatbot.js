@@ -50,10 +50,12 @@ document.addEventListener('DOMContentLoaded', () => {
             headerName.textContent = name;
             profileDesc.textContent = desc;
             
-            // Clear chat history
+            // Clear chat history and try loading history for new persona
             chatHistory = [];
-            chatMessages.innerHTML = getWelcomeHtml();
+            chatMessages.innerHTML = `<div class="chat-welcome"><p>Loading...</p></div>`;
             chatInput.placeholder = window.translations[window.currentLanguage || 'en'].chat_placeholder;
+            
+            loadHistory(currentPersona);
         });
     });
 
@@ -63,6 +65,10 @@ document.addEventListener('DOMContentLoaded', () => {
             chatOverlay.classList.add('active');
             document.body.style.overflow = 'hidden';
             chatInput.focus();
+            
+            if (chatHistory.length === 0) {
+                loadHistory(currentPersona);
+            }
         });
     }
 
@@ -175,6 +181,35 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Scroll to bottom
         chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+
+    // Load History
+    async function loadHistory(persona) {
+        const userName = window.currentAnalysisUserName;
+        if (!userName) {
+            chatMessages.innerHTML = getWelcomeHtml();
+            return;
+        }
+
+        try {
+            const res = await fetch(`/api/chatbot/history?user_name=${encodeURIComponent(userName)}&persona=${persona}`);
+            const data = await res.json();
+            
+            chatMessages.innerHTML = '';
+            chatHistory = [];
+
+            if (data.status === 'success' && data.history && data.history.length > 0) {
+                data.history.forEach(msg => {
+                    appendMessage(msg.role, msg.content);
+                    chatHistory.push(msg);
+                });
+            } else {
+                chatMessages.innerHTML = getWelcomeHtml();
+            }
+        } catch (err) {
+            console.error('Failed to load history:', err);
+            chatMessages.innerHTML = getWelcomeHtml();
+        }
     }
 
     // Typing indicator
